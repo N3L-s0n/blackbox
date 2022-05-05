@@ -2,17 +2,30 @@
 #define BOX_HEADERS_H
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /* HTTP Headers*/
 #define BOX_CONTENT_TYPE "Content-Type"
 
-#define BOX_HEADER_END "\r\n"
+typedef struct box_headers box_headers;
+
+#define BOX_HEADER_END  "\r\n"
 
 /* HTTP Content-Type values */
-#define BOX_TYPE_TEXT_HTML   0
-#define BOX_TYPE_TEXT_PLAIN  1
-#define BOX_TYPE_CHARSET_UTF 2
+typedef enum {
+    
+    TEXT_HTML = 0,
+    TEXT_PLAIN,
+    CHARSET_UTF_8
+    
+} box_type_values;
 
-extern void box_print_content_type( int* values, int count );
+extern box_headers* box_new_headers(void);
+
+extern void box_print_headers(box_headers *headers);
+
+extern void box_destroy_headers(box_headers *headers);
+
+extern void box_header_add_content_type(box_headers *headers, unsigned int *values, unsigned int count);
 
 #endif

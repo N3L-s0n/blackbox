@@ -1,0 +1,12 @@
+body {
+    font-family: Arial;
+}
+
+.logo {
+    height: 100px;
+}
+
+.logo img {
+    height: 100%;
+    width: auto;
+}
