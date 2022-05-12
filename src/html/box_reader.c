@@ -8,7 +8,11 @@ static int box_check_void_tag(const char *string);
 
 static int box_check_end_tag(const char *string);
 
+static int box_check_empty_string(const char *string);
+
 static char *box_concat(char *dest, char *src);
+
+static char *box_copy_string(const char *src);
 
 static char *box_move_regex_line(box_regex_result result, char *string);
 
@@ -61,8 +65,9 @@ extern box_file box_read_file(char *filename) {
             }
             else {
 
-                if(strlen(tmpline) > 1) {
-                    box_handle_element(file, tmpline);
+                if(box_check_empty_string(tmpline) != 0) {
+
+                    box_handle_element(file, box_copy_string(tmpline));
                 }
                 skip = 1;
             }
@@ -83,7 +88,17 @@ extern void box_destroy_file(box_file file) {
     box_destroy_html_tree(file);
 }
 
-static char* box_handle_element(box_file file, char* tmpline) {
+static char *box_copy_string(const char *src) {
+
+    char* string = (char*)malloc(sizeof(char)*(strlen(src)+1));
+
+    strncpy(string, src, strlen(src));
+    string[strlen(src)] = '\0';
+
+    return string;
+}
+
+static char *box_handle_element(box_file file, char *tmpline) {
     
     element el = box_html_tree_add_node(file);
     box_html_set_opening_tag(el, tmpline);
@@ -91,7 +106,7 @@ static char* box_handle_element(box_file file, char* tmpline) {
     box_html_element_up(file);
 }
 
-static char* box_handle_tag(box_file file, box_regex_result result, char *tmpline) {
+static char *box_handle_tag(box_file file, box_regex_result result, char *tmpline) {
 
     char *match;
     char *body;
@@ -204,6 +219,21 @@ static char *box_get_regex_string(box_regex_result result, const char *string) {
     return match;
 }
 
+static int box_check_empty_string(const char *string) {
+
+    regex_t regex;
+
+    int result;
+
+    if( 0 != (result = regcomp(&regex, "^([ \t\n\r\f\v]*)\n$", REG_EXTENDED))) {
+        printf("regcomp() failed\n");
+        exit(EXIT_FAILURE);
+    }
+    result = regexec(&regex, string, 0, NULL, 0);
+ 
+    return result;
+}
+
 static int box_check_void_tag(const char* string) {
 
     regex_t regex;
@@ -287,7 +317,7 @@ static char *box_match_class(const char* string) {
 
     static regmatch_t regmatch_class[2];
 
-    if( 0 != (result.res = regcomp(&regex, "<.*[:space:]class=\"([a-zA-Z0-9]+)\".*>", REG_EXTENDED))) {
+    if( 0 != (result.res = regcomp(&regex, "<.*[ \t\n\r\f\v]class=\"([a-zA-Z0-9]+)\".*>", REG_EXTENDED))) {
         printf("regcomp() failed\n");
         exit(EXIT_FAILURE);
     }
