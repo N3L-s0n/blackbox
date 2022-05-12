@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <regex.h>
 
 /* HTTP Headers*/
 #define BOX_CONTENT_TYPE "Content-Type"
@@ -27,5 +29,9 @@ extern void box_print_headers(box_headers *headers);
 extern void box_destroy_headers(box_headers *headers);
 
 extern void box_header_add_content_type(box_headers *headers, unsigned int *values, unsigned int count);
+
+extern char *box_get_env_var(char *varname, char **env);
+
+extern char *box_get_value_from_query(char *param, char **env);
 
 #endif
