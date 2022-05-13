@@ -35,7 +35,7 @@ header {
 }
 
 .nav_list{
-    align-items: end;
+    float: right;
 }
 
 .nav_item{
@@ -83,3 +83,37 @@ footer {
     background: #111111;
     color: #EEEEEE;
 }
+
+.layout {  
+    display: grid;
+    grid-template-rows: 30%;
+    grid-template-columns: 30% 50%;
+    gap: 8px;  
+}
+
+
+input[type=text],textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    background-color: #C4C4C4;
+}
+
+input[type=submit]{
+    border-radius: 12px;
+    border: 2px solid #111111;;
+    color: #111111;
+    background-color: #EEEEEE;
+    width: 100px;
+    height: 40px;
+    transition-duration: 0.4s;
+
+}
+
+a{
+    text-decoration:none;
+    color: #EEEEEE;
+}
+
+  
