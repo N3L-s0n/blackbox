@@ -1,10 +1,6 @@
 #include "box_headers.h"
 
-typedef void (*box_header_handler)(unsigned int*, unsigned int);
-
-typedef unsigned int *box_header_values;
-
-static char *box_get_regex_string(regmatch_t* reg, const char *string);
+typedef void (*box_header_handler)(void*, unsigned int);
 
 struct box_headers {
 
@@ -19,10 +15,28 @@ typedef struct box_header_node box_header_node;
 struct box_header_node {
 
    box_header_handler   handler;
-   unsigned int         *values;
-   unsigned int         count;
+   void                 *values;
+   unsigned int          count;
 
    struct box_header_node   *next;
+};
+
+static char *box_response_status[] = {
+
+    /* 200 OK */
+    "Status:200 OK",
+
+    /* 201 CREATED */
+    "Status:201 Created",
+
+    /* 202 ACCEPTED */
+    "Status:202 Accepted",
+
+    /* 302 Found */
+    "Status:302 Found"
+
+    /* 308 Permantent Redirect */
+    "Status:308 Permanent Redirect"
 };
 
 static char *box_content_type_values[] = {
@@ -38,9 +52,22 @@ static char *box_content_type_values[] = {
 
 };
 
+
+static void box_response_status_handler(void *values, unsigned int count);
+
+static void box_content_type_handler(void *values, unsigned int count);
+
+static void box_location_handler(void *values, unsigned int count);
+
+static box_header_node* box_add_header(box_headers *headers, box_header_handler handler, unsigned int values_count);
+
 extern box_headers* box_new_headers(void) {
     
     box_headers *headers = (box_headers*)malloc(sizeof(box_headers));
+
+    /* ALL HEADERS SHOULD HAVE A RESPONSE STATUS */
+    box_header_node *node = box_add_header(headers, &box_response_status_handler, 1);
+    ((uint8_t*) node->values)[0] = BOX200;
 
     return headers;
 }
@@ -51,8 +78,8 @@ static box_header_node* box_add_header(box_headers *headers, box_header_handler 
 
     *node = (box_header_node) {
         .handler = handler,
-        .values = (unsigned int*)malloc(sizeof(unsigned int) * values_count),
-        .count = 0,
+        .values = (void*)calloc(values_count, sizeof(uint8_t)),
+        .count = values_count,
         .next = NULL
     };
 
@@ -70,26 +97,32 @@ static box_header_node* box_add_header(box_headers *headers, box_header_handler 
     return node;
 }
 
-static void box_content_type(unsigned int *values, unsigned int count) {
+/* REPLACE RESPONSE STATUS */
+extern void box_header_add_response_status(box_headers *headers, uint8_t value) {
     
-    printf( "%s: ", BOX_CONTENT_TYPE );
+    box_header_node *node = headers->root;
 
-    for (int i=0; i<count; ++i) {
-        printf("%s%s", box_content_type_values[values[i]], (i+1 == count) ? "" : "; "); 
-    }
+    ((uint8_t*) node->values)[0] = value;
+
 }
 
 
-extern void box_header_add_content_type(box_headers *headers, unsigned int *values, unsigned int count) {
+extern void box_header_add_content_type(box_headers *headers, unsigned int count, va_list args) {
    
-    box_header_node *node = box_add_header(headers, &box_content_type, count); 
+    box_header_node *node = box_add_header(headers, &box_content_type_handler, count); 
 
     for (int i = 0; i < count; ++i) {
-        node->values[i] = values[i];
+        ((uint8_t*) node->values)[i] = (uint8_t) va_arg(args, int); // should be checked
     }
+}
 
-    node->count = count;
+extern void box_header_add_location(box_headers *headers, const char *url) {
+    
+    if (url != NULL) {
+        box_header_node *node = box_add_header(headers, &box_location_handler, strlen(url)+1);
 
+        strncpy((char *)node->values, url, strlen(url));
+    }
 }
 
 extern void box_print_headers(box_headers *headers) {
@@ -122,78 +155,27 @@ extern void box_destroy_headers(box_headers *headers) {
     free(headers);
 }
 
-extern char *box_get_env_var(char *varname, char **env) {
+/* HEADERS HANDLERS */
 
-    regex_t regex;
-    regmatch_t regmatch[2]; 
+static void box_content_type_handler(void *values, unsigned int count) {
+    
+    printf( "%s: ", BOX_CONTENT_TYPE );
 
-    int size = strlen(varname) + 10;
-
-    char *buffer = (char*)malloc(sizeof(char) * size);
-    char *var = NULL;
-
-    snprintf(buffer, size, "%s=(.*)", varname);
-
-    if( 0 != regcomp(&regex, buffer, REG_EXTENDED)) {
-        printf("regcomp() failed\n");
-        exit(EXIT_FAILURE);
+    for (int i=0; i<count; ++i) {
+        printf("%s%s", box_content_type_values[((uint8_t*) values)[i]], (i+1 == count) ? "" : "; "); 
     }
-
-    while(*env) {
-        
-        if (regexec(&regex, *env, 2, regmatch, 0) == 0) {
-
-            var = box_get_regex_string(regmatch, *env);
-            break;
-        }
-
-        env++;
-    }
-
-    free(buffer);
-
-    return var;
 }
 
-extern char *box_get_value_from_query(char *param, char **env) {
-
-    regex_t regex;
-    regmatch_t regmatch[2];
-
-    int size = strlen(param) + 10;
-
-    char *buffer = (char*)malloc(sizeof(char) * size);
-    char *value = NULL;
-    char *var = box_get_env_var("QUERY_STRING", env);
-
-    snprintf(buffer, size, "%s=([^&]+)", param);
-
-    if (0 != regcomp(&regex, buffer, REG_EXTENDED)) {
-        printf("regcomp() failed\n");
-        exit(EXIT_FAILURE);
+static void box_response_status_handler(void *values, unsigned int count) {
+    
+    if (count == 1) {
+        printf("%s",  box_response_status[((uint8_t*) values)[0]]);
     }
-
-    if (regexec(&regex, var, 2, regmatch, 0) == 0) {
-        value = box_get_regex_string(regmatch, var);
-    }
-
-    free(var);
-    free(buffer);
-
-    return value;
 }
 
-static char *box_get_regex_string(regmatch_t* reg, const char *string) {
+static void box_location_handler(void *values, unsigned int count) {
 
-    int size;
-    char *match;
-
-    size = reg[1].rm_eo - reg[1].rm_so;
-
-    match = (char*)malloc(sizeof(char)*(size+1));
-
-    strncpy(match, string + reg[1].rm_so, size);
-    match[size] = '\0';
-
-    return match;
+    if (count > 0) {
+        printf( "%s: %s", BOX_LOCATION, (char *)values);
+    }
 }

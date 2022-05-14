@@ -3,18 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <regex.h>
 
 #include "box_html.h"
 #include "box_tags.h"
+#include "../utils/box_regex.h"
 
-typedef struct box_regex_result {
-
-    regmatch_t *regmatch;
-    int res;
-
-} box_regex_result;
 
 typedef box_html_tree *box_file;
 
