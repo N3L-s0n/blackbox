@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <unistd.h>
 
 #include "box_headers.h"
 #include "../html/box_reader.h"
@@ -30,6 +31,11 @@ extern void  box_http_env(box_http *http, char  **env);
 /* sends headers & html if available */
 extern void box_http_send(box_http *http);
 
+/* returns 1 if post method */
+extern int  box_http_has_post(box_http *http);
+
+/* returns 1 if get method with query string */
+extern int  box_http_has_query(box_http *http);
 
 
 /* HEADERS RELATED */
@@ -53,9 +59,9 @@ extern void box_send_html(box_http *http);
 
 
 /* CLIENT INPUT */
-extern char *box_get_env_var(char *varname, char **env);
+extern char *box_query_param(box_http *http, char *param);
 
-extern char *box_get_value_from_query(char *param, char **env);
+extern char *box_post_param(box_http *http, char *param);
 
 
 #endif

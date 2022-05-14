@@ -12,6 +12,11 @@ typedef struct box_http {
 
 } box_http;
 
+static int  box_read_post_body(box_http *http);
+
+static int  box_read_query_string(box_http *http);
+
+static char *box_get_env_var(box_http *http, char *varname);
 
 /* HTTP STRUCT */
 /* creates new http struct & sets 200 OK response */
@@ -28,6 +33,9 @@ extern box_http *box_new_http(char *filename, char **env) {
     };
 
     if (filename != NULL) http->html = box_read_file(filename);
+
+    box_read_query_string(http);
+    box_read_post_body(http);
 
     return http;
 }
@@ -67,6 +75,25 @@ extern void box_http_send(box_http *http) {
     box_send_html(http);
 }
 
+/* returns 1 if post method */
+extern int  box_http_has_post(box_http *http) {
+
+    if (http->post_body != NULL) printf("%s<br/>", http->post_body);
+
+    if (http->post_body != NULL) return 1;
+
+    return box_read_post_body(http); // try to read it again if env was not set
+}
+
+/* returns 1 if get query string */
+extern int  box_http_has_query(box_http *http) {
+
+    if (http->query_string != NULL) printf("%s<br/>", http->query_string);
+
+    if (http->query_string != NULL) return 1;
+
+    return box_read_query_string(http);
+}
 
 
 /* HEADERS RELATED */
@@ -116,48 +143,100 @@ extern void box_send_html(box_http *http) {
 }
 
 
-
 /* CLIENT INPUT */
-extern char *box_get_env_var(char *varname, char **env) {
+static int  box_read_post_body(box_http *http) {
+
+    char *cont_len = box_get_env_var(http, "CONTENT_LENGTH");
+
+    if (cont_len != NULL) {
+
+        int len = atoi(cont_len);
+
+        char *buffer = (char*)calloc(len+1, sizeof(char));
+        read(0, buffer, len);
+
+        http->post_body = buffer;
+
+        free(cont_len);
+        return 1;
+    }
+
+    return 0;
+}
+
+static int  box_read_query_string(box_http *http) {
+
+    char *query = box_get_env_var(http, "QUERY_STRING");
+
+    if (query != NULL) {
+        http->query_string = query;
+
+        return 1;
+    }
+
+    return 0;
+}
+
+static char *box_get_env_var(box_http *http, char *varname) {
 
     char *var = NULL;
 
-    int size = strlen(varname) + 10;
-    char *buffer = (char*)malloc(sizeof(char) * size);
+    if (http->env != NULL) {
 
-    snprintf(buffer, size, "%s=(.*)", varname);
+        char **env = http->env;
 
-    while(*env) {
+        int size = strlen(varname) + 10;
+        char *buffer = (char*)malloc(sizeof(char) * size);
 
-        if ((var = box_get_regex_match(*env, buffer)) != NULL) break;
+        snprintf(buffer, size, "%s=(.*)", varname);
 
-        env++;
+        while(*env) {
+
+            if ((var = box_get_regex_match(*env, buffer)) != NULL) break;
+
+            env++;
+        }
+
+        free(buffer);
     }
-
-    free(buffer);
 
     return var;
 }
 
-extern char *box_get_value_from_query(char *param, char **env) {
+extern char *box_post_param(box_http *http, char *param) {
 
-    int size = strlen(param) + 10;
-
-    char *buffer = (char*)malloc(sizeof(char) * size);
     char *value = NULL;
 
-    char *var = box_get_env_var("QUERY_STRING", env);
+    if (http->post_body != NULL) { 
 
-    if(var != NULL) {
+        int size = strlen(param) + 10;
+        char *buffer = (char*)calloc(size+1, sizeof(char));
 
         snprintf(buffer, size, "%s=([^&]+)", param);
 
-        value = box_get_regex_match(var, buffer);
+        value = box_get_regex_match(http->post_body, buffer);
 
-        free(var);
+        free(buffer);
     }
 
-    free(buffer);
+    return value;
+}
+
+extern char *box_query_param(box_http *http, char *param) {
+
+    char *value = NULL;
+
+    if (http->query_string != NULL) { 
+
+        int size = strlen(param) + 10;
+        char *buffer = (char*)calloc(size+1, sizeof(char));
+
+        snprintf(buffer, size, "%s=([^&]+)", param);
+
+        value = box_get_regex_match(http->query_string, buffer);
+
+        free(buffer);
+    }
 
     return value;
 }
