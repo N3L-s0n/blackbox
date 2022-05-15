@@ -3,7 +3,7 @@
 typedef struct box_http {
     
     box_headers *headers;
-    box_file    html;
+    document    html;
 
     char        **env;
 
@@ -32,7 +32,7 @@ extern box_http *box_new_http(char *filename, char **env) {
         .env = env
     };
 
-    if (filename != NULL) http->html = box_read_file(filename);
+    if (filename != NULL) http->html = box_read_document(filename);
 
     box_read_query_string(http);
     box_read_post_body(http);
@@ -47,7 +47,7 @@ extern void  box_destroy_http(box_http *http) {
 
         if (http->headers != NULL) box_destroy_headers(http->headers);
 
-        if (http->html != NULL) box_destroy_html_tree(http->html);
+        if (http->html != NULL) box_destroy_document(http->html);
 
         if (http->query_string != NULL) free(http->query_string);
 
@@ -60,7 +60,7 @@ extern void  box_destroy_http(box_http *http) {
 /* opens a html file */
 extern void  box_http_file(box_http *http, char *filename) {
 
-    if (http->html == NULL && filename != NULL) http->html = box_read_file(filename); 
+    if (http->html == NULL && filename != NULL) http->html = box_read_document(filename); 
 }
 
 /* sets environment variables */
@@ -138,7 +138,7 @@ extern void box_send_html(box_http *http) {
 
     if (http->html != NULL) {
 
-        box_html_print_document(http->html);
+        box_document_print(http->html);
     }
 }
 

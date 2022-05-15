@@ -65,7 +65,7 @@ typedef enum {
     box_li,
     box_link,
     box_main,
-    box_map,
+    box_map_,
     box_mark,
     box_meta,
     box_meter,

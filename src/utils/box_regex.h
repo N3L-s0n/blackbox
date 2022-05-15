@@ -10,11 +10,11 @@
 
 /* Some useful expressions */
 
-#define EMPTY_STRING    "^([ \t\n\r\f\v]*)\n$"
+#define EMPTY_STRING    "^([ \t\n\r\f\v]*)$"
 
 #define AFTER_TAG       "<[^>]+>(.*)"
 
-#define GENERIC_TAG     "(<[^>]+>)"
+#define GENERIC_TAG     "([ \t\n\r\f\v]*<[^>]+>[ \t\n\r\f\v]*)"
 
 #define VOID_TAG        "(<[^>]+/>)"
 
@@ -25,6 +25,8 @@
 #define TAG_NAME        "<([a-zA-Z0-9]+).*>"
 
 #define TAG_CLASS       "<.*[ \t\n\r\f\v]class=\"([a-zA-Z0-9]+)\".*>"
+
+#define ENDS_WITH_TAG   "<[^<]*>[ \t\n\t\f\v]*$"
 
 
 /* BOTH regex functions work with 0 or 1 subexpressions */

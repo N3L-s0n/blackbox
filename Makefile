@@ -2,7 +2,7 @@ BUILDDIR := obj
 TARGETDIR := bin
 VPATH := src:src/core:src/http:src/mem:src/html:src/utils
 OBJS := $(addprefix $(BUILDDIR)/, box_headers.o box_array.o box_ntree.o \
-		box_html.o box_reader.o box_tags.o box_regex.o box_http.o)
+		box_html.o box_reader.o box_tags.o box_regex.o box_http.o box_map.o)
 
 .PHONY: all
 

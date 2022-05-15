@@ -5,77 +5,65 @@
 
 #include "../mem/box_ntree.h"
 #include "../mem/box_array.h"
+#include "../mem/box_map.h"
+#include "../utils/box_regex.h"
 
 #include <stdio.h>
 
-typedef struct box_html_element {
+#define BOX_TAGS    0
+#define BOX_CONTENT 1
 
-    int html_id;
-    int html_tag;
-    int html_class;
+typedef struct box_element {
+
+    int type;
+
+} box_element;
+
+typedef struct box_el_content {
+
+    box_element super;
 
     char *content;
-    char *opening_tag;
-    char *closing_tag;
 
-} box_html_element;
+} box_el_content;
 
-typedef struct box_html_tree {
+typedef struct box_el_tags {
 
-    box_ntree *ntree;
-    box_array *classes;
+    box_element super;
 
-} box_html_tree;
+    int tag;
 
-extern box_html_element *box_new_html_element(void);
+    char *open_tag;
+    char *close_tag;
 
-extern box_html_element *box_html_get_last_element(box_html_tree *tree);
+} box_el_tags;
 
-extern void  box_destroy_html_element(void *element);
+typedef struct box_document {
 
-extern box_html_tree *box_new_html_tree(void);
+    box_ntree     *ntree;
 
-extern box_html_element *box_html_tree_add_node(box_html_tree *tree);
+    box_map_array *id_map;
+    box_map_array *class_map;
 
-extern void box_destroy_html_tree(box_html_tree *tree);
+} box_document;
 
-extern void box_html_element_up(box_html_tree *tree);
+extern box_element *box_new_element_tags(char *open, char *close);
+extern box_element *box_new_element_content(char *content);
+extern box_document *box_new_document(void);
 
-extern void box_html_print_document(box_html_tree *tree);
+extern void  box_destroy_element(void *element);
+extern void box_destroy_document(box_document *document);
 
-extern void box_html_print_by_tag(box_html_tree *tree, char *tag);
+extern box_element *box_document_add_tag(box_document *document, char *open, char *close);
+extern box_element *box_document_add_content(box_document *document, char *content);
 
-extern void box_html_print_by_tag_excluded(box_html_tree *tree, char *tag);
+extern box_element *box_document_get_last_element(box_document *document);
+extern box_element *box_document_set_close_tag(box_element *element, char *close_tag);
 
-/* html_id */
-extern int   box_html_get_html_id(box_html_element *element);
-extern void  box_html_set_html_id(box_html_element *element, int value);
+extern void box_document_element_up(box_document *document);
 
+extern void box_document_print(box_document *document);
 
-/* html_tag */
-extern int   box_html_get_html_tag(box_html_element *element);
-extern void  box_html_set_html_tag(box_html_element *element, int value);
-
-
-/* html_class */
-extern int   box_html_get_html_class(box_html_element *element);
-extern void  box_html_set_html_class(box_html_element *element, int value);
-
-
-/* content */
-extern char *box_html_get_content(box_html_element *element);
-extern void  box_html_set_content(box_html_element *element, char *value);
-
-
-/* openening_tag */
-extern char *box_html_get_opening_tag(box_html_element *element);
-extern void  box_html_set_opening_tag(box_html_element *element, char *value);
-
-
-/* closing_tag */
-extern char *box_html_get_closing_tag(box_html_element *element);
-extern void  box_html_set_closing_tag(box_html_element *element, char *value);
-
-
+extern void box_document_print_by_tag(box_document *document, char *tag);
 
 #endif

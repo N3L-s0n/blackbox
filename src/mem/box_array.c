@@ -6,7 +6,7 @@ extern box_array *box_new_array(size_t length, size_t size) {
     array->length = length;
     array->size = size;
 
-    array->array = (char*)malloc(sizeof(char)*size*length);
+    array->array = (char*)calloc(size*length,sizeof(char));
 
     return array;
 }
@@ -26,7 +26,7 @@ extern void *box_put_array(box_array *array, unsigned int index, void *value) {
 
 extern void *box_get_array(box_array *array, unsigned int index) {
 
-    void *value;
+    void *value = NULL;
 
     if (index < array->length) {
         value = array->array + index*array->size; 

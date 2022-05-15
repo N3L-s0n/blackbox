@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "box_headers.h"
+#include "../html/box_html.h"
 #include "../html/box_reader.h"
 
 #include "../utils/box_regex.h"

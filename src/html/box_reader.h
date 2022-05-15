@@ -5,16 +5,15 @@
 #include <stdlib.h>
 
 #include "box_html.h"
-#include "box_tags.h"
 #include "../utils/box_regex.h"
 
 
-typedef box_html_tree *box_file;
+typedef box_document *document;
 
-typedef box_html_element *element;
+typedef box_element    *element;
+typedef box_el_tags    *element_tags;
+typedef box_el_content *element_content;
 
-extern box_file box_read_file(char *filename);
-
-extern void box_destroy_file(box_file file);
+extern document box_read_document(char *filename);
 
 #endif

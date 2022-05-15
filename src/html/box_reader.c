@@ -2,18 +2,15 @@
 
 /* declarations */
 
-static void box_set_tag(box_file file, char *line);
+static char *box_handle_tag(document doc, char *tmpline);
 
-static char *box_handle_tag(box_file file, char *tmpline);
+static char *box_handle_content(document doc, char *tmpline);
 
-static char *box_handle_element(box_file file, char *tmpline);
+static char *box_read_buffer(FILE *fp);
 
 /* definitions */
 
-extern box_file box_read_file(char *filename) {
-
-    ssize_t read;
-     size_t len;
+extern document box_read_document(char *filename) {
 
     char    *line = NULL;
     char *tmpline = NULL;
@@ -25,48 +22,68 @@ extern box_file box_read_file(char *filename) {
         exit(1);
     }
     
-    box_file file = box_new_html_tree();
+    document doc = box_new_document();
 
-    while ((read = getline( &line, &len, fp)) != -1) {
+    while ((line = box_read_buffer(fp)) != NULL) {
 
         tmpline = line;
 
         while (1) {
             
-            int result = box_check_regex_match(tmpline, GENERIC_TAG);
-
-            if (result == MATCH) {
-                tmpline = box_handle_tag(file, tmpline);
+            if (box_check_regex_match(tmpline, GENERIC_TAG) == MATCH) {
+                tmpline = box_handle_tag(doc, tmpline);
                 continue;
             }
 
             if(box_check_regex_match(tmpline, EMPTY_STRING) != MATCH) {
-                box_handle_element(file, box_copy_string(tmpline));
+                box_handle_content(doc, tmpline);
             }
 
             break;
         }
+
+        if (line != NULL) free(line);
     }
 
+    return doc;
+}
+
+static char *box_read_buffer(FILE *fp) {
+
+    char *line   = NULL;
+    char *buffer = NULL;
+
+    size_t len;
+    size_t size;
+    ssize_t read;
+    
+    while ((read = getline( &line, &len, fp)) != -1) {
+
+        if (buffer == NULL) {
+            buffer = (char*) calloc(read+1, sizeof(char));
+        }
+        else {
+            buffer = (char*)realloc(buffer, sizeof(char) * (read + strlen(buffer)));
+        }
+
+        strncat(buffer, line, read);
+
+        if (box_check_regex_match(buffer, ENDS_WITH_TAG) == MATCH) break;
+    }
+    
     if (line != NULL) free(line);
 
-    return file;
-}
-
-extern void box_destroy_file(box_file file) {
-
-    box_destroy_html_tree(file);
-}
-
-static char *box_handle_element(box_file file, char *tmpline) {
+    return buffer;
     
-    element el = box_html_tree_add_node(file);
-    box_html_set_opening_tag(el, tmpline); // Opening tag works as body too
-
-    box_html_element_up(file);
 }
 
-static char *box_handle_tag(box_file file, char *tmpline) {
+static char *box_handle_content(document doc, char *tmpline) {
+    
+    box_document_add_content(doc, tmpline);
+    box_document_element_up(doc);
+}
+
+static char *box_handle_tag(document doc, char *tmpline) {
 
     char *match;
     char *body;
@@ -76,43 +93,27 @@ static char *box_handle_tag(box_file file, char *tmpline) {
 
     if (box_check_regex_match(match, VOID_TAG) == MATCH) {       // VOID TAG
                                                 //
-        element el = box_html_tree_add_node(file);
-        box_html_set_opening_tag(el, match);
+        element el = box_document_add_tag(doc, match, NULL);
 
-        box_set_tag(file, match);
-        box_html_element_up(file);
-
-        if (body != NULL) free(body);
+        box_document_element_up(doc);
     }
     else if (box_check_regex_match(match, END_TAG) == MATCH) {   // END TAG
         
-        element el = box_html_get_last_element(file);
-        box_html_set_closing_tag(el, match);
+        element el = box_document_get_last_element(doc);
+        box_document_set_close_tag(el, match);
        
-        box_handle_element(file, body);
-        box_html_element_up(file);
+        if(box_check_regex_match(body, EMPTY_STRING) != MATCH) {
+            box_handle_content(doc, body);
+        }
+        box_document_element_up(doc);
     }
     else {                                                      // START TAG
         
-        element el = box_html_tree_add_node(file);
-        box_html_set_opening_tag(el, match);
-
-        box_set_tag(file, match);
-
-        if (body != NULL) free(body); 
+        element el = box_document_add_tag(doc, match, NULL);
     }
-    
+
+    if (match != NULL) free(match); 
+    if (body != NULL) free(body);
+
     return box_move_regex_match(tmpline, AFTER_TAG);
-}
-
-static void box_set_tag(box_file file, char *line) {
-    
-    char *string = box_get_regex_match(line, TAG_NAME);
-
-    if (string != NULL) {
-        
-        box_html_set_html_tag(box_html_get_last_element(file), box_html_tag_id(string));
-        free(string);
-    }
-
 }

@@ -123,6 +123,8 @@ extern char *box_concat_n_destroy(char *dest, char *src) {
 
 extern char *box_copy_string(const char *src) {
 
+    if (src == NULL) return NULL; 
+
     char* string = (char*)calloc(strlen(src)+1, sizeof(char));
     strncpy(string, src, strlen(src));
 
