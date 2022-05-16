@@ -64,5 +64,7 @@ extern char *box_query_param(box_http *http, char *param);
 
 extern char *box_post_param(box_http *http, char *param);
 
+/* HTML OPERATIONS */
+extern void *box_replicate_class(box_http *http, char *html_class, int n);
 
 #endif

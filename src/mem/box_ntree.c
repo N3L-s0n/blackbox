@@ -124,6 +124,60 @@ extern void *box_ntree_node_get_value(box_ntree_node *node) {
     return value;
 }
 
+extern box_ntree_node *box_ntree_ploriferate(box_ntree *ntree, box_ntree_node *node, int size, copy_value copy) {
+
+    if (node == NULL || size < 2) return NULL;
+
+    box_ntree_node *dummy = node;
+    node = box_ntree_node_clone(ntree, dummy, copy);
+
+    // new dummy array of duplicated nodes
+    box_destroy_array(dummy->array);
+    dummy->array = box_new_array(ntree->length, ntree->size);
+    dummy->child_count = 1;
+
+    box_put_array(dummy->array, 0, (void*)&node);
+
+    for (int i = 1; i < size; ++i) {
+        
+        box_ntree_node *tmp = box_ntree_node_clone(ntree, node, copy);
+        box_put_array(dummy->array, i, (void*)&tmp);
+        dummy->child_count++;
+    }
+
+    return dummy;
+}
+
+extern box_ntree_node *box_ntree_node_clone(box_ntree *ntree, box_ntree_node *node, copy_value copy) {
+
+    if (node == NULL) return NULL;
+
+    box_ntree_node *new = (box_ntree_node*)malloc(sizeof(box_ntree_node));
+
+    new->parent = node->parent;
+    new->child_count = node->child_count;
+
+    new->value = copy(node->value);
+    new->array = box_new_array(ntree->length, ntree->size);
+
+    for (int i = 0; i < node->child_count; ++i) {
+
+        box_ntree_node *tmp = *(box_ntree_node**)box_get_array(node->array, i);
+        box_ntree_node *cloned = box_ntree_node_clone(ntree, tmp, copy);
+
+        box_put_array(new->array, i, (void*)&cloned);
+    }
+
+    return new;
+}
+
+extern box_ntree_node *box_ntree_get_worker(box_ntree *ntree) {
+
+    if (ntree != NULL) return ntree->worker;
+
+    return NULL;
+}
+
 /* node value */
 extern void *box_worker_get_value(box_ntree *ntree) {
 
@@ -141,4 +195,16 @@ extern void box_worker_set_value(box_ntree *ntree, void *value) {
     if (ntree->worker != NULL) {
         ntree->worker->value = value;
     }
+}
+
+extern void *box_ntree_get_value(box_ntree_node *node) {
+
+    if (node == NULL) return NULL;
+
+    return node->value;
+}
+
+extern void box_ntree_set_value(box_ntree_node *node, void *value) {
+    
+    if (node != NULL) node->value = value;
 }

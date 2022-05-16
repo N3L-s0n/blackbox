@@ -13,7 +13,7 @@ extern box_array *box_new_array(size_t length, size_t size) {
 
 extern void *box_put_array(box_array *array, unsigned int index, void *value) {
 
-    if (index > array->length && index < array->length*2) {
+    if (index >= array->length && index < array->length*2) {
         box_resize_array(array);
     }
 

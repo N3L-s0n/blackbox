@@ -12,6 +12,7 @@
 
 #define BOX_TAGS    0
 #define BOX_CONTENT 1
+#define BOX_DUMMY   2
 
 typedef struct box_element {
 
@@ -49,6 +50,8 @@ typedef struct box_document {
 
 extern box_element *box_new_element_tags(char *open, char *close);
 extern box_element *box_new_element_content(char *content);
+extern void *box_copy_element(void *element);
+
 extern box_document *box_new_document(void);
 
 extern void  box_destroy_element(void *element);
@@ -66,4 +69,22 @@ extern void box_document_print(box_document *document);
 
 extern void box_document_print_by_tag(box_document *document, char *tag);
 
+extern void box_document_print_with_class(box_document *document, char *key);
+
+extern void box_document_print_with_id(box_document *document, char *key);
+
+extern void box_document_replicate_by_class(box_document *document, char *key, int n);
+
+extern void box_document_replicate_by_id(box_document *document, char *key, int n);
+
 #endif
+
+
+
+
+
+
+
+
+
+

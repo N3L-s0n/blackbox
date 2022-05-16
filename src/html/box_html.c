@@ -37,11 +37,36 @@ extern box_element *box_new_element_content(char *content){
     return (box_element *) element;
 }
 
+extern void *box_copy_element(void *element) {
+
+    box_element *el = (box_element *)element;
+
+    if (el != NULL & el->type == BOX_TAGS) {
+
+        box_el_tags *tag = (box_el_tags *)el;
+        box_el_tags *new = (box_el_tags *)box_new_element_tags(tag->open_tag, tag->close_tag);
+
+        new->tag = tag->tag;
+
+        return (void *)new;
+    }
+
+    if (el != NULL & el->type == BOX_CONTENT) {
+
+        box_el_content *cont = (box_el_content *)el;
+        box_el_content *new  = (box_el_content *)box_new_element_content(cont->content);
+
+        return (void *)new;
+    }
+
+    return NULL;
+}
+
 extern void  box_destroy_element(void *element){
 
     box_element *el = (box_element *) element;
 
-    if (el != NULL & el->type == BOX_TAGS) {
+    if (el != NULL && el->type == BOX_TAGS) {
 
         box_el_tags *tag = (box_el_tags *)el;
 
@@ -50,13 +75,22 @@ extern void  box_destroy_element(void *element){
 
         free(tag);
     }
-    else if (el != NULL & el->type == BOX_CONTENT) {
+    else if (el != NULL && el->type == BOX_CONTENT) {
 
         box_el_content *cont = (box_el_content *)el;
 
         if (cont->content != NULL) free(cont->content);
 
         free(cont);
+    }
+    else if (el != NULL && el->type == BOX_DUMMY) {
+
+        box_el_tags *tag = (box_el_tags *)el;
+
+        if (tag->open_tag != NULL) free(tag->open_tag);
+        if (tag->close_tag != NULL) free(tag->close_tag);
+
+        free(tag);
     }
     else {
         fprintf(stderr, "Trying to destroy not valid element\n");
@@ -95,8 +129,13 @@ extern void box_destroy_document(box_document *document) {
 extern box_element *box_document_add_tag(box_document *document, char *open, char *close) {
     
     box_element *element = box_new_element_tags(open, close);
+
     box_set_tag((box_el_tags*) element);
+
     box_worker_set_value(box_add_ntree_node(document->ntree), element);
+
+    box_map(document->class_map, box_get_regex_match(open, TAG_CLASS), box_ntree_get_worker(document->ntree));
+    box_map(document->id_map, box_get_regex_match(open, TAG_ID), box_ntree_get_worker(document->ntree));
 
     return element;
 }
@@ -190,6 +229,11 @@ static  int box_print_open_tag(box_ntree_node *node, void *data) {
 
         return 0;
     }
+
+    if (element->type == BOX_DUMMY) {
+
+        return 0; // continue printing dummy children
+    }
     
     return 1;
 }
@@ -216,3 +260,124 @@ static void box_set_tag(box_el_tags *tag) {
         free(string); 
     }
 }
+
+extern void box_document_print_with_class(box_document *document, char *key) {
+
+    box_array *nodes = box_map(document->class_map, key, NULL);
+
+    if (nodes == NULL) return;
+
+    for ( int i = 0; ; ++i) {
+
+        void *tmp = *(void**)box_get_array(nodes, i);
+        if (tmp == NULL) break;
+
+        box_ntree_node *node = (box_ntree_node *)tmp;
+
+        box_element *el = (box_element *)box_ntree_get_value(node);
+
+        if (el->type == BOX_TAGS) {
+            box_el_tags *tag = (box_el_tags *)el;
+            printf("%s: %s\n", key, tag->open_tag);
+        }
+
+        if (el->type == BOX_CONTENT) {
+            box_el_content *cont = (box_el_content *)el;
+            printf("%s: %s\n", key, cont->content);
+        }
+    }
+}
+
+extern void box_document_print_with_id(box_document *document, char *key) {
+
+    box_array *nodes = box_map(document->id_map, key, NULL);
+
+    if (nodes == NULL) return;
+
+    for ( int i = 0; ; ++i) {
+
+        void *tmp = *(void**)box_get_array(nodes, i);
+        if (tmp == NULL) break;
+
+        box_ntree_node *node = (box_ntree_node *)tmp;
+
+        box_element *el = (box_element *)box_ntree_get_value(node);
+
+        if (el->type == BOX_TAGS) {
+            box_el_tags *tag = (box_el_tags *)el;
+            printf("%s: %s\n", key, tag->open_tag);
+        }
+
+        if (el->type == BOX_CONTENT) {
+            box_el_content *cont = (box_el_content *)el;
+            printf("%s: %s\n", key, cont->content);
+        }
+    }
+}
+
+extern void box_document_replicate_by_class(box_document *document, char *key, int n) {
+    
+    box_array *nodes = box_map(document->class_map, key, NULL);
+
+    if (nodes != NULL) {
+
+        for (int i = 0; ; ++i) {
+
+            void *tmp = *(void**)box_get_array(nodes, i);
+            if (tmp == NULL) break;
+
+            box_ntree_node *node = (box_ntree_node *)tmp;
+
+            box_ntree_node *dummy = box_ntree_ploriferate(document->ntree, node, n, &box_copy_element);
+            box_element *el = (box_element *)box_ntree_node_get_value(dummy);
+            el->type = BOX_DUMMY;
+        }
+
+    }
+
+}
+
+extern void box_document_replicate_by_id(box_document *document, char *key, int n) {
+
+    box_array *nodes = box_map(document->id_map, key, NULL);
+
+    if (nodes != NULL) {
+
+        for (int i = 0; ; ++i) {
+
+            void *tmp = *(void**)box_get_array(nodes, i);
+            if (tmp == NULL) break;
+
+            box_ntree_node *node = (box_ntree_node *)tmp;
+
+            box_ntree_node *dummy = box_ntree_ploriferate(document->ntree, node, n, &box_copy_element);
+            box_element *el = (box_element *)box_ntree_node_get_value(dummy);
+            el->type = BOX_DUMMY;
+        }
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

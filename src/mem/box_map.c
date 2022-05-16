@@ -109,6 +109,8 @@ extern size_t box_get_map_array_length(box_map_array *array) {
 /* If value     null: Don't add value and return array of values if key exists */
 extern box_array *box_map(box_map_array *array, char *key, void *value) {
 
+    if (key == NULL) return NULL;
+
     box_map_node *node = NULL;
 
     if (array != NULL) {
@@ -129,6 +131,8 @@ extern box_array *box_map(box_map_array *array, char *key, void *value) {
 
                 if (*(void **)box_get_array(node->values, i) == value) return node->values;
             }
+
+            free(key);
         }
         else node = box_map_new_node(array, key);
 
@@ -167,7 +171,7 @@ static box_map_node *box_map_get_by_key(box_map_array *array, char *key) {
 
         tmp = *(box_map_node **)box_get_array(array->maps, i); 
 
-        if (strncmp(key, tmp->key, strlen(tmp->key)) == 0) return tmp;
+        if (strcmp(key, tmp->key) == 0) return tmp;
     }
 
     return NULL;

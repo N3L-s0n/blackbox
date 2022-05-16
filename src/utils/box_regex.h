@@ -24,9 +24,13 @@
 
 #define TAG_NAME        "<([a-zA-Z0-9]+).*>"
 
-#define TAG_CLASS       "<.*[ \t\n\r\f\v]class=\"([a-zA-Z0-9]+)\".*>"
+#define TAG_CLASS       "<.*[ \t\n\r\f\v]class=\"([a-zA-Z0-9_]+)\".*>"
+
+#define TAG_ID          "<.*[ \t\n\r\f\v]id=\"([a-zA-Z0-9_]+)\".*>"
 
 #define ENDS_WITH_TAG   "<[^<]*>[ \t\n\t\f\v]*$"
+
+#define VARIABLE_NAME   "\$\((.*)\)"
 
 
 /* BOTH regex functions work with 0 or 1 subexpressions */

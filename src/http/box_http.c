@@ -140,6 +140,10 @@ extern void box_send_html(box_http *http) {
 
         box_document_print(http->html);
     }
+
+    // Should not be here
+    //box_document_print_with_class(http->html, "nav_item");
+
 }
 
 
@@ -241,3 +245,8 @@ extern char *box_query_param(box_http *http, char *param) {
     return value;
 }
 
+/* HTML OPERATIONS */
+extern void *box_replicate_class(box_http *http, char *html_class, int n){
+    
+    box_document_replicate_by_class(http->html, html_class, n);
+}
