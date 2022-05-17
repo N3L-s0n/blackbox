@@ -45,6 +45,7 @@ extern document box_read_document(char *filename) {
         if (line != NULL) free(line);
     }
 
+    box_document_map_classes(doc);
     return doc;
 }
 

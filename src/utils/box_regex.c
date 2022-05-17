@@ -19,6 +19,83 @@ int main() {
 }
 */
 
+extern char *box_replace_variables(char *variables, char *target) {
+
+    //char *text = box_copy_string(target);
+    char *text = target;
+
+    char *variables_tmp = variables;
+    char *text_tmp = NULL;
+    
+    while (variables_tmp != NULL) {
+
+        while(1) {
+
+            text_tmp = box_replace_regex_match(variables_tmp, text);
+
+            if (text_tmp == NULL) break;
+
+            free(text);
+            text = text_tmp;
+        }
+
+        variables_tmp = box_move_regex_match(variables_tmp, VAR_VALUE);
+    }
+
+    return text;
+}
+
+/* vars should be in format: varname=var
+ * replaces in string: $(varname) -> var */
+extern char *box_replace_regex_match(const char *vars, const char *string) {
+
+    regex_t regex;
+    regmatch_t regmatch[2];
+
+    char *new = NULL;
+    int   res;
+
+    char *varname = box_get_regex_match(vars, VAR_NAME);
+    char *var     = box_get_regex_match(vars, VAR_VALUE);
+
+    if (varname == NULL) return NULL;
+    if (var == NULL) var = (char*)calloc(1, sizeof(char));
+
+    int size = strlen(varname) + 20;
+    char *buffer = (char*)calloc(size + 1, sizeof(char)); 
+    snprintf(buffer, size, "([$][(]%s[)])", varname);
+
+
+    if ((res = regcomp(&regex, buffer, REG_EXTENDED)) != 0) {
+
+        printf("regcomp() failed\n");
+        exit(EXIT_FAILURE);
+    }
+
+    res = regexec(&regex, string, 2, regmatch, 0);
+
+    if (res == 0) {
+
+        int index = 0;
+
+        if (regmatch[1].rm_eo != -1) index = 1;
+
+        int size = regmatch[index].rm_eo - regmatch[index].rm_so;
+        
+        new = (char*)calloc(strlen(string) + (strlen(var) - size), sizeof(char));
+
+        strncpy(new, string, regmatch[index].rm_so);
+        strncpy(new+regmatch[index].rm_so, var, strlen(var));
+        strncpy(new+regmatch[index].rm_so+strlen(var), string+regmatch[index].rm_eo, strlen(string+regmatch[index].rm_eo));
+    }
+
+    free(var);
+    free(varname);
+    free(buffer);
+
+    return new;
+
+}
 
 extern char *box_move_regex_match(char *string, const char *expr) {
 
@@ -44,6 +121,7 @@ extern char *box_move_regex_match(char *string, const char *expr) {
         string += regmatch[index].rm_so;
 
     }
+    else return NULL;
 
     return string;
 }

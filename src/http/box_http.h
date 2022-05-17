@@ -65,6 +65,14 @@ extern char *box_query_param(box_http *http, char *param);
 extern char *box_post_param(box_http *http, char *param);
 
 /* HTML OPERATIONS */
-extern void *box_replicate_class(box_http *http, char *html_class, int n);
+extern void *box_replicate_class(box_http *http, char *html_class, int index, int n);
+
+extern void *box_replicate_id(box_http *http, char *html_id, int index, int n);
+
+extern void box_set_class_variables(box_http *http, char *html_class, char *variables, int index);
+
+extern void box_set_id_variables(box_http *http, char *html_id, char *variables, int index);
+
+extern int  box_class_n_instances(box_http *http, char *html_class);
 
 #endif

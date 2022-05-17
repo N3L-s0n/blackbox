@@ -14,6 +14,9 @@
 #define BOX_CONTENT 1
 #define BOX_DUMMY   2
 
+#define BOX_CLASS   10
+#define BOX_ID      11
+
 typedef struct box_element {
 
     int type;
@@ -63,6 +66,8 @@ extern box_element *box_document_add_content(box_document *document, char *conte
 extern box_element *box_document_get_last_element(box_document *document);
 extern box_element *box_document_set_close_tag(box_element *element, char *close_tag);
 
+extern void box_document_map_classes(box_document *document);
+
 extern void box_document_element_up(box_document *document);
 
 extern void box_document_print(box_document *document);
@@ -71,11 +76,11 @@ extern void box_document_print_by_tag(box_document *document, char *tag);
 
 extern void box_document_print_with_class(box_document *document, char *key);
 
-extern void box_document_print_with_id(box_document *document, char *key);
+extern void box_document_replicate(box_document *document, int mode, char *key, int index, int n);
 
-extern void box_document_replicate_by_class(box_document *document, char *key, int n);
+extern int box_document_get_class_n(box_document *document, char *key);
 
-extern void box_document_replicate_by_id(box_document *document, char *key, int n);
+extern void box_document_set_variables(box_document *document, int mode, char *key, char *variables, int index);
 
 #endif
 

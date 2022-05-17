@@ -78,8 +78,6 @@ extern void box_http_send(box_http *http) {
 /* returns 1 if post method */
 extern int  box_http_has_post(box_http *http) {
 
-    if (http->post_body != NULL) printf("%s<br/>", http->post_body);
-
     if (http->post_body != NULL) return 1;
 
     return box_read_post_body(http); // try to read it again if env was not set
@@ -87,8 +85,6 @@ extern int  box_http_has_post(box_http *http) {
 
 /* returns 1 if get query string */
 extern int  box_http_has_query(box_http *http) {
-
-    if (http->query_string != NULL) printf("%s<br/>", http->query_string);
 
     if (http->query_string != NULL) return 1;
 
@@ -140,10 +136,6 @@ extern void box_send_html(box_http *http) {
 
         box_document_print(http->html);
     }
-
-    // Should not be here
-    //box_document_print_with_class(http->html, "nav_item");
-
 }
 
 
@@ -246,7 +238,28 @@ extern char *box_query_param(box_http *http, char *param) {
 }
 
 /* HTML OPERATIONS */
-extern void *box_replicate_class(box_http *http, char *html_class, int n){
+extern void *box_replicate_class(box_http *http, char *html_class, int index, int n) {
     
-    box_document_replicate_by_class(http->html, html_class, n);
+    box_document_replicate(http->html, BOX_CLASS, html_class, index, n);
 }
+
+extern void *box_replicate_id(box_http *http, char *html_id, int index, int n) {
+    
+    box_document_replicate(http->html, BOX_ID, html_id, index, n);
+}
+
+
+extern void box_set_class_variables(box_http *http, char *html_class, char *variables, int index) {
+    box_document_set_variables(http->html, BOX_CLASS, html_class, variables, index);
+}
+
+extern void box_set_id_variables(box_http *http, char *html_id, char *variables, int index) {
+    box_document_set_variables(http->html, BOX_ID, html_id, variables, index);
+}
+
+extern int   box_class_n_instances(box_http *http, char *html_class) {
+    
+    return box_document_get_class_n(http->html, html_class);
+}
+
+

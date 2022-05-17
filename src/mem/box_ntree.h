@@ -20,7 +20,7 @@ extern box_ntree *box_new_ntree(size_t length);
 
 extern box_ntree *box_add_ntree_node(box_ntree *ntree);
 
-extern box_ntree_node *box_ntree_ploriferate(box_ntree *ntree, box_ntree_node *node, int size, copy_value copy);
+extern box_ntree_node *box_ntree_ploriferate(box_ntree *ntree, box_ntree_node *node, int size, copy_value copy, destroy_value destroy);
 
 extern box_ntree_node *box_ntree_node_clone(box_ntree *ntree, box_ntree_node *node, copy_value copy);
 
@@ -42,5 +42,9 @@ extern void  box_worker_set_value(box_ntree *ntree, void *value);
 
 extern void *box_ntree_get_value(box_ntree_node *node);
 extern void box_ntree_set_value(box_ntree_node *node, void *value);
+
+extern int  box_ntree_get_children_count(box_ntree_node *node);
+
+extern box_ntree_node *box_ntree_get_node_child(box_ntree_node *node, int index);
 
 #endif

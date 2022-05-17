@@ -124,7 +124,7 @@ extern void *box_ntree_node_get_value(box_ntree_node *node) {
     return value;
 }
 
-extern box_ntree_node *box_ntree_ploriferate(box_ntree *ntree, box_ntree_node *node, int size, copy_value copy) {
+extern box_ntree_node *box_ntree_ploriferate(box_ntree *ntree, box_ntree_node *node, int size, copy_value copy, destroy_value destroy) {
 
     if (node == NULL || size < 2) return NULL;
 
@@ -132,7 +132,12 @@ extern box_ntree_node *box_ntree_ploriferate(box_ntree *ntree, box_ntree_node *n
     node = box_ntree_node_clone(ntree, dummy, copy);
 
     // new dummy array of duplicated nodes
+    for (int i = 0; i < dummy->child_count; ++i) {
+        box_ntree_node *tmp = *(box_ntree_node**)box_get_array(dummy->array, i);
+        box_destroy_nodes(tmp, destroy);
+    }
     box_destroy_array(dummy->array);
+
     dummy->array = box_new_array(ntree->length, ntree->size);
     dummy->child_count = 1;
 
@@ -207,4 +212,23 @@ extern void *box_ntree_get_value(box_ntree_node *node) {
 extern void box_ntree_set_value(box_ntree_node *node, void *value) {
     
     if (node != NULL) node->value = value;
+}
+
+extern int  box_ntree_get_children_count(box_ntree_node *node) {
+    
+    if (node != NULL) return node->child_count;
+
+    return -1;
+}
+
+extern box_ntree_node *box_ntree_get_node_child(box_ntree_node *node, int index) {
+
+    if (node != NULL && index < node->child_count) {
+        
+        void *tmp = *(void**)box_get_array(node->array, index);
+        box_ntree_node *node = (box_ntree_node*)tmp;
+        
+        return node;
+    }
+    return NULL;
 }

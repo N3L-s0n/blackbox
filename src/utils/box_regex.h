@@ -32,6 +32,9 @@
 
 #define VARIABLE_NAME   "\$\((.*)\)"
 
+#define VAR_NAME        "([^=&]*)=[^=&]*"
+
+#define VAR_VALUE       "[^=&]*=([^=&]*)"
 
 /* BOTH regex functions work with 0 or 1 subexpressions */
 
@@ -43,6 +46,14 @@ extern char *box_get_regex_match(const char *string, const char *expr);
 
 /* if you want to know if there is a match */
 extern int   box_check_regex_match(const char *string, const char *expr);
+
+/* if you want to replace variables 
+ * Variables: varname1=var1&varname2=var2&...
+ * Target: text with $(varname1) and $(varname2) variables 
+ */
+extern char *box_replace_variables(char *variables, char *target);
+
+extern char *box_replace_regex_match(const char *vars, const char *string);
 
 extern char *box_concat_n_destroy(char *dest, char *src);
 
