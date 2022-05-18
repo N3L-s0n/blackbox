@@ -52,7 +52,7 @@ extern char *box_replace_regex_match(const char *vars, const char *string) {
     regex_t regex;
     regmatch_t regmatch[2];
 
-    char *new = NULL;
+    char *_new = NULL;
     int   res;
 
     char *varname = box_get_regex_match(vars, VAR_NAME);
@@ -82,18 +82,18 @@ extern char *box_replace_regex_match(const char *vars, const char *string) {
 
         int size = regmatch[index].rm_eo - regmatch[index].rm_so;
         
-        new = (char*)calloc(strlen(string) + (strlen(var) - size), sizeof(char));
+        _new = (char*)calloc(strlen(string) + (strlen(var) - size), sizeof(char));
 
-        strncpy(new, string, regmatch[index].rm_so);
-        strncpy(new+regmatch[index].rm_so, var, strlen(var));
-        strncpy(new+regmatch[index].rm_so+strlen(var), string+regmatch[index].rm_eo, strlen(string+regmatch[index].rm_eo));
+        strncpy(_new, string, regmatch[index].rm_so);
+        strncpy(_new+regmatch[index].rm_so, var, strlen(var));
+        strncpy(_new+regmatch[index].rm_so+strlen(var), string+regmatch[index].rm_eo, strlen(string+regmatch[index].rm_eo));
     }
 
     free(var);
     free(varname);
     free(buffer);
 
-    return new;
+    return _new;
 
 }
 
