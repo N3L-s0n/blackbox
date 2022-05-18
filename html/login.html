@@ -1,13 +1,66 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Login/Blackbox</title>
         <link href="../www/css/style.css" rel="stylesheet">
     </head>
     <body>
-        <header>f</header>
+        <header>
+            <nav class="nav">
+                <div class="nav_title" > 
+                    <a href="./index.html">Welcome!</a>
+                </div>
+                <ul class="nav_list">
+                    <a href="./cart.html">
+                        <li class="nav_item">Cart</li>
+                    </a>
+                    <a href="./stock.html">
+                        <li class="nav_item">Stock</li>
+                    </a>
+                    <a href="./questions.html">
+                        <li class="nav_item">Questions</li>
+                    </a>   
+                </ul>
+            </nav>  
+            
+            <div class="options">
+                <a href="./login.html">
+                    <button class="button">Login</button>
+                </a>
+                <a href="./register.html">
+                    <button class="button">Register</button>
+                </a>
+            </div>      
+        </header>
         <div class="body">
-            <div class="subheader">Test</div>
+            <div class="subheader">
+                <div class="subheaderTitle">
+                    Login
+                </div>  
+            </div>
+            <div class="Content">
+                </div>
+                    <form action="https://localhost/login.html" method="post">
+                        <label for="user">username</label>
+                        <input id="user" type="text" name="username">
+                        <label for="pass">password</label>
+                        <input id="pass" type="text" name="password">
+                        <input type="submit" value="Login">
+                    </form>
+                </div>
+            </div>
         </div>
-        <footer>d</footer>
+        <footer>
+            <p>
+            C written website using CGI.
+            </p>
+            <p>
+            Developed by
+            Nelson Alvarez / Andrea Alvarado / Greivin Sanchez
+            </p>
+            <p>
+            B90368 / B90272 / B97248
+            </p>
+        </footer>
     </body>
 </html>

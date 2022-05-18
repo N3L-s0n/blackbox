@@ -10,7 +10,7 @@
 /* HTTP Headers*/
 #define BOX_CONTENT_TYPE "Content-Type"
 #define BOX_LOCATION         "Location"
-
+#define BOX_COOKIE          "Set-Cookie"
 typedef struct box_headers box_headers;
 
 #define BOX_HEADER_END  "\r\n"
