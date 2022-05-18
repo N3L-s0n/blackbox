@@ -41,39 +41,43 @@ typedef struct productIsINCart{
     int CartId;
 };
 
-int main()
+/*int main()
 {
     innit();
     getAllProducts();
 
     int numProducts = getNumberOfProducts();
     struct product *listOfProducts = (struct product *)malloc(sizeof(struct product) * numProducts);
-    /*listOfProducts = getAllProducts();
+    listOfProducts = getAllProducts();
 
     for (int i = 0; i < numProducts; i++)
     {
         printf("%i %s %i %i %s %s\n", listOfProducts[i].id, listOfProducts[i].name, listOfProducts[i].price, 
         listOfProducts[i].stock, listOfProducts[i].description,listOfProducts[i].imagePath);
-    }*/
+    }
 
-    //createNewUser("a@gmail.com","name", "apellido1", "apellido2", "afdaf", "CR", "88839208", "token");
+    createNewUser("a@gmail.com","name", "apellido1", "apellido2", "afdaf", "CR", "88839208", "token");
 
-    //printf("%i\n",validatePassword("a@gmail.com","afdaf"));
+    printf("%i\n",validatePassword("a@gmail.com","afdaf"));
 
 
-    /*listOfProducts = getProductsFilteredByName("blue");
+    listOfProducts = getProductsFilteredByName("blue");
 
     for (int i = 0; i < 1; i++) //cambiar num
     {
         printf("%i %s %i %i %s %s\n", listOfProducts[i].id, listOfProducts[i].name, listOfProducts[i].price, 
         listOfProducts[i].stock, listOfProducts[i].description,listOfProducts[i].imagePath);
-    }*/
+    }
 
-    //saveQuestion("a","2022-05-14","c","d");
+    saveQuestion("a","2022-05-14","c","d");
+
+    createCart("joe.doe@gmail.com","123456598");
+
+    addProduct("Red box", 300, 1, "A red box vwery pretty", "path");
 
     mysql_close(connection);
     free(listOfProducts);
-}
+}*/
 
 extern void innit()
 {
@@ -89,6 +93,10 @@ extern void innit()
     {
         finish_with_error(connection);
     }
+}
+
+extern void closeConnection(){
+    mysql_close(connection);
 }
 
 extern void finish_with_error(MYSQL *conn)
@@ -203,6 +211,16 @@ extern struct product* getProductsFilteredByName(char* name){
 
 }
 
+
+extern void addProduct(char* name, int price, int stock, char* description, char* image){
+    char* query;
+    asprintf(&query, "INSERT INTO Product (Name, Price, Stock, Description, Image) VALUES('%s','%i','%i','%s','%s')",name, price, stock, description,image);
+    if (mysql_query(connection, query)) {
+        finish_with_error(connection);
+    }
+}
+
+
 extern void createNewUser(char* email, char* name, char* firstLastName, char* secondLastName, char* password, char* address, char* phone, char* token){
     char* query;
     asprintf(&query, "INSERT INTO User VALUES('%s','%s','%s','%s','%s','%s','%s','%s')", email, name, firstLastName, secondLastName, password, address, phone, token);
@@ -250,6 +268,18 @@ extern void saveQuestion(char* email, char* date, char* subject, char* descripti
         finish_with_error(connection);
     }
 
+}
+
+extern void createCart(char* email, char* cardNumber){
+    char date[15] = {0};
+    char* query;
+    time_t rawtime = time(NULL);
+    struct tm *ptm = localtime(&rawtime);
+    strftime(date, 15, "%Y-%m-%d", ptm);
+    asprintf(&query, "INSERT INTO Cart (PayDate, UserEmail, CardNumber) VALUES ('%s','%s','%s')",date,email,cardNumber);
+    if (mysql_query(connection, query)) {
+        finish_with_error(connection);
+    }
 }
 
 
