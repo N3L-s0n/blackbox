@@ -1,21 +1,25 @@
 #include "box_client_token.h"
-char* generate_token(){
+
+static const char alphanum[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxzy@#$*+-.";
+int length= sizeof(alphanum)-1;
+
+extern char getRandomChar(){
+
+    return alphanum[rand()%length];
+}
+
+extern char * getToken(){
     char token[MYLEN], *ptr;
-    int i,num,start,range;
+    int i;
     long seconds;
-
-    start= (int)('!');
-    range= (int)('z')-(int)('!');
-
     time(&seconds);
     srand((unsigned int)seconds);
-    for (ptr = token , i=1; i<MYLEN; ++ptr, ++i){
-        num = rand()%range;
-        *ptr = (char)(num+start);
+    for (i=0; i<MYLEN;i++){
+        token[i] = getRandomChar();
     }
-    *ptr= MYNULL;
-    printf(token);
-    return token;
+    token[MYLEN-1]=MYNULL;
+    ptr=token;
+    return ptr;
 }
 
 
