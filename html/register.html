@@ -1,11 +1,77 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Register|Blackbox</title>
         <link href="../www/css/style.css" rel="stylesheet">
+        <link href="../www/css/login_register.css" rel="stylesheet">
     </head>
     <body>
-        <header>f</header>
-        <div class="body">Test</div>
-        <footer>d</footer>
+        <header>
+            <nav class="nav">
+                <div class="nav_title" >Welcome!</div>
+                <ul class="nav_list">
+                    <a href="./cart.html">
+                        <li class="nav_item">Cart</li>
+
+                    </a>
+                    <a href="./products.html">
+                        <li class="nav_item">Stock</li>
+                    </a>
+                    <a href="./questions.html">
+                        <li class="nav_item">Questions</li>
+                    </a>   
+                </ul>
+            </nav>   
+            <div class="options">
+                <a href="./login.html">
+                    <button class="button">Login</button>
+                </a>
+                <a href="./register.html">
+                    <button class="button">Register</button>
+                </a>
+            </div>
+        </header>
+        <div class="body">
+            <div class="subheader">
+                Register
+            </div>
+            <div class="content">
+                <form action="" method="">
+                    <div class="row">
+                        <div class="column">
+                            <label for="email">Username email</label>
+                            <input id="email" type="email" name="email">
+                            <label for="password">Password</label>
+                            <input id="password" type="password"  name="password">
+                            <label for="confPass">Confirm Password</label>
+                            <input id="confPass" type="password" name="confPass">
+                        </div>
+                        <div class="column">
+                            <label for="fullname">Full name</label>
+                            <input id="fullname" type="text" name="fullname">
+                            <label for="phoneNumber">Phone Number</label>
+                            <input id="phoneNumber" type="phone"  name="phoneNumber">
+                            <label for="adddres">Address</label>
+                            <input id="adddres" type="text" name="adddres">
+                        </div>
+                    </div>
+                    <div>
+                        <input type="submit" value="Register"> 
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <p>
+                C written website using CGI.
+            </p>
+            <p>
+                Developed by
+                Nelson Alvarez / Andrea Alvarado / Greivin Sanchez
+            </p>
+            <p>
+                B90368 / B90272 / B97248
+            </p>
+        </footer>
     </body>
 </html>

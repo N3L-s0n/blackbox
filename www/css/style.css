@@ -73,8 +73,7 @@ header {
     justify-content: center;
     margin: auto;
     width: 50%;
-    padding: 10px;
-    border: 3px solid green;
+    padding: 100px;
 }
 
 .subheaderTitle{
@@ -99,25 +98,6 @@ footer {
     gap: 8px;  
 }
 
-
-input[type=text],textarea {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    background-color: #C4C4C4;
-}
-
-input[type=submit]{
-    border-radius: 12px;
-    border: 2px solid #111111;;
-    color: #111111;
-    background-color: #EEEEEE;
-    width: 100px;
-    height: 40px;
-    transition-duration: 0.4s;
-
-}
 
 a{
     text-decoration:none;
