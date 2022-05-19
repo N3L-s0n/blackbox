@@ -73,6 +73,7 @@ extern char *box_replace_regex_match(const char *vars, const char *string) {
     }
 
     res = regexec(&regex, string, 2, regmatch, 0);
+    regfree(&regex);
 
     if (res == 0) {
 
@@ -111,6 +112,7 @@ extern char *box_move_regex_match(char *string, const char *expr) {
     }
 
     res = regexec(&regex, string, 2, regmatch, 0);
+    regfree(&regex);
 
     if (res == 0) {
 
@@ -143,6 +145,7 @@ extern char *box_get_regex_match(const char *string, const char *expr) {
     }
 
     res = regexec(&regex, string, 2, regmatch, 0);
+    regfree(&regex);
 
     if (res == 0) {
 
@@ -175,6 +178,7 @@ extern int box_check_regex_match(const char *string, const char *expr) {
     }
 
     res = regexec(&regex, string, 2, regmatch, 0);
+    regfree(&regex);
 
     return res;
 }

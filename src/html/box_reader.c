@@ -57,17 +57,22 @@ static char *box_read_buffer(FILE *fp) {
     size_t len;
     size_t size;
     ssize_t read;
+
+    int new_size = 0;
     
     while ((read = getline( &line, &len, fp)) != -1) {
 
         if (buffer == NULL) {
-            buffer = (char*) calloc(read+1, sizeof(char));
+            new_size = read;
+            buffer = (char*) calloc(new_size+1, sizeof(char));
         }
         else {
-            buffer = (char*)realloc(buffer, sizeof(char) * (read + strlen(buffer)));
+            new_size = read + strlen(buffer);
+            buffer = (char*)realloc(buffer, sizeof(char) * (new_size+1));
         }
 
         strncat(buffer, line, read);
+        buffer[new_size] = '\0';
 
         if (box_check_regex_match(buffer, ENDS_WITH_TAG) == MATCH) break;
     }
