@@ -1,9 +1,15 @@
-CREATE DATABASE blackboxDB;
+CREATE DATABASE IF NOT EXISTS blackboxDB;
+CREATE USER IF NOT EXISTS 'blackbox'@'localhost'
+    IDENTIFIED BY '2uwejs45KSdf8!4$';
+
+GRANT SELECT, INSERT, UPDATE
+    ON blackboxDB.*
+    TO 'blackbox'@'localhost';
 
 USE blackboxDB;
 
 
-CREATE TABLE Questions
+CREATE TABLE IF NOT EXISTS Questions
 (
 	Email NVARCHAR(100) NOT NULL, 
     Date DATE NOT NULL, 
@@ -12,7 +18,7 @@ CREATE TABLE Questions
     PRIMARY KEY (Email,Date)
 );
 
-CREATE TABLE User
+CREATE TABLE IF NOT EXISTS User
 (
     Email NVARCHAR(100) NOT NULL PRIMARY KEY, 
     Name NVARCHAR(100) NOT NULL,
@@ -24,7 +30,7 @@ CREATE TABLE User
     Token NVARCHAR(200) NULL
 );
 
-CREATE TABLE Cart
+CREATE TABLE IF NOT EXISTS Cart
 (
 	Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     PayDate DATE NOT NULL,
@@ -35,7 +41,7 @@ CREATE TABLE Cart
 );
 
 
-CREATE TABLE Product
+CREATE TABLE IF NOT EXISTS Product
 (
 	Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     Name NVARCHAR(200) NOT NULL, 
@@ -45,7 +51,7 @@ CREATE TABLE Product
     Image NVARCHAR(100) NULL
 );
 
-CREATE TABLE ProductIsINCart
+CREATE TABLE IF NOT EXISTS ProductIsINCart
 (
 	ProductId INT NOT NULL,
     CartId INT NOT NULL,
@@ -59,28 +65,28 @@ CREATE TABLE ProductIsINCart
 );
 
 
-INSERT INTO Questions
+INSERT IGNORE INTO Questions
 (Email, Date, Subject, Description)
 VALUES 
 ("abc@gmail.com","2022-05-14","How do I log out?", "I dont know how to log out of my account.");
 
-INSERT INTO User
+INSERT IGNORE INTO User
 (Email,Name,FirstLastName,SecondLastName,Password,Address,Phone,Token)
 VALUES
 ("jane.doe@gmail.com","Jane","Doe","","Contrasena12.","Costa Rica","88888888",NULL),
 ("joe.doe@gmail.com","Joe","Doe","","Contrasena12.","Costa Rica","88888881",NULL);
 
-INSERT INTO Cart
-(PayDate, UserEmail, CardNumber)
+INSERT IGNORE INTO Cart
+(Id, PayDate, UserEmail, CardNumber)
 VALUES 
-("2022-05-14","jane.doe@gmail.com","111111111111");
+(1, "2022-05-14","jane.doe@gmail.com","111111111111");
 
-INSERT INTO Product
-(Name, Price, Stock, Description, Image)
+INSERT IGNORE INTO Product
+(Id, Name, Price, Stock, Description, Image)
 VALUES 
-("Black box",100,1,"A black box","./www/imgs/blackbox.png");
+(1, "Black box",100,1,"A black box","images/blackbox.png");
 
-INSERT INTO ProductIsINCart
+INSERT IGNORE INTO ProductIsINCart
 (ProductId,CartId)
 VALUES
 (1,1);
