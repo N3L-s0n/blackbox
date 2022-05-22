@@ -4,11 +4,11 @@
         <title>Blackbox</title>
         <link rel="stylesheet" href="../css/style.css"/>
     </head>
-    <body>
+    <body class="wrapper">
         <header>
             <nav class="nav">
                 <div class="nav_title" > 
-                    <a href="./index.cgi">Welcome!</a>
+                    <h3><a href="./index.cgi">blackbox</a></h3>
                 </div>
                 <ul class="nav_list">
                     <a href="./cart.cgi">
@@ -21,36 +21,42 @@
                         <li class="nav_item">Questions</li>
                     </a>   
                 </ul>
+                    <div class="options">
+                    <a href="./login.cgi">
+                        <button class="button">Login</button>
+                    </a>
+                    <a href="./register.cgi">
+                        <button class="button">Register</button>
+                    </a>
+                </div> 
             </nav>  
-            <div class="options">
-                <a href="./login.cgi">
-                    <button class="button">Login</button>
-                </a>
-                <a href="./register.cgi">
-                    <button class="button">Register</button>
-                </a>
-            </div> 
+            <div class="subheader">
+                <h1>Aiming for secure.</h1>
+            </div>
         </header>
         <div class="body">
-            <div class="subheader">
-                Aiming for secure!
-            </div>
             <div class="content">
-                <h1>blackbox</h1>
-                <div class="logo">
+                <div class="content-logo">
                     <img src="../images/blackbox.png" alt="blackbox logo"/>
                 </div>
+                <div class="content-details">
+                    <p>Search, buy and sell your boxes, they can containt anything.</p>
+                    <a href="./products.cgi">
+                        <button>Go to products</button>
+                    </a>
+                </div>
             </div>
-
         </div>
         
         <footer>
+            <h2>blackbox</h2>
+            <p class="no-margin"> CI-0143 project </p>
             <p>
-                C written website using CGI.
+                <b>C</b> written website using <b>CGI</b>.
             </p>
             <p>
-                Developed by
-                Nelson Alvarez / Andrea Alvarado / Greivin Sanchez
+                Developed by </br>
+                Nelson <b>Alvarez</b> / Andrea <b>Alvarado</b> / Greivin <b>Sanchez</b>
             </p>
             <p>
                 B90368 / B90272 / B97248

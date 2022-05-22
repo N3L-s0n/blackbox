@@ -1,41 +1,55 @@
-body {
+html, body {
     font-family: Arial;
+    margin: 0;
+    height: 100vh;
 }
 
-.logo {
-    height: 100px;
+.wrapper {
+    display: flex;
+    flex-direction: column;
 }
 
-.logo img {
+.content-logo {
+    height: 20vw;
+    max-height: 200px;
+}
+
+.content-logo img{
     height: 100%;
     width: auto;
 }
 header {
-    font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
-    font-size: 30px;
-    padding: 40px;
-    text-align: left;
+    /*font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;*/
+    /*font-size: 30px;*/
     background: #111111;
     color: #EEEEEE;
     display: flex;
+    flex-direction: column;
 }
 
 .nav {
+    padding: 5px 10px;
 	position: sticky;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 60px;
+	height: 50px;
+    width: 80vw;
+    max-width: 1280px;
     list-style: none;
 	top: 0;
-}
 
+	display: flex;
+    flex-direction: row;
+    align-items: center;
+	justify-content: space-between;
+    align-self: center;
+}
 .nav_title {
     margin: 0px 30px;
 }
 
 .nav_list{
-    float: right;
+    display: flex;
+    justify-content: flex-end;
+    flex: 2;
 }
 
 .nav_item{
@@ -45,8 +59,65 @@ header {
 .options {
     align-items: flex-end;
 }
+
+.body {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.body .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    width: 80vw;
+    max-width: 1080px;
+}
+
+.body .content .content-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    margin: 0 0 0 20px;
+    width: 400px;
+}
+
+.body .content .content-details p {
+    font-weight: 100;
+    align-self: start;
+    font-size: 18px;
+}
+
+.body .content .content-details a {
+    align-self: end;
+}
+
+.body .content .content-details button {
+    color: #111111;
+    border-color: #111111;
+    background-color: transparent;
+    text-align: center;
+    font-size: 16px;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 8px 16px;
+    transition-duration: 0.4s;
+}
+
+.body .content .content-details button:hover {
+    color: #3250b3;
+    border-color: #3250b3;
+    border-radius: 0px;
+}
+
+
 .button {
-    border-radius: 12px;
+    border-radius: 20px;
     border: 2px solid #EEEEEE;
     color: #EEEEEE;
     background-color: #111111;
@@ -54,26 +125,30 @@ header {
     height: 40px;
     transition-duration: 0.4s;
 }
+
 .button:hover{
-    background-color: #404048;
-    color: #EEEEEE;
-}
-.subheader{
-    background-color: #404048;
-    opacity: 1;
-    text-align: initial;
-    color: #EEEEEE;
-    font-size: 30px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    padding: 30px;
+    color: #3250b3;
+    border-color: #3250b3;
+    border-radius: 0px;
 }
 
-.content {
-    text-align: center;
+.subheader{
+    background-color: #EEEEEE;
+    opacity: 1;
+    text-align: initial;
+    color: #404048;
+    font-size: 20px;
+    font-family:'Arial Bold', sans-serif;
+    padding: 60px 0 0 0;
+
+    display: flex;
     justify-content: center;
-    margin: auto;
-    width: 50%;
-    padding: 100px;
+}
+
+.subheader h1{
+    margin: 0;
+    width: 80vw;
+    max-width: 1080px;
 }
 
 .subheaderTitle{
@@ -85,10 +160,18 @@ header {
 footer {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: small;
-    padding: 70px;
+    padding: 20px 0 40px 0;
     text-align: center;
     background: #111111;
-    color: #EEEEEE;
+    color: #52525a;
+}
+
+footer h2 {
+    margin: 0;
+}
+
+footer .no-margin {
+    margin-top: 0;
 }
 
 .layout {  
