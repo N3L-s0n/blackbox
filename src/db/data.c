@@ -16,8 +16,16 @@ typedef struct cart{
     int id;
     char* payDate;
     char* userEmail;
-    char* cardNumber;
 };
+
+typedef struct CreditCard
+{
+    int id;
+    char* cardNumber;
+    char* expirationDate;
+    char* CSV;
+};
+
 
 typedef struct product
 {
@@ -270,13 +278,13 @@ extern void saveQuestion(char* email, char* date, char* subject, char* descripti
 
 }
 
-extern void createCart(char* email, char* cardNumber){
+extern void createCart(char* email){
     char date[15] = {0};
     char* query;
     time_t rawtime = time(NULL);
     struct tm *ptm = localtime(&rawtime);
     strftime(date, 15, "%Y-%m-%d", ptm);
-    asprintf(&query, "INSERT INTO Cart (PayDate, UserEmail, CardNumber) VALUES ('%s','%s','%s')",date,email,cardNumber);
+    asprintf(&query, "INSERT INTO Cart (PayDate, UserEmail) VALUES ('%s','%s')",date,email);
     if (mysql_query(connection, query)) {
         finish_with_error(connection);
     }

@@ -40,6 +40,15 @@ CREATE TABLE IF NOT EXISTS Cart
     FOREIGN KEY (UserEmail) REFERENCES User (Email)
 );
 
+CREATE TABLE IF NOT EXISTS CreditCard
+(
+    CartId INT NOT NULL PRIMARY KEY,
+    CardNumber NVARCHAR(20),
+    ExpirationDate NVARCHAR(10),
+    CSV NVARCHAR(3),
+    FOREIGN KEY (CartId) REFERENCES Cart (Id)
+);
+
 
 CREATE TABLE IF NOT EXISTS Product
 (
@@ -77,9 +86,14 @@ VALUES
 ("joe.doe@gmail.com","Joe","Doe","","Contrasena12.","Costa Rica","88888881",NULL);
 
 INSERT IGNORE INTO Cart
-(Id, PayDate, UserEmail, CardNumber)
+(Id, PayDate, UserEmail)
 VALUES 
-(1, "2022-05-14","jane.doe@gmail.com","111111111111");
+(1, "2022-05-14","jane.doe@gmail.com");
+
+INSERT IGNORE INTO CreditCard
+(CartId, CardNumber, ExpirationDate, CSV)
+VALUES
+(1, "1111111111111111","12/25","123");
 
 INSERT IGNORE INTO Product
 (Id, Name, Price, Stock, Description, Image)
