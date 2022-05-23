@@ -129,6 +129,11 @@ extern void box_http_location(box_http *http, char *url) {
     box_header_add_location(http->headers, url);
 }
 
+/*sets cookie */
+extern void box_http_setCookie(box_http *http, char * cookie){
+    box_header_add_cookie(http->headers,cookie);
+}
+
 /* send headers */
 extern void box_send_headers(box_http *http) {
 

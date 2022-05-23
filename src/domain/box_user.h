@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include "../utils/box_regex.h"
 
 #define USER_EMAIL_SIZE 100
 #define USER_NAME_SIZE 100

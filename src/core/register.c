@@ -11,7 +11,6 @@ int main(int argc, char **argv, char **env){
 
     box_http_content(http,2, TEXT_HTML,CHARSET_UTF_8);
 
-    box_send_headers(http);
     
     if (box_http_has_post(http)==1){
         char * email = box_post_param(http,"email");
@@ -30,7 +29,7 @@ int main(int argc, char **argv, char **env){
             box_http_redirect(http,"login.cgi");
         }   
     }
-    
+    box_send_headers(http);
     box_send_html(http);
     
     box_destroy_http(http);

@@ -54,6 +54,10 @@ extern void box_http_redirect(box_http *http, char *url);
 /* sets location header, only use it with 30x & 201 */
 extern void box_http_location(box_http *http, char *url);
 
+/*sets cookie header*/
+extern void box_http_setCookie(box_http *http, char * cookie);
+
+
 /* send headers */
 extern void box_send_headers(box_http *http);
 

@@ -24,7 +24,7 @@ extern box_user  *sql_get_user(MYSQL *connection, char *email) {
 
     char *query = NULL;
     box_user *user = NULL;
-
+    email = box_replace_string(email,"%40","@"); //solve %40 in input instead of @
     asprintf(&query, "SELECT * from User where Email = '%s'", email);
 
     if (mysql_query(connection, query)) handle_sql_error(connection);
@@ -123,18 +123,18 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
     return res;
 }
 
-extern int sql_log_user(MYSQL * connection, char * email, char * password){
+extern char * sql_log_user(MYSQL * connection, char * email, char * password){
     box_user *user = sql_get_user(connection,email);
     if (user!= NULL){
         char * storedPAssword = box_user_get_password(user); //consigo el password 
-        if (box_same_string(password,storedPAssword)){ //verifico sean iguales
-            box_user_token(user,box_getToken()); // le asigno un token 
-            return 1; 
+        if (box_same_string(password,storedPAssword)==0){ //verifico sean iguales
+            char * token = box_getToken();
+            return box_user_token(user,token); // le asigno un token 
         }else{
-            return 0; //incorect password 
+            return NULL;//incorect password 
         }
     }else{
-        return 0; //no user exist with that email
+        return NULL; //no user exist with that email
     }
 
 }

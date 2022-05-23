@@ -75,6 +75,10 @@ extern char *box_copy_string(const char *src);
 
 /*Return 0 if strings are the same*/
 extern int box_same_string(char * string, char* string2);
+/*Replace a pattern in a string*/
+extern char * box_replace_string(char *str,char * pattern, char * replace);
+/*Separate string into three pieces*/
+extern char ** box_strtok_string(char * string, char * separator);
 
 #endif
 

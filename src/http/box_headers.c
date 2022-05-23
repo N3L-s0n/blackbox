@@ -59,6 +59,9 @@ static void box_content_type_handler(void *values, unsigned int count);
 
 static void box_location_handler(void *values, unsigned int count);
 
+static void box_cookie_handler(void *values, unsigned int count);
+
+
 static box_header_node* box_add_header(box_headers *headers, box_header_handler handler, unsigned int values_count);
 
 extern box_headers* box_new_headers(void) {
@@ -73,9 +76,9 @@ extern box_headers* box_new_headers(void) {
 }
 
 static box_header_node* box_add_header(box_headers *headers, box_header_handler handler, unsigned int values_count) {
-    
+    //crear nod
     box_header_node *node = (box_header_node*)malloc(sizeof(box_header_node));
-
+    // handler funcion imprimir
     *node = (box_header_node) {
         .handler = handler,
         .values = (void*)calloc(values_count, sizeof(uint8_t)),
@@ -125,6 +128,15 @@ extern void box_header_add_location(box_headers *headers, const char *url) {
     }
 }
 
+extern void box_header_add_cookie(box_headers *headers, const char *cookie) {
+    
+    if (cookie != NULL) {
+        box_header_node *node = box_add_header(headers, &box_cookie_handler, strlen(cookie)+1);
+
+        strncpy((char *)node->values, cookie, strlen(cookie));
+    }
+}
+
 extern void box_print_headers(box_headers *headers) {
     
     box_header_node *node = headers->root;
@@ -156,7 +168,7 @@ extern void box_destroy_headers(box_headers *headers) {
 }
 
 /* HEADERS HANDLERS */
-
+//values = vector de string , primero cookie, segundo expires....
 static void box_content_type_handler(void *values, unsigned int count) {
     
     printf( "%s: ", BOX_CONTENT_TYPE );
@@ -177,5 +189,12 @@ static void box_location_handler(void *values, unsigned int count) {
 
     if (count > 0) {
         printf( "%s: %s", BOX_LOCATION, (char *)values);
+    }
+}
+
+static void box_cookie_handler(void *values, unsigned int count) {
+
+    if (count > 0) {
+        printf( "%s: %s", BOX_COOKIE, (char *)values);
     }
 }
