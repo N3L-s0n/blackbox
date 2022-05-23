@@ -35,7 +35,9 @@ extern box_http *box_new_http(char *filename, char **env) {
         .login = USER_VISIT
     };
 
-    if (filename != NULL) http->html = box_read_document(filename, &(http->login));
+    http->html = box_open_document(&(http->login));
+
+    if (filename != NULL) box_read_document(http->html, filename);
 
     box_read_query_string(http);
     box_read_post_body(http);
@@ -63,7 +65,7 @@ extern void  box_destroy_http(box_http *http) {
 /* opens a html file */
 extern void  box_http_file(box_http *http, char *filename) {
 
-    if (http->html == NULL && filename != NULL) http->html = box_read_document(filename, &(http->login)); 
+    if (http->html == NULL && filename != NULL) box_read_document(http->html, filename); 
 }
 
 /* sets environment variables */

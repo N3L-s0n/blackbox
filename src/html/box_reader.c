@@ -1,6 +1,7 @@
 #include "box_reader.h"
 
 /* declarations */
+static void box_read_document_recursive(document doc, char *filename, int check);
 
 static char *box_handle_tag(document doc, char *tmpline, int check);
 
@@ -10,12 +11,23 @@ static char *box_read_buffer(FILE *fp);
 
 /* definitions */
 
-extern document box_read_document(char *filename, int *login) {
+extern document box_open_document(int *login) {
+
+    document doc = box_new_document(login);
+}
+
+extern void box_read_document(document doc, char *filename) {
+
+    box_read_document_recursive(doc, filename, CHECK_NOTHING);
+    box_document_map_classes(doc);
+}
+
+static void box_read_document_recursive(document doc, char *filename, int check) {
 
     char    *line = NULL;
     char *tmpline = NULL;
 
-    int check_logged = CHECK_NOTHING;
+    int check_logged = check;
 
     FILE *fp = fopen(filename, "r");
 
@@ -24,13 +36,20 @@ extern document box_read_document(char *filename, int *login) {
         exit(1);
     }
     
-    document doc = box_new_document(login);
-
     while ((line = box_read_buffer(fp)) != NULL) {
 
         tmpline = line;
 
         while (1) {
+
+            if (box_check_regex_match(tmpline, COMPONENT) == MATCH) {
+
+                char* file = box_get_regex_match(tmpline, COMPONENT);
+                tmpline = box_move_regex_match(tmpline, AFTER_COMMENT);
+                
+                box_read_document_recursive(doc, file, check_logged);
+                free(file);
+            }
             
             if (box_check_regex_match(tmpline, IF_LOGGED) == MATCH) {
                 tmpline = box_move_regex_match(tmpline, AFTER_LOGGED);
@@ -57,9 +76,10 @@ extern document box_read_document(char *filename, int *login) {
 
         if (line != NULL) free(line);
     }
+}
 
-    box_document_map_classes(doc);
-    return doc;
+static char *box_parse_buffer() {
+
 }
 
 static char *box_read_buffer(FILE *fp) {

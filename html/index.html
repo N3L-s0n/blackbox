@@ -5,42 +5,9 @@
         <link rel="stylesheet" href="../css/style.css"/>
     </head>
     <body class="wrapper">
-        <header>
-            <nav class="nav">
-                <div class="nav_title" > 
-                    <h3><a href="./index.cgi">blackbox</a></h3>
-                </div>
-                <ul class="nav_list">
-                    <a href="./cart.cgi">
-                        <li class="nav_item">Cart</li>
-                    </a>
-                    <a href="./products.cgi">
-                        <li class="nav_item">Products</li>
-                    </a>
-                    <a href="./questions.cgi">
-                        <li class="nav_item">Questions</li>
-                    </a>   
-                </ul>
-                    <div class="options">
-                    <!-- @ifnlogged -->
-                    <a href="./login.cgi">
-                        <button class="button">Login</button>
-                    </a>
-                    <!-- @ifnlogged -->
-                    <a href="./register.cgi">
-                        <button class="button">Register</button>
-                    </a>
 
-                    <!-- @iflogged -->
-                    <a href="./login.cgi">
-                        <button class="button">Logout</button>
-                    </a>
-                </div> 
-            </nav>  
-            <div class="subheader">
-                <h1>Aiming for secure.</h1>
-            </div>
-        </header>
+        <!-- @component="../html/components/navbar.html" -->
+
         <div class="body">
             <div class="content">
                 <div class="content-logo">
