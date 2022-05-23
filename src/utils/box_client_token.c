@@ -8,7 +8,7 @@ extern char getRandomChar(){
     return alphanum[rand()%length];
 }
 
-extern char * getToken(){
+extern char * box_getToken(){
     char token[MYLEN], *ptr;
     int i;
     long seconds;

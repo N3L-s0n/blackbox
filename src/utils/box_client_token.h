@@ -9,6 +9,6 @@
 #define MYNULL '\0'
 
 extern char getRandomChar();
-extern char* getToken();
+extern char* box_getToken();
 
 #endif

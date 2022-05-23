@@ -123,4 +123,19 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
     return res;
 }
 
+extern int sql_log_user(MYSQL * connection, char * email, char * password){
+    box_user *user = sql_get_user(connection,email);
+    if (user!= NULL){
+        char * storedPAssword = box_user_get_password(user); //consigo el password 
+        if (box_same_string(password,storedPAssword)){ //verifico sean iguales
+            box_user_token(user,box_getToken()); // le asigno un token 
+            return 1; 
+        }else{
+            return 0; //incorect password 
+        }
+    }else{
+        return 0; //no user exist with that email
+    }
+
+}
 

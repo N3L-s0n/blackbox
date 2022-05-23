@@ -28,9 +28,8 @@ extern box_user *box_get_user_from_array(box_users *users, unsigned int index);
 extern int box_get_user_array_size(box_users *users);
 extern void box_set_user_from_array(box_users *users, box_user *user, unsigned int index);
 
-/* KEY */
+/* SET */
 extern char *box_user_email(box_user *user, char *value);
-
 extern char *box_user_name(box_user *user, char *value);
 extern char *box_user_last_name(box_user *user, char *value);
 extern char *box_user_second_last_name(box_user *user, char *value);
@@ -38,5 +37,13 @@ extern char *box_user_password(box_user *user, char *value);
 extern char *box_user_address(box_user *user, char *value);
 extern char *box_user_phone(box_user *user, char *value);
 extern char *box_user_token(box_user *user, char *value);
+
+/* GET */
+extern char *box_user_get_email(box_user *user);
+extern char *box_user_get_password(box_user *user);
+extern char *box_user_get_token(box_user *user);
+extern char *box_user_get_phone(box_user *user);
+extern char *box_user_get_address(box_user *user);
+
 
 #endif
