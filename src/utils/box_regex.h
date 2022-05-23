@@ -18,7 +18,9 @@
 
 #define VOID_TAG        "(<[^>]+/>)"
 
-#define TAG_BODY        "([^<>]*)</[^>]+>"
+#define DOCTYPE         "(<!DOCTYPE[^>]+>)"
+
+#define TAG_BODY        "([^<>]*)<[^>]+>"
 
 #define END_TAG         "(</[^>]+>)"
 
@@ -35,6 +37,14 @@
 #define VAR_NAME        "([^=&]*)=[^=&]*"
 
 #define VAR_VALUE       "[^=&]*=([^=&]*)"
+
+#define IF_LOGGED       "(<!--[ \t\r\f\v]*@iflogged[ \t\r\f\v]*-->[ \t\n\r\f\v]*)"
+
+#define AFTER_LOGGED    "<!--[ \t\r\f\v]*@iflogged[ \t\r\f\v]*-->(.*)"
+
+#define IF_NOT_LOGGED   "(<!--[ \t\r\f\v]*@ifnlogged[ \t\r\f\v]*-->[ \t\n\r\f\v]*)"
+
+#define AFTER_N_LOGGED  "<!--[ \t\r\f\v]*@ifnlogged[ \t\r\f\v]*-->(.*)"
 
 /* BOTH regex functions work with 0 or 1 subexpressions */
 

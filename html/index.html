@@ -22,11 +22,18 @@
                     </a>   
                 </ul>
                     <div class="options">
+                    <!-- @ifnlogged -->
                     <a href="./login.cgi">
                         <button class="button">Login</button>
                     </a>
+                    <!-- @ifnlogged -->
                     <a href="./register.cgi">
                         <button class="button">Register</button>
+                    </a>
+
+                    <!-- @iflogged -->
+                    <a href="./login.cgi">
+                        <button class="button">Logout</button>
                     </a>
                 </div> 
             </nav>  
@@ -55,7 +62,7 @@
                 <b>C</b> written website using <b>CGI</b>.
             </p>
             <p>
-                Developed by </br>
+                Developed by <br />
                 Nelson <b>Alvarez</b> / Andrea <b>Alvarado</b> / Greivin <b>Sanchez</b>
             </p>
             <p>

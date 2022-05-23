@@ -15,6 +15,8 @@
 
 typedef struct box_http box_http;
 
+#define USER_LOGGED 21
+#define USER_VISIT  22
 
 /* HTTP STRUCT */
 /* creates new http struct & sets 200 OK response */

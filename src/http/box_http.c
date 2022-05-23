@@ -10,6 +10,8 @@ typedef struct box_http {
     char        *query_string;
     char        *post_body;
 
+    int login;
+
 } box_http;
 
 static int  box_read_post_body(box_http *http);
@@ -29,10 +31,11 @@ extern box_http *box_new_http(char *filename, char **env) {
         .query_string = NULL,
         .post_body = NULL,
         .html = NULL,
-        .env = env
+        .env = env,
+        .login = USER_VISIT
     };
 
-    if (filename != NULL) http->html = box_read_document(filename);
+    if (filename != NULL) http->html = box_read_document(filename, &(http->login));
 
     box_read_query_string(http);
     box_read_post_body(http);
@@ -60,7 +63,7 @@ extern void  box_destroy_http(box_http *http) {
 /* opens a html file */
 extern void  box_http_file(box_http *http, char *filename) {
 
-    if (http->html == NULL && filename != NULL) http->html = box_read_document(filename); 
+    if (http->html == NULL && filename != NULL) http->html = box_read_document(filename, &(http->login)); 
 }
 
 /* sets environment variables */

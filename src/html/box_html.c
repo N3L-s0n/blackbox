@@ -18,14 +18,15 @@ static int box_map_class_traverse(box_ntree_node *node, void *data);
 
 
 /* definitions */
-extern box_element *box_new_element_tags(char *open, char *close){
+extern box_element *box_new_element_tags(char *open, char *close, int check){
 
     box_el_tags *element = (box_el_tags *)malloc(sizeof(box_el_tags));
 
     *element = (box_el_tags) {
         .super.type = BOX_TAGS,
         .open_tag   = box_copy_string(open),
-        .close_tag  = box_copy_string(close)
+        .close_tag  = box_copy_string(close),
+        .check_user = check
     };
 
     return (box_element *) element;
@@ -50,7 +51,7 @@ extern void *box_copy_element(void *element) {
     if (el != NULL & el->type == BOX_TAGS) {
 
         box_el_tags *tag = (box_el_tags *)el;
-        box_el_tags *new = (box_el_tags *)box_new_element_tags(tag->open_tag, tag->close_tag);
+        box_el_tags *new = (box_el_tags *)box_new_element_tags(tag->open_tag, tag->close_tag, tag->check_user);
 
         new->tag = tag->tag;
 
@@ -103,13 +104,19 @@ extern void  box_destroy_element(void *element){
     }
 }
 
-extern box_document *box_new_document(void){
+extern box_document *box_new_document(int *login){
 
     box_document *document = (box_document *)malloc(sizeof(box_document));
 
     document->ntree     = box_new_ntree(10);
     document->id_map    = box_new_map_array();
     document->class_map = box_new_map_array();
+    document->login     = login;
+
+    box_element *parent_dummy = box_new_element_tags("","", CHECK_NOTHING);
+    parent_dummy->type = BOX_DUMMY;
+
+    box_worker_set_value(box_add_ntree_node(document->ntree), parent_dummy);
 
     return document;
 }
@@ -132,9 +139,9 @@ extern void box_destroy_document(box_document *document) {
 }
 
 
-extern box_element *box_document_add_tag(box_document *document, char *open, char *close) {
+extern box_element *box_document_add_tag(box_document *document, char *open, char *close, int check) {
     
-    box_element *element = box_new_element_tags(open, close);
+    box_element *element = box_new_element_tags(open, close, check);
 
     box_set_tag((box_el_tags*) element);
 
@@ -190,7 +197,7 @@ extern void box_document_element_up(box_document *document) {
 
 extern void box_document_print(box_document *document) {
     
-    box_traverse_ntree(document->ntree, &box_print_open_tag, &box_print_close_tag, NULL);
+    box_traverse_ntree(document->ntree, &box_print_open_tag, &box_print_close_tag, (void *)document);
 }
 
 extern void box_document_print_by_tag(box_document *document, char *tag) {
@@ -228,6 +235,7 @@ static  int box_print_if_tag(box_ntree_node *node, void *data) {
 
 static  int box_print_open_tag(box_ntree_node *node, void *data) {
 
+    box_document *document = (box_document *)data;
     box_element *element = (box_element *)box_ntree_node_get_value(node);
 
     if (element->type == BOX_CONTENT) {
@@ -239,6 +247,18 @@ static  int box_print_open_tag(box_ntree_node *node, void *data) {
 
     if (element->type == BOX_TAGS) {
         box_el_tags *tag = (box_el_tags *)element;
+
+        if (tag->check_user == CHECK_LOGGED) {
+           
+            if (*(document->login) == USER_VISIT) // user is not logged, don't sent
+                return 1;
+        }
+        else if (tag->check_user == CHECK_VISIT) {
+
+            if (*(document->login) == USER_LOGGED) // user is logged, don't sent
+                return 1;
+        }
+
         printf("%s", tag->open_tag); 
 
         return 0;

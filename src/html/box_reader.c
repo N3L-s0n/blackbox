@@ -2,7 +2,7 @@
 
 /* declarations */
 
-static char *box_handle_tag(document doc, char *tmpline);
+static char *box_handle_tag(document doc, char *tmpline, int check);
 
 static char *box_handle_content(document doc, char *tmpline);
 
@@ -10,10 +10,12 @@ static char *box_read_buffer(FILE *fp);
 
 /* definitions */
 
-extern document box_read_document(char *filename) {
+extern document box_read_document(char *filename, int *login) {
 
     char    *line = NULL;
     char *tmpline = NULL;
+
+    int check_logged = CHECK_NOTHING;
 
     FILE *fp = fopen(filename, "r");
 
@@ -22,7 +24,7 @@ extern document box_read_document(char *filename) {
         exit(1);
     }
     
-    document doc = box_new_document();
+    document doc = box_new_document(login);
 
     while ((line = box_read_buffer(fp)) != NULL) {
 
@@ -30,8 +32,19 @@ extern document box_read_document(char *filename) {
 
         while (1) {
             
+            if (box_check_regex_match(tmpline, IF_LOGGED) == MATCH) {
+                tmpline = box_move_regex_match(tmpline, AFTER_LOGGED);
+                check_logged = CHECK_LOGGED;
+            }
+
+            if (box_check_regex_match(tmpline, IF_NOT_LOGGED) == MATCH) {
+                tmpline = box_move_regex_match(tmpline, AFTER_N_LOGGED);
+                check_logged = CHECK_VISIT;
+            }
+            
             if (box_check_regex_match(tmpline, GENERIC_TAG) == MATCH) {
-                tmpline = box_handle_tag(doc, tmpline);
+                tmpline = box_handle_tag(doc, tmpline, check_logged);
+                check_logged = CHECK_NOTHING;
                 continue;
             }
 
@@ -89,7 +102,7 @@ static char *box_handle_content(document doc, char *tmpline) {
     box_document_element_up(doc);
 }
 
-static char *box_handle_tag(document doc, char *tmpline) {
+static char *box_handle_tag(document doc, char *tmpline, int check) {
 
     char *match;
     char *body;
@@ -97,9 +110,13 @@ static char *box_handle_tag(document doc, char *tmpline) {
     match = box_get_regex_match(tmpline, GENERIC_TAG);
     body  = box_get_regex_match(tmpline, TAG_BODY);
 
-    if (box_check_regex_match(match, VOID_TAG) == MATCH) {       // VOID TAG
-                                                //
-        element el = box_document_add_tag(doc, match, NULL);
+    if(box_check_regex_match(body, EMPTY_STRING) != MATCH) {
+            box_handle_content(doc, body);
+    }
+
+    if (box_check_regex_match(match, VOID_TAG) == MATCH || box_check_regex_match(match, DOCTYPE) == MATCH) {       // VOID TAG
+
+        element el = box_document_add_tag(doc, match, NULL, check);
 
         box_document_element_up(doc);
     }
@@ -108,14 +125,10 @@ static char *box_handle_tag(document doc, char *tmpline) {
         element el = box_document_get_last_element(doc);
         box_document_set_close_tag(el, match);
        
-        if(box_check_regex_match(body, EMPTY_STRING) != MATCH) {
-            box_handle_content(doc, body);
-        }
         box_document_element_up(doc);
     }
     else {                                                      // START TAG
-        
-        element el = box_document_add_tag(doc, match, NULL);
+        element el = box_document_add_tag(doc, match, NULL, check);
     }
 
     if (match != NULL) free(match); 

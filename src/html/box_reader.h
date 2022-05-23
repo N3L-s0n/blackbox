@@ -14,6 +14,6 @@ typedef box_element    *element;
 typedef box_el_tags    *element_tags;
 typedef box_el_content *element_content;
 
-extern document box_read_document(char *filename);
+extern document box_read_document(char *filename, int *login);
 
 #endif
