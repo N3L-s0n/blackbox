@@ -90,7 +90,7 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
     char *query = NULL;
 
     asprintf(&query, "INSERT INTO User VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
-            box_user_email(user),
+            box_user_email(user, NULL),
             box_user_name(user, NULL),
             box_user_last_name(user, NULL),
             box_user_second_last_name(user, NULL),

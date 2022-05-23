@@ -107,7 +107,10 @@ extern int box_get_user_array_size(box_users *users) {
 }
 
 /* KEY */
-extern char *box_user_email(box_user *user) {
+extern char *box_user_email(box_user *user, char *value) {
+
+    if (value != NULL) strncpy(user->email, value, USER_EMAIL_SIZE);
+
     return user->email;
 }
 
