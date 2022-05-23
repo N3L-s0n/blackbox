@@ -46,6 +46,10 @@
 
 #define AFTER_N_LOGGED  "<!--[ \t\r\f\v]*@ifnlogged[ \t\r\f\v]*-->(.*)"
 
+#define COMPONENT       "<!--[ \t\r\f\v]*@component=\"([^\"]*)\"[ \t\r\f\v]*-->"
+
+#define AFTER_COMMENT   "<!--[^(-->)]*-->(.*)"
+
 /* BOTH regex functions work with 0 or 1 subexpressions */
 
 /* if you want to move string to match */
