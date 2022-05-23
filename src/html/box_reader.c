@@ -78,10 +78,6 @@ static void box_read_document_recursive(document doc, char *filename, int check)
     }
 }
 
-static char *box_parse_buffer() {
-
-}
-
 static char *box_read_buffer(FILE *fp) {
 
     char *line   = NULL;
