@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "box_client_token.h": "c"
+        "box_client_token.h": "c",
+        "box_http.h": "c"
     }
 }

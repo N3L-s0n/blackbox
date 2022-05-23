@@ -1,0 +1,7 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/greivin/blackbox'
+ 
+make: *** No rule to make target 'obj/.o', needed by '/var/www/blackbox/bin/.cgi'.
+
+make: Leaving directory '/home/greivin/blackbox'
+ 

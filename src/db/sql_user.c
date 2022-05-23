@@ -1,4 +1,20 @@
 #include "sql_user.h"
+/*
+typedef struct box_http {
+    
+    box_headers *headers;
+    document    html;
+
+    char        **env;
+
+    char        *query_string;
+    char        *post_body;
+
+} box_http;
+
+extern box_user *new_user(){
+
+}
 
 /* USER DATA */
 extern box_user  *sql_get_user(MYSQL *connection, char *email) {

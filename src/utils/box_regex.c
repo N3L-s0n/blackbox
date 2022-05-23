@@ -213,3 +213,6 @@ extern char *box_copy_string(const char *src) {
     return string;
 }
 
+extern int box_same_string(char* string, char * string2){
+    return strcmp(string,string2);
+}

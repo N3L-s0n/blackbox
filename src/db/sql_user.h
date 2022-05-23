@@ -4,6 +4,7 @@
 #include "sql_connection.h"
 #include "../domain/box_user.h"
 
+//extern box_user *new_user();
 extern box_user  *sql_get_user(MYSQL *connection, char *email);
 extern box_users *sql_get_users(MYSQL *connection);
 
