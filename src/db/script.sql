@@ -9,7 +9,7 @@ GRANT SELECT, INSERT, UPDATE
 USE blackboxDB;
 
 
-CREATE TABLE IF NOT EXISTS Questions
+CREATE TABLE IF NOT EXISTS Question
 (
 	Email NVARCHAR(100) NOT NULL, 
     Date DATE NOT NULL, 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS ProductIsINCart
 );
 
 
-INSERT IGNORE INTO Questions
+INSERT IGNORE INTO Question
 (Email, Date, Subject, Description)
 VALUES 
 ("abc@gmail.com","2022-05-14","How do I log out?", "I dont know how to log out of my account.");
