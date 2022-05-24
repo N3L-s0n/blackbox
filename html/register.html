@@ -5,33 +5,8 @@
         <link href="../css/style.css" rel="stylesheet">
         <link href="../css/login_register.css" rel="stylesheet">
     </head>
-    <body>
-        <header>
-            <nav class="nav">
-                <div class="nav_title" > 
-                    <h3><a href="./index.cgi">blackbox</a></h3>
-                </div>
-                <ul class="nav_list">
-                    <a href="./cart.cgi">
-                        <li class="nav_item">Cart</li>
-                    </a>
-                    <a href="./products.cgi">
-                        <li class="nav_item">Products</li>
-                    </a>
-                    <a href="./questions.cgi">
-                        <li class="nav_item">Questions</li>
-                    </a>   
-                </ul>
-                    <div class="options">
-                    <a href="./login.cgi">
-                        <button class="button">Login</button>
-                    </a>
-                    <a href="./register.cgi">
-                        <button class="button">Register</button>
-                    </a>
-                </div> 
-            </nav>  
-        </header>
+    <body  class="wrapper">
+        <!-- @component="../html/components/navbar.html" -->
         <div class="body">
             <div class="subheader">
                 Register
@@ -62,17 +37,7 @@
                 </form>
             </div>
         </div>
-        <footer>
-            <p>
-                C written website using CGI.
-            </p>
-            <p>
-                Developed by
-                Nelson Alvarez / Andrea Alvarado / Greivin Sanchez
-            </p>
-            <p>
-                B90368 / B90272 / B97248
-            </p>
-        </footer>
+        <!-- @component="../html/components/footer.html" -->
+        
     </body>
 </html>
