@@ -2,78 +2,55 @@
 <html>
     <head>
         <title>Products</title>
-        <link href="../css/style.css" rel="stylesheet">
-        <link href="../css/products.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet" />
+        <link href="../css/products.css" rel="stylesheet" />
+        <script src="https://kit.fontawesome.com/370d34b641.js" crossorigin="anonymous"></script>
     </head>
-    <body>
-        <header>
-            <nav class="nav">
-                <div class="nav_title" > 
-                    <a href="./index.cgi">Welcome!</a>
-                </div>
-                <ul class="nav_list">
-                    <a href="./cart.cgi">
-                        <li class="nav_item">Cart</li>
-                    </a>
-                    <a href="./products.cgi">
-                        <li class="nav_item">Products</li>
-                    </a>
-                    <a href="./questions.cgi">
-                        <li class="nav_item">Questions</li>
-                    </a>   
-                </ul>
-            </nav>  
-            <div class="options">
-                <a href="./login.cgi">
-                    <button class="button">Login</button>
-                </a>
-                <a href="./register.cgi">
-                    <button class="button">Register</button>
-                </a>
-            </div> 
-        </header>
+    <body class="wrapper">
+
+        <!--@component="../html/components/navbar.html"-->
+
         <div class="body">
-            <div class="subheader">
-                Check our products.
-            </div>
+            
             <div class="content">
-                <div class="searchbar">
-                    <form action="" class="search-bar">
-                        <input type="search" name="search" pattern=".*\S.*" required>
-                        <button class="search-btn" type="submit">
-                            <span>Search</span>
+                <div class="user-options">
+                    <div class="search-box">
+                        <form class="search-bar">
+                            <button class="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <input type="text" class="input-search" name="search" pattern=".*\S.*" required >
+                        </form>
+                    </div>
+
+                    <div class="add-product">
+                        <button class="add-btn"> 
+                            <i class="fas fa-plus"></i>
                         </button>
-                    </form>
-                </div>
-                <div class="products">
-                    <section class="layout">
-                        <div class="card">
-                            <div class="imgBx">
-                                <img src="https://imgs.search.brave.com/TfvRrbTEyykx18I9BROWFFb0f50EPSmUJ9nT59_hJv4/rs:fit:500:500:1/g:ce/aHR0cHM6Ly80Lmlt/aW1nLmNvbS9kYXRh/NC9FRi9DQS9NWS03/MjMyMDk4L29yYW5n/ZS1ib3gtNTAweDUw/MC5qcGc" alt="image">
-                            </div>
-                            <div class="details">
-                                <div>
-                                    <h2>$(product)<br><span>$(price)</span></h2>
-                                    <input type="button" value="Add">
-                                </div>
-                                
-                            </div>
-                        </div>
-                      </section>
+                    </div>
                 </div>
             </div>
+
+
+            <div class="content">
+                <div class="products">
+                    <div class="card">
+                        <div class="imgBx">
+                            <img src="../images/blackbox.png" alt="image" />
+                        </div>
+                        <div class="details">
+                            <h2>$(product-name)<br /><span>$(product-price)</span></h2>
+                            <form>
+                                <input name="product-id" type="hidden" value="$(product-id)" />
+                                <input class="product-btn" type="submit" value="Add" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
-        <footer>
-            <p>
-                C written website using CGI.
-            </p>
-            <p>
-                Developed by
-                Nelson Alvarez / Andrea Alvarado / Greivin Sanchez
-            </p>
-            <p>
-                B90368 / B90272 / B97248
-            </p>
-        </footer>
+
+        <!--@component="../html/components/footer.html"-->
     </body>
 </html>
