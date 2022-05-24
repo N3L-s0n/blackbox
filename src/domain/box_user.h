@@ -29,7 +29,7 @@ extern box_user *box_get_user_from_array(box_users *users, unsigned int index);
 extern int box_get_user_array_size(box_users *users);
 extern void box_set_user_from_array(box_users *users, box_user *user, unsigned int index);
 
-/* SET */
+/* KEY */
 extern char *box_user_email(box_user *user, char *value);
 extern char *box_user_name(box_user *user, char *value);
 extern char *box_user_last_name(box_user *user, char *value);

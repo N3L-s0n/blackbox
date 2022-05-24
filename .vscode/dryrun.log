@@ -34,12 +34,20 @@ gcc -g -c `mysql_config --cflags` -o obj/sql_connection.o src/db/sql_connection.
 gcc -g -c `mysql_config --cflags` -o obj/sql_product.o src/db/sql_product.c
  
 gcc -g -c `mysql_config --cflags` -o obj/sql_user.o src/db/sql_user.c
+ 
 gcc -g -c `mysql_config --cflags` -o obj/sql_question.o src/db/sql_question.c
+ 
 gcc -g -c `mysql_config --cflags` -o obj/box_client_token.o src/utils/box_client_token.c
+ 
 mkdir /var/www/blackbox
+ 
 mkdir /var/www/blackbox/bin
+ 
 rsync -rupE --delete www/css /var/www/blackbox
+ 
 rsync -rupE --delete www/images /var/www/blackbox 
+ 
 rsync -rupE --delete html /var/www/blackbox
+ 
 make: Leaving directory '/home/greivin/blackbox'
  

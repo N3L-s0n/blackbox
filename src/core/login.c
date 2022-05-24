@@ -16,13 +16,13 @@ int main(int argc, char **argv, char **env){
         MYSQL *connection = init_sql_connection();
         char * email = box_post_param(http, "email");    
         char * password = box_post_param(http, "password");
+        
+
         char* log = sql_log_user(connection,email,password);
         //comments
-        //printf("%s %s", email, password);
-        printf("%s", log );
-        if (log!=NULL){ 
+        printf("%s",log);
+        if (log!=NULL){ // credenciales correctas 
             //printf("recibe post");
-            // credenciales correctas 
             box_http_setCookie(http,log);
             //free(log);
             box_http_redirect(http,"index.cgi");
