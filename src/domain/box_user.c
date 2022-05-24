@@ -49,7 +49,7 @@ extern box_users *box_users_new(size_t size) {
 extern box_user *box_user_fill(char *email, char *name, char *last_name, char *second_last_name, char *password, char *address, char *phone, char *token){
 
     if (email == NULL) return NULL; // key
-
+    email = box_replace_string(email,"%40","@");
     box_user *user = (box_user *)calloc(1, sizeof(box_user));
 
     strncpy(user->email, email, USER_EMAIL_SIZE);
