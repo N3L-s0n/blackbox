@@ -49,6 +49,9 @@ extern void box_header_add_response_status(box_headers *headers, uint8_t value);
 
 extern void box_header_add_content_type(box_headers *headers, unsigned int count, va_list args);
 
+extern void box_header_add_cookie(box_headers *headers,  const char * cookie);
+
+
 /* url can be relative or absolute */
 extern void box_header_add_location(box_headers *headers, const char *url);
 

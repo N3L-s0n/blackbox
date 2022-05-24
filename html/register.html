@@ -8,51 +8,52 @@
     <body>
         <header>
             <nav class="nav">
-                <div class="nav_title" >Welcome!</div>
+                <div class="nav_title" > 
+                    <h3><a href="./index.cgi">blackbox</a></h3>
+                </div>
                 <ul class="nav_list">
                     <a href="./cart.cgi">
                         <li class="nav_item">Cart</li>
-
                     </a>
                     <a href="./products.cgi">
-                        <li class="nav_item">Stock</li>
+                        <li class="nav_item">Products</li>
                     </a>
                     <a href="./questions.cgi">
                         <li class="nav_item">Questions</li>
                     </a>   
                 </ul>
-            </nav>   
-            <div class="options">
-                <a href="./login.cgi">
-                    <button class="button">Login</button>
-                </a>
-                <a href="./register.cgi">
-                    <button class="button">Register</button>
-                </a>
-            </div>
+                    <div class="options">
+                    <a href="./login.cgi">
+                        <button class="button">Login</button>
+                    </a>
+                    <a href="./register.cgi">
+                        <button class="button">Register</button>
+                    </a>
+                </div> 
+            </nav>  
         </header>
         <div class="body">
             <div class="subheader">
                 Register
             </div>
             <div class="content">
-                <form action="" method="">
+                <form method="post">
                     <div class="row">
                         <div class="column">
-                            <label for="email">Username email</label>
-                            <input id="email" type="email" name="email">
+                            <label for="email">Email</label>
+                            <input id="email" type="email" name="email" required>
                             <label for="password">Password</label>
-                            <input id="password" type="password"  name="password">
+                            <input id="password" type="password"  name="password" minlength="8" maxlength="16" required>
                             <label for="confPass">Confirm Password</label>
-                            <input id="confPass" type="password" name="confPass">
+                            <input id="confPass" type="password" name="confPass" minlength="8" maxlength="16" required>
                         </div>
                         <div class="column">
                             <label for="fullname">Full name</label>
-                            <input id="fullname" type="text" name="fullname">
+                            <input id="fullname" type="text" name="fullname" required>
                             <label for="phoneNumber">Phone Number</label>
-                            <input id="phoneNumber" type="phone"  name="phoneNumber">
+                            <input id="phoneNumber" type="text"  name="phoneNumber" required>
                             <label for="adddres">Address</label>
-                            <input id="adddres" type="text" name="adddres">
+                            <input id="adddres" type="text" name="address" required>
                         </div>
                     </div>
                     <div>

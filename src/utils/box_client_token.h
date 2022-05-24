@@ -5,10 +5,10 @@
 #include <stdbool.h>
 #include <time.h>
 
-#define MYLEN 25
+#define TOKENSIZE 200
 #define MYNULL '\0'
 
 extern char getRandomChar();
-extern char* getToken();
+extern char* box_getToken();
 
 #endif

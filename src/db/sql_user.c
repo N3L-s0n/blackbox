@@ -1,4 +1,20 @@
 #include "sql_user.h"
+/*
+typedef struct box_http {
+    
+    box_headers *headers;
+    document    html;
+
+    char        **env;
+
+    char        *query_string;
+    char        *post_body;
+
+} box_http;
+
+extern box_user *new_user(){
+
+}
 
 /* USER DATA */
 extern box_user  *sql_get_user(MYSQL *connection, char *email) {
@@ -8,7 +24,7 @@ extern box_user  *sql_get_user(MYSQL *connection, char *email) {
 
     char *query = NULL;
     box_user *user = NULL;
-
+    email = box_replace_string(email,"%40","@"); //solve %40 in input instead of @
     asprintf(&query, "SELECT * from User where Email = '%s'", email);
 
     if (mysql_query(connection, query)) handle_sql_error(connection);
@@ -107,4 +123,19 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
     return res;
 }
 
+extern char * sql_log_user(MYSQL * connection, char * email, char * password){
+    box_user *user = sql_get_user(connection,email);
+    if (user!= NULL){
+        char * storedPAssword = box_user_get_password(user); //consigo el password 
+        if (box_same_string(password,storedPAssword)==0){ //verifico sean iguales
+            char * token = box_getToken();
+            return box_user_token(user,token); // le asigno un token 
+        }else{
+            return NULL;//incorect password 
+        }
+    }else{
+        return NULL; //no user exist with that email
+    }
+
+}
 

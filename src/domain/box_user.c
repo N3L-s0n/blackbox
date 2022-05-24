@@ -47,9 +47,9 @@ extern box_users *box_users_new(size_t size) {
 }
 
 extern box_user *box_user_fill(char *email, char *name, char *last_name, char *second_last_name, char *password, char *address, char *phone, char *token){
-
+    email = box_replace_string(email,"%40","@");
     if (email == NULL) return NULL; // key
-        
+
     box_user *user = (box_user *)calloc(1, sizeof(box_user));
 
     strncpy(user->email, email, EMAIL_SIZE);
@@ -106,8 +106,9 @@ extern int box_get_user_array_size(box_users *users) {
     if (users != NULL) return users->size;
 }
 
-/* KEY */
+/* SET */
 extern char *box_user_email(box_user *user, char *value) {
+
 
     if (value != NULL) strncpy(user->email, value, USER_EMAIL_SIZE);
 
@@ -158,3 +159,22 @@ extern char *box_user_token(box_user *user, char *value) {
 }
 
 
+/* GET */
+extern char *box_user_get_email(box_user *user){
+    return user->email;
+}
+extern char *box_user_get_password(box_user *user){
+    return user->password;
+}
+extern char *box_user_get_token(box_user *user){
+    return user->token;
+
+}
+extern char *box_user_get_phone(box_user *user){
+    return user->phone;
+
+}
+extern char *box_user_get_address(box_user *user){
+    return user->address;
+
+}

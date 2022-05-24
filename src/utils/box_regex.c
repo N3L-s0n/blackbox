@@ -213,3 +213,44 @@ extern char *box_copy_string(const char *src) {
     return string;
 }
 
+extern int box_same_string(char* string, char * string2){
+    return strcmp(string,string2);
+}
+
+extern char * box_replace_string(char *str,char * pattern, char * replace){
+    int i = 0, cnt = 0;
+    int len1 = strlen(replace);
+    int len2 = strlen(pattern);
+    for (i = 0; str[i] != '\0'; i++) {
+        if (strstr(&str[i], pattern) == &str[i]) {
+            cnt++;
+            i += len2 - 1;
+        }
+    }
+    char *newString = (char *)malloc(i + cnt * (len1 - len2) + 1);
+    i = 0;
+    while (*str) {
+        if (strstr(str, pattern) == str) {
+            strcpy(&newString[i], replace);
+            i += len1;
+            str += len2;
+        }
+        else
+        newString[i++] = *str++;
+    }
+    return newString;
+}
+/*
+extern char ** box_strtok_string(char * string, char * separator){
+    char *ptr[3];
+    char * token;
+    token = strtok(string,separator);
+    int i=0;
+    while ((i<3) || (token=!NULL) ){
+        ptr[i] = token;
+        i++;
+        strtok(string,separator);
+    }
+
+    return ptr;  
+}*/

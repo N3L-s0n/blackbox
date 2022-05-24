@@ -24,12 +24,12 @@ extern void finish_with_error (MYSQL *conn);
 extern struct product* getAllProducts(); 
 extern int getNumberOfProducts();
 extern struct product* getProductsFilteredByName(char* word);
-extern struct product* getProductsInUserCart(char* email);
+//extern struct product* getProductsInUserCart(char* email);
 extern void addProduct(char* name, int price, int stock, char* description, char* image);
 extern void createNewUser(char* email, char* name, char* firstLastName, char* secondLastName, char* password, char* address, char* phone, char* token);
 extern bool validatePassword(char* email, char* password);
 extern void saveQuestion(char* email, char* date, char* subject, char* description);
-extern void createCart(char* email, char* cardNumber);
+//extern void createCart(char* email, char* cardNumber);
 
 //Falta
 extern void getProductsInUserCart(); //con token, email o cartID?

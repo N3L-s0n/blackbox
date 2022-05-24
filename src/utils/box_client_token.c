@@ -8,16 +8,16 @@ extern char getRandomChar(){
     return alphanum[rand()%length];
 }
 
-extern char * getToken(){
-    char token[MYLEN], *ptr;
+extern char * box_getToken(){
+    char token[TOKENSIZE], *ptr;
     int i;
     long seconds;
     time(&seconds);
     srand((unsigned int)seconds);
-    for (i=0; i<MYLEN;i++){
+    for (i=0; i<TOKENSIZE;i++){
         token[i] = getRandomChar();
     }
-    token[MYLEN-1]=MYNULL;
+    token[TOKENSIZE-1]=MYNULL;
     ptr=token;
     return ptr;
 }
