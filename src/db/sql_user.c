@@ -101,7 +101,7 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
     MYSQL_ROW row; 
     char * query= NULL;
     int res = SQL_NO_ERROR;
-    asprintf(&query, "UPDATE User SET Name='%s',FirstLastName='%s',SecondLastName='%s',Password='%s',Address='%s',Phone='%s',Token='%s' WHERE Email='%s'", 
+    asprintf(&query, "UPDATE User SET Name='%s',FirstLastName='%s',SecondLastName='%s',Password='%s',Address='%s',Phone='%s',Token='%s',TokenTime='%s' WHERE Email='%s'", 
             box_user_name(user, NULL),
             box_user_last_name(user, NULL),
             box_user_second_last_name(user, NULL),
@@ -109,6 +109,7 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
             box_user_address(user, NULL),
             box_user_phone(user, NULL),
             box_user_token(user, NULL),
+            box_user_token_time(user,NULL),
             box_user_email(user,NULL)
             );
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
@@ -149,9 +150,9 @@ extern char * sql_log_user(MYSQL * connection, char * email, char * password){
     if (user!= NULL){
         char * storedPassword = box_user_get_password(user); //consigo el password 
         if (box_same_string(password,storedPassword)==0){ //verifico sean iguales
-            char * token = box_getToken();
-            token = box_user_token(user,token); // le asigno un token 
-            int error = sql_save_user(connection,user); //
+            box_user_token(user,box_getToken()); // le asigno un token
+            box_user_token_time(user,box_get_timestamp()); // asigno un timestamp
+            int error = sql_save_user(connection,user); //guardo en base 
             return box_user_get_token(user);
         }else{
             return NULL;//incorect password 

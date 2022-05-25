@@ -22,7 +22,21 @@ extern char * box_getToken(){
     return ptr;
 }
 
+extern char * box_get_timestamp(){
+    time_t seconds = time(NULL);
+    char * str = calloc(100,sizeof(char));
+    snprintf(str,100,"%ld",seconds);        
+    return str;
+}
 
+extern int box_compare_time(char * time1,char *time2){
+    long int time_1 = atoi(time1);
+    long int time_2 = atoi(time2);
+    if (time_1<time_2){
+        return 1; 
+    }
+    return 0; 
+}
 
 
  

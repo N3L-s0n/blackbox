@@ -6,6 +6,7 @@
 #define ADDRESS_SIZE 200
 #define PHONE_SIZE 20
 #define TOKEN_SIZE 200
+#define TOKEN_TIME 200
 
 typedef struct box_user {
     
@@ -18,6 +19,8 @@ typedef struct box_user {
     char address[USER_ADDRESS_SIZE + 1];
     char phone[USER_PHONE_SIZE + 1];
     char token[USER_TOKEN_SIZE + 1];
+    char token_time[USER_TIME_SIZE + 1];
+
 
 } box_user;
 
@@ -157,7 +160,12 @@ extern char *box_user_token(box_user *user, char *value) {
 
     return user->token;
 }
+extern char *box_user_token_time(box_user *user, char *value) {
 
+    if (value != NULL) strncpy(user->token_time, value, USER_TIME_SIZE);
+
+    return user->token_time;
+}
 
 /* GET */
 extern char *box_user_get_email(box_user *user){
@@ -168,14 +176,13 @@ extern char *box_user_get_password(box_user *user){
 }
 extern char *box_user_get_token(box_user *user){
     return user->token;
-
 }
 extern char *box_user_get_phone(box_user *user){
     return user->phone;
-
 }
 extern char *box_user_get_address(box_user *user){
     return user->address;
-
 }
-
+extern char *box_user_get_token_time(box_user *user){
+    return user->token_time;
+}

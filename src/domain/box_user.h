@@ -11,6 +11,7 @@
 #define USER_ADDRESS_SIZE 200
 #define USER_PHONE_SIZE 20
 #define USER_TOKEN_SIZE 200
+#define USER_TIME_SIZE 100
 
 typedef struct box_user box_user;
 typedef struct box_users box_users;
@@ -38,6 +39,7 @@ extern char *box_user_password(box_user *user, char *value);
 extern char *box_user_address(box_user *user, char *value);
 extern char *box_user_phone(box_user *user, char *value);
 extern char *box_user_token(box_user *user, char *value);
+extern char *box_user_token_time(box_user *user,char *value);
 
 /* GET */
 extern char *box_user_get_email(box_user *user);

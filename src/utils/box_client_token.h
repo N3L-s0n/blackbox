@@ -10,5 +10,6 @@
 
 extern char getRandomChar();
 extern char* box_getToken();
+extern char* box_get_timestamp();
 
 #endif
