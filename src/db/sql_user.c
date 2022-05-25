@@ -97,6 +97,28 @@ extern int   sql_get_users_count(MYSQL *connection) {
 }
 
 extern int  sql_save_user(MYSQL *connection, box_user *user) {
+    if (user==NULL)return 1; 
+    MYSQL_ROW row; 
+    char * query= NULL;
+    int res = SQL_NO_ERROR;
+    asprintf(&query, "UPDATE User SET Name='%s',FirstLastName='%s',SecondLastName='%s',Password='%s',Address='%s',Phone='%s',Token='%s' WHERE Email='%s'", 
+            box_user_name(user, NULL),
+            box_user_last_name(user, NULL),
+            box_user_second_last_name(user, NULL),
+            box_user_password(user, NULL),
+            box_user_address(user, NULL),
+            box_user_phone(user, NULL),
+            box_user_token(user, NULL),
+            box_user_email(user,NULL)
+            );
+    if (mysql_query(connection, query)) res = handle_sql_error(connection);
+    
+    free(query);
+    
+    return res;
+    
+}
+extern int  sql_create_user(MYSQL *connection, box_user *user) {
 
     if (user == NULL) return 1;
 
@@ -122,7 +144,6 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
     
     return res;
 }
-
 extern char * sql_log_user(MYSQL * connection, char * email, char * password){
     box_user *user = sql_get_user(connection,email);
     if (user!= NULL){
@@ -130,7 +151,7 @@ extern char * sql_log_user(MYSQL * connection, char * email, char * password){
         if (box_same_string(password,storedPassword)==0){ //verifico sean iguales
             char * token = box_getToken();
             token = box_user_token(user,token); // le asigno un token 
-            sql_save_user(connection,user); //
+            int error = sql_save_user(connection,user); //
             return box_user_get_token(user);
         }else{
             return NULL;//incorect password 

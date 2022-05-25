@@ -195,6 +195,6 @@ static void box_location_handler(void *values, unsigned int count) {
 static void box_cookie_handler(void *values, unsigned int count) {
 
     if (count > 0) {
-        printf( "%s: %s", BOX_COOKIE, (char *)values);
+        printf( "%s: ID=%s; Max-Age=3600; HttpOnly", BOX_COOKIE, (char *)values);
     }
 }

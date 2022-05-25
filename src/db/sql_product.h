@@ -1,5 +1,6 @@
 #ifndef SQL_PRODUCT_H
 #define SQL_PRODUCT_H
+#include <stdint.h>
 
 #include "sql_connection.h"
 #include "../domain/box_product.h"

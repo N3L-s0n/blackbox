@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "../utils/box_regex.h"
-
+#include <stdbool.h>
 //g++ data.c ../utils/box_regex.c -o test `mysql_config --cflags --libs`
 
 

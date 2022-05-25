@@ -12,7 +12,8 @@ extern box_user  *sql_get_user(MYSQL *connection, char *email);
 extern box_users *sql_get_users(MYSQL *connection);
 
 extern int  sql_get_users_count(MYSQL *connection);
-extern int  sql_save_user(MYSQL *connection, box_user *user);
+extern int  sql_create_user(MYSQL *connection, box_user *user);
+extern int sql_save_user(MYSQL *conection, box_user *user);
 extern char * sql_log_user(MYSQL * connection, char * email, char * password);
 
 #endif
