@@ -50,6 +50,10 @@
 
 #define AFTER_COMMENT   "<!--[^(-->)]*-->(.*)"
 
+#define ALPHA_NUMERIC   "^([a-zA-Z0-9 ]+)$"
+
+#define NUMERIC         "^([0-9]+)$"
+
 /* BOTH regex functions work with 0 or 1 subexpressions */
 
 /* if you want to move string to match */

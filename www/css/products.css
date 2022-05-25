@@ -173,6 +173,15 @@
     right: 0px;
     color:#111111 ;
     background-color:transparent;
+
+    display: block;
+}
+
+.add-btn i {
+
+    padding: 0;
+    padding-left: 17px;
+    padding-top: 15px;
 }
 
 .search-btn:focus ~ .input-search{

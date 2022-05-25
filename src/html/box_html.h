@@ -13,6 +13,7 @@
 #define BOX_TAGS    0
 #define BOX_CONTENT 1
 #define BOX_DUMMY   2
+#define BOX_HIDDEN  3
 
 #define BOX_CLASS   10
 #define BOX_ID      11

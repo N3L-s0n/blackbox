@@ -15,18 +15,18 @@
             <div class="content">
                 <div class="user-options">
                     <div class="search-box">
-                        <form class="search-bar">
+                        <form class="search-bar" method="get">
                             <button class="search-btn">
                                 <i class="fas fa-search"></i>
                             </button>
-                            <input type="text" class="input-search" name="search" pattern=".*\S.*" required >
+                            <input type="text" class="input-search" name="search" pattern="[A-z0-9 ]+" required >
                         </form>
                     </div>
 
                     <div class="add-product">
-                        <button class="add-btn"> 
+                        <a class="add-btn" href="addProduct.cgi">
                             <i class="fas fa-plus"></i>
-                        </button>
+                        <a/>
                     </div>
                 </div>
             </div>

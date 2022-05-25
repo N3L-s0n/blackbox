@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 static void set_products(box_http *http, MYSQL *connection);
+static int filter_products(box_http *http, MYSQL *connection);
 
 int main(int argc, char **argv, char **env) {
 
@@ -14,17 +15,80 @@ int main(int argc, char **argv, char **env) {
     MYSQL *connection = init_sql_connection();
 
     box_http_content(http, 2 , TEXT_HTML, CHARSET_UTF_8);
+    box_send_headers(http);
+    
+
+    if ( filter_products(http, connection) == 0) set_products(http, connection);
+
+    close_sql_connection(connection);
     
     box_set_class_variables(http, "subheader", "subtitle=Check our products.", 0);
 
-    set_products(http, connection);
-
-    close_sql_connection(connection);
-
-    box_send_headers(http);
     box_send_html(http);
-
     box_destroy_http(http);
+
+    return 0;
+}
+
+static int filter_products(box_http *http, MYSQL *connection) {
+
+    char *string = box_query_param(http, "search");
+
+    if (string != NULL) {
+
+        if ( box_check_regex_match(string, ALPHA_NUMERIC) != 0 ) {
+
+            box_replicate_class(http, "card", 0, 0);
+            box_set_class_variables(http, "subheader", "subtitle=Try Harder.", 0);
+            return 1;
+        }
+
+        box_products *products = sql_get_products_filter(connection, string);
+        box_product  *product  = NULL;
+
+        int i = 0;
+
+        int size = box_get_product_array_size(products);
+
+        if (size == 0) {
+            char *message = NULL;
+            asprintf(&message, "subtitle=No products found by search: %s.", string);
+            box_set_class_variables(http, "subheader", message, 0);
+            free(message);
+        }
+        else {
+            char *message = NULL;
+
+            if(size == 1) asprintf(&message, "subtitle=Found %d product by search: %s.", size, string);
+            else asprintf(&message, "subtitle=Found %d products by search: %s.", size, string);
+
+            box_set_class_variables(http, "subheader", message, 0);
+            free(message);
+        }
+
+        box_replicate_class(http, "card", 0, size);
+
+        while((product = box_get_product_from_array(products, i)) != NULL) {
+
+            char *name = box_product_name(product, NULL);
+            int  price = box_product_price(product, -1);
+            int     id = box_product_id(product);
+
+            char *variables = NULL;
+            asprintf(&variables, "product-name=%s&product-price=$%d&product-id=%d", name, price, id);
+
+            box_set_class_variables(http, "card", variables, i++);
+            free(variables);
+        }
+
+        box_destroy_products(products);
+
+        free(string);
+        return 1;
+    }
+
+    return 0;
+
 }
 
 static void set_products(box_http *http, MYSQL *connection) {
@@ -35,6 +99,19 @@ static void set_products(box_http *http, MYSQL *connection) {
     int i = 0;
 
     int size = box_get_product_array_size(products);
+
+    if (size == 0) {
+        box_set_class_variables(http, "subheader", "subtitle=No products found.", 0);
+    }
+    else {
+        char *message = NULL;
+
+        if(size == 1) asprintf(&message, "subtitle=Check our product & login to add more.", size);
+        else asprintf(&message, "subtitle=Check our %d products.", size);
+
+        box_set_class_variables(http, "subheader", message, 0);
+        free(message);
+    }
 
     box_replicate_class(http, "card", 0, size);
 

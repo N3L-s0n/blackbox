@@ -72,6 +72,54 @@ extern box_products *sql_get_products(MYSQL *connection) {
 
     return products;
 }
+
+extern box_products *sql_get_products_filter(MYSQL *connection, char *string) {
+
+    if (string == NULL) return NULL;
+
+    MYSQL_RES *res = NULL;
+    MYSQL_ROW  row;
+
+    uint64_t rows = 0;
+
+    char *query = NULL;
+
+    asprintf(&query, "SELECT * from Product WHERE Name LIKE '%s%%'", string);
+
+    if (mysql_query(connection, query)) handle_sql_error(connection);
+    
+    if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
+
+    rows = mysql_num_rows(res);
+
+    box_products* products = box_products_new(rows);
+    if (products != NULL) {
+        int i = 0;
+
+        while ((row = mysql_fetch_row(res)) != NULL) {
+
+            box_set_product_from_array(products, 
+                    box_product_fill(
+                        atoi(row[0]), 
+                        row[1], 
+                        atoi(row[2]), 
+                        atoi(row[3]), 
+                        row[4], 
+                        row[5]
+                        ), 
+                    i++);
+        }
+    }
+
+    mysql_free_result(res);
+    free(query);
+
+    return products;
+}
+
+
+
+
 extern int   sql_get_products_count(MYSQL *connection) {
 
     MYSQL_RES *res = NULL;

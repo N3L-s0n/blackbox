@@ -126,7 +126,7 @@ extern void *box_ntree_node_get_value(box_ntree_node *node) {
 
 extern box_ntree_node *box_ntree_ploriferate(box_ntree *ntree, box_ntree_node *node, int size, copy_value copy, destroy_value destroy) {
 
-    if (node == NULL || size < 2) return NULL;
+    if (node == NULL || size < 1) return NULL;
 
     box_ntree_node *dummy = node;
     node = box_ntree_node_clone(ntree, dummy, copy);

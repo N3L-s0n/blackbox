@@ -245,17 +245,19 @@ static  int box_print_open_tag(box_ntree_node *node, void *data) {
         return 1; // No need to continue traversing nodes from content one
     }
 
+    if (element->type == BOX_HIDDEN) return 1; // hidden, don't send
+
     if (element->type == BOX_TAGS) {
         box_el_tags *tag = (box_el_tags *)element;
 
         if (tag->check_user == CHECK_LOGGED) {
            
-            if (*(document->login) == USER_VISIT) // user is not logged, don't sent
+            if (*(document->login) == USER_VISIT) // user is not logged, don't send
                 return 1;
         }
         else if (tag->check_user == CHECK_VISIT) {
 
-            if (*(document->login) == USER_LOGGED) // user is logged, don't sent
+            if (*(document->login) == USER_LOGGED) // user is logged, don't send
                 return 1;
         }
 
@@ -387,6 +389,13 @@ extern void box_document_replicate(box_document *document, int mode, char *key, 
 
     if (node != NULL) {
         box_ntree_node *dummy = box_ntree_ploriferate(document->ntree, node, n, &box_copy_element, &box_destroy_element);
+
+        if( dummy == NULL) { // ploriferate failed or n = 0
+            box_element *el = (box_element *)box_ntree_node_get_value(node);
+            el->type = BOX_HIDDEN;
+            return;
+        }
+
         box_element *el = (box_element *)box_ntree_node_get_value(dummy);
         el->type = BOX_DUMMY;
     }
