@@ -10,6 +10,8 @@ int main(int argc, char **argv, char **env)
 
     box_http_content(http, 2, TEXT_HTML, CHARSET_UTF_8);
 
+    box_set_class_variables(http, "subheader", "subtitle=Questions", 0);
+
     box_send_headers(http);
 
     if (box_http_has_post(http) == 1)
@@ -26,6 +28,7 @@ int main(int argc, char **argv, char **env)
             sql_save_question(connection,question);
             
             close_sql_connection(connection);
+            box_destroy_question(question);
             free(email);
             free(subject);
             free(description);

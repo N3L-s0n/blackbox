@@ -20,7 +20,6 @@ int main(int argc, char **argv, char **env){
         char * phone = box_post_param(http,"phoneNumber");
         char * address = box_post_param(http,"address");
         
-
         if (box_same_string(pass,confpass) == 0 ){ //confirm password 
             MYSQL *connection = init_sql_connection(); //initialize conection to database
             box_user * user =  box_user_fill(email,name,"","",pass,address,phone,NULL);
@@ -30,6 +29,7 @@ int main(int argc, char **argv, char **env){
         }   
     }
     box_send_headers(http);
+
     box_send_html(http);
     
     box_destroy_http(http);

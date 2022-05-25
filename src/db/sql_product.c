@@ -31,6 +31,7 @@ extern box_product  *sql_get_product(MYSQL *connection, int id) {
 
     return product;
 }
+
 extern box_products *sql_get_products(MYSQL *connection) {
 
     MYSQL_RES *res = NULL;
@@ -93,6 +94,7 @@ extern box_products *sql_get_products_filter(MYSQL *connection, char *string) {
     rows = mysql_num_rows(res);
 
     box_products* products = box_products_new(rows);
+
     if (products != NULL) {
         int i = 0;
 
@@ -118,6 +120,47 @@ extern box_products *sql_get_products_filter(MYSQL *connection, char *string) {
 }
 
 
+extern box_products *sql_get_products_by_cart_id(MYSQL *connection, int cartId){
+    MYSQL_RES *res = NULL;
+    MYSQL_ROW  row;
+
+    uint64_t rows = 0;
+
+    char *query = NULL;
+
+    asprintf(&query,"SELECT Product.Id, Product.Name, Product.Price, Product.Stock, Product.Description, Product.Image FROM Product INNER JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d",cartId);
+    
+    if (mysql_query(connection, query)) handle_sql_error(connection);
+    
+    if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
+
+    rows = mysql_num_rows(res);
+
+    box_products* products = box_products_new(rows);
+
+    if (products != NULL) {
+        int i = 0;
+
+        while ((row = mysql_fetch_row(res)) != NULL) {
+
+            box_set_product_from_array(products, 
+                    box_product_fill(
+                        atoi(row[0]), 
+                        row[1], 
+                        atoi(row[2]), 
+                        atoi(row[3]), 
+                        row[4], 
+                        row[5]
+                        ), 
+                    i++);
+        }
+    }
+
+    mysql_free_result(res);
+    free(query);
+
+    return products;
+}
 
 
 extern int   sql_get_products_count(MYSQL *connection) {
@@ -170,3 +213,27 @@ extern int  sql_save_product(MYSQL *connection, box_product *product) {
 }
 
 
+extern int sql_get_products_in_cart_count(MYSQL *connection, int cartId){
+    MYSQL_RES *res = NULL;
+    MYSQL_ROW  row;
+
+    char *query = NULL;
+    int count = 0;
+
+    asprintf(&query,"SELECT  COUNT(*) FROM Product INNER JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d",cartId);
+    
+    if (mysql_query(connection, query)) handle_sql_error(connection);
+    
+    if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
+
+    if ((row = mysql_fetch_row(res)) != NULL) {
+
+        count = atoi(row[0]); 
+    }
+
+    mysql_free_result(res);
+    free(query);
+    
+    return count;
+
+}

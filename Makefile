@@ -15,8 +15,8 @@ HTMLSRC := html
 VPATH := src:src/core:src/http:src/mem:src/html:src/utils:src/db:src/domain
 OBJS := $(addprefix $(BUILDDIR)/, box_headers.o box_array.o box_ntree.o \
 		box_html.o box_reader.o box_tags.o box_regex.o box_http.o box_map.o \
-		box_product.o box_user.o box_question.o\
-		sql_connection.o sql_product.o sql_user.o sql_question.o box_client_token.o)
+		box_product.o box_user.o box_question.o box_credit_card.o\
+		sql_connection.o sql_product.o sql_user.o sql_question.o sql_credit_card.o box_client_token.o)
 
 .PHONY: all
 

@@ -227,7 +227,7 @@ extern char * box_replace_string(char *str,char * pattern, char * replace){
             i += len2 - 1;
         }
     }
-    char *newString = (char *)malloc(i + cnt * (len1 - len2) + 1);
+    char *newString = (char *)calloc(i + cnt * (len1 - len2) + 1, sizeof(char));
     i = 0;
     while (*str) {
         if (strstr(str, pattern) == str) {

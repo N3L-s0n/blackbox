@@ -43,9 +43,10 @@ CREATE TABLE IF NOT EXISTS Cart
 CREATE TABLE IF NOT EXISTS CreditCard
 (
     CartId INT NOT NULL PRIMARY KEY,
-    CardNumber NVARCHAR(20),
-    ExpirationDate NVARCHAR(10),
-    CSV NVARCHAR(3),
+    CardNumber NVARCHAR(20) NULL,
+    ExpirationDate NVARCHAR(10) NULL,
+    CSV INT NULL,
+    CardOwner NVARCHAR(200) NULL,
     FOREIGN KEY (CartId) REFERENCES Cart (Id)
 );
 
@@ -91,9 +92,9 @@ VALUES
 (1, "2022-05-14","jane.doe@gmail.com");
 
 INSERT IGNORE INTO CreditCard
-(CartId, CardNumber, ExpirationDate, CSV)
+(CartId, CardNumber, ExpirationDate, CSV, CardOwner)
 VALUES
-(1, "1111111111111111","12/25","123");
+(1, "1111111111111111","12/25",123, "Jane Doe");
 
 INSERT IGNORE INTO Product
 (Id, Name, Price, Stock, Description, Image)
