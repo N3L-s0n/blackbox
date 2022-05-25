@@ -2,27 +2,36 @@
 <html>
     <head>
         <title>Login/Blackbox</title>
-        <link href="../css/style.css" rel="stylesheet">
-        <link href="../css/login_register.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet" />
+        <link href="../css/login.css" rel="stylesheet" />
     </head>
     <body class="wrapper">
+
         <!-- @component="../html/components/navbar.html" -->
+
         <div class="body">
-            <div class="subheader">
-               Login
-            </div>
-            <div class="Content">
-                <div class="login">
-                    <form action="" method="post">
-                        <label for="email">Username email</label>
-                        <input id="email" type="email" name="email">
-                        <label for="password">Password</label>
-                        <input id="password" type="password"  name="password">
-                        <input type="submit" value="Login">
-                    </form>
+            <div class="content">
+
+                <form action="" method="post">
+
+                    <label for="email">User email</label>
+                    <input id="email" type="email" name="email" />
+
+                    <label for="password">Password</label>
+                    <input id="password" type="password"  name="password" />
+
+                    <input class="submit" type="submit" value="Login" />
+                </form>
+
+                <div class="pattern">
+                    <img src="../images/pattern.png" />
+                    <h3 class="patternText">Aiming for secure.</h3>
                 </div>
+
             </div>
         </div>
+
         <!-- @component="../html/components/footer.html" -->
+
     </body>
 </html>
