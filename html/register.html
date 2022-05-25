@@ -2,38 +2,37 @@
 <html>
     <head>
         <title>Register|Blackbox</title>
-        <link href="../css/style.css" rel="stylesheet">
-        <link href="../css/login_register.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet" />
+        <link href="../css/register.css" rel="stylesheet" />
     </head>
     <body  class="wrapper">
+
         <!-- @component="../html/components/navbar.html" -->
+
         <div class="body">
-            <div class="subheader">
-                Register
-            </div>
             <div class="content">
                 <form method="post">
-                    <div class="row">
-                        <div class="column">
-                            <label for="email">Email</label>
-                            <input id="email" type="email" name="email" required>
-                            <label for="password">Password</label>
-                            <input id="password" type="password"  name="password" minlength="8" maxlength="16" required>
-                            <label for="confPass">Confirm Password</label>
-                            <input id="confPass" type="password" name="confPass" minlength="8" maxlength="16" required>
-                        </div>
-                        <div class="column">
-                            <label for="fullname">Full name</label>
-                            <input id="fullname" type="text" name="fullname" required>
-                            <label for="phoneNumber">Phone Number</label>
-                            <input id="phoneNumber" type="text"  name="phoneNumber" required>
-                            <label for="adddres">Address</label>
-                            <input id="adddres" type="text" name="address" required>
-                        </div>
-                    </div>
-                    <div>
-                        <input type="submit" value="Register"> 
-                    </div>
+
+                        <label for="email">Email</label>
+                        <label for="fullname">Full name</label>
+
+                        <input id="email" type="email" name="email" required placeholder="name@email.com"/>
+                        <input id="fullname" type="text" name="fullname" required placeholder="Name LastName"/>
+
+                        <label for="password">Password</label>
+                        <label for="confPass">Confirm Password</label>
+
+                        <input id="password" type="password"  name="password" minlength="8" maxlength="16" required placeholder="Use alphanumerics and symbols"/>
+                        <input id="confPass" type="password" name="confPass" minlength="8" maxlength="16" required placeholder="Passwords must match"/>
+
+                        <label for="phoneNumber">Phone Number</label>
+                        <label for="adddres">Address</label>
+
+                        <input id="phoneNumber" type="text"  name="phoneNumber" required placeholder="555-555-555"/>
+                        <input id="adddres" type="text" name="address" required placeholder="Some street ..."/>
+
+                        <input class="submit" type="submit" value="Register" /> 
+
                 </form>
             </div>
         </div>

@@ -11,6 +11,7 @@ int main(int argc, char **argv, char **env){
 
     box_http_content(http,2, TEXT_HTML,CHARSET_UTF_8);
 
+    box_set_class_variables(http, "subheader", "subtitle=Register new user.", 0);
     
     if (box_http_has_post(http)==1){
         char * email = box_post_param(http,"email");
