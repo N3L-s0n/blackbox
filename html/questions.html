@@ -3,22 +3,32 @@
     <head>
         <title>Questions</title>
         <link rel="stylesheet" href="../css/style.css"/>
-        <link href="../css/addProduct_questions.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/addProduct.css" />
     </head>
     <body class="wrapper">
         <!-- @component="../html/components/navbar.html" -->
 
         <div class="body">
-                <div class="form">
+                <div class="content">
+
                     <form method="POST">
-                        <label for="email">Email:</label><br>
-                        <input type="text" id="email" name="email"><br>
-                        <label for="subject">Subject:</label><br>
-                        <input type="text" id="subject" name="subject"><br>
-                        <label for="description">Description:</label><br>
-                        <textarea id="description" name="description" style="height:200px"></textarea>
-                        <input type="submit" value="Submit">
-                        </form> 
+                        <label for="email">Email:</label>
+                        <input type="text" id="email" name="email" placeholder="Your email...">
+                        
+                        <label for="subject">Subject:</label>
+                        <input type="text" id="subject" name="subject" placeholder="Subject...">
+
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" placeholder="Description..."></textarea>
+                        
+                        <input class="submit" type="submit" value="Submit" />
+                    </form>
+
+                    <div class="pattern">
+                        <img src="../images/pattern.png"/>
+                        <h2 class="patternText">blackbox</h2>
+                    </div>  
+
                 </div>
         </div>
         
