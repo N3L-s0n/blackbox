@@ -8,11 +8,11 @@ extern int sql_save_credit_card(MYSQL *connection, box_credit_card *card){
     
     char* query = NULL;
 
-    asprintf(&query, "INSERT INTO CreditCard VALUES('%d','%s','%s','%d','%s')",
+    asprintf(&query, "INSERT INTO CreditCard VALUES('%d','%s','%s','%s','%s')",
         box_credit_card_cart_id(card, -1),
         box_credit_card_number(card,NULL),
         box_credit_card_expiration_date(card,NULL),
-        box_credit_card_csv(card,-1),
+        box_credit_card_csv(card,NULL),
         box_credit_card_owner(card,NULL)
     );
 
