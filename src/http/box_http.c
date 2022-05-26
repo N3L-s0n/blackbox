@@ -46,9 +46,20 @@ extern box_http *box_new_http(char *filename, char **env) {
     box_read_query_string(http);
     box_read_post_body(http);
     box_read_cookie(http);
-
-    if ( http->token != NULL) http->login = USER_LOGGED;
-
+    MYSQL * connection = init_sql_connection();
+   
+    if ( http->token != NULL){
+        box_user * user = sql_get_user_by_token(connection,http->token);
+        if (user!=NULL){
+            if (box_check_time(box_user_token_time(user,NULL))==0){
+                http->login = USER_LOGGED;
+            }else{
+                box_clear_token(user);
+                sql_save_user(connection,user);
+            }
+        }
+    } 
+    close_sql_connection(connection);
     return http;
 }
 

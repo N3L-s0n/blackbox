@@ -22,7 +22,7 @@ extern box_user *box_user_new(void);
 
 extern box_users *box_users_new(size_t size);
 
-extern box_user *box_user_fill(char *email, char *name, char *last_name, char *second_last_name, char *password, char *address, char *phone, box_token *token);
+extern box_user *box_user_fill(char *email, char *name, char *last_name, char *second_last_name, char *password, char *address, char *phone, box_token *token, char *toke_time);
 
 extern void box_destroy_user(box_user *user);
 
@@ -42,6 +42,8 @@ extern char *box_user_address(box_user *user, char *value);
 extern char *box_user_phone(box_user *user, char *value);
 extern char *box_user_token_time(box_user *user,char *value);
 extern box_token *box_user_token(box_user *user, box_token *token);
+
+extern void box_clear_token(box_user *user);
 
 /* GET */
 extern char *box_user_get_email(box_user *user);

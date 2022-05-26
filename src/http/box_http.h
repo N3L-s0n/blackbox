@@ -7,6 +7,8 @@
 #include <stdarg.h>
 #include <unistd.h>
 
+#include "../db/sql_connection.h"
+#include "../db/sql_user.h"
 #include "box_headers.h"
 #include "../html/box_html.h"
 #include "../html/box_reader.h"

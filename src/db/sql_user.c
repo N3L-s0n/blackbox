@@ -15,7 +15,7 @@ extern box_user  *sql_get_user(MYSQL *connection, char *email) {
     if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
 
     if ((row = mysql_fetch_row(res)) != NULL) {
-        user = box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], box_new_token(row[7]));
+        user = box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], box_new_token(row[7]),row[8]);
     }
 
     mysql_free_result(res);
@@ -41,7 +41,7 @@ extern box_user *sql_get_user_by_token(MYSQL *connection, box_token *token) {
     if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
 
     if ((row = mysql_fetch_row(res)) != NULL) {
-        user = box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], box_new_token(row[7]));
+        user = box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], box_new_token(row[7]), row[8]);
     }
 
     mysql_free_result(res);
@@ -72,7 +72,7 @@ extern box_users *sql_get_users(MYSQL *connection) {
         int i = 0;
 
         while ((row = mysql_fetch_row(res)) != NULL) {
-            box_set_user_from_array(users, box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], box_new_token(row[7])), i++);
+            box_set_user_from_array(users, box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], box_new_token(row[7]),row[8]), i++);
         }
     }
 
@@ -138,15 +138,14 @@ extern int  sql_create_user(MYSQL *connection, box_user *user) {
 
     char *query = NULL;
 
-    asprintf(&query, "INSERT INTO User VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
+    asprintf(&query, "INSERT INTO User VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
             box_user_email(user, NULL),
             box_user_name(user, NULL),
             box_user_last_name(user, NULL),
             box_user_second_last_name(user, NULL),
             box_user_password(user, NULL),
             box_user_address(user, NULL),
-            box_user_phone(user, NULL),
-            box_user_token(user, NULL)
+            box_user_phone(user, NULL)
             );
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
@@ -162,7 +161,7 @@ extern box_token *sql_log_user(MYSQL *connection, char *email, char *password) {
     box_token *token = NULL;
 
     if (user != NULL && box_same_string(password, box_user_get_password(user)) == 0) {
-
+            box_user_token_time(user,box_get_timestamp());
             token = box_user_token(user, box_craft_token()); // le asigno un token 
             if (sql_save_user(connection,user) != SQL_NO_ERROR) token = NULL;
     }

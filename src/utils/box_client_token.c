@@ -67,14 +67,15 @@ extern char * box_get_timestamp(){
     return str;
 }
 
-extern int box_compare_time(char * time1,char *time2){
-    long int time_1 = atoi(time1);
-    long int time_2 = atoi(time2);
-    if (time_1<time_2){
-        return 1; 
+extern int box_check_time(char * time){
+    unsigned long int time_1 = atol(time);
+    unsigned long int time_2 = atol(box_get_timestamp());
+    unsigned long int rest = time_2 -time_1;
+    if (rest>=3600){
+        return 1;
     }
+    if (rest<0)printf("hola");
     return 0; 
 }
-
 
  

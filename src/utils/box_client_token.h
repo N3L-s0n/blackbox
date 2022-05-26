@@ -12,6 +12,7 @@
 
 
 extern char* box_get_timestamp();
+extern int box_check_time(char * time);
 typedef struct box_token box_token;
 
 extern box_token *box_new_token(char *value);
