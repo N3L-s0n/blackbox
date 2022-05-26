@@ -3,6 +3,8 @@
 typedef struct box_http {
     
     box_headers *headers;
+    box_token   *token;
+
     document    html;
 
     char        **env;
@@ -17,6 +19,8 @@ typedef struct box_http {
 static int  box_read_post_body(box_http *http);
 
 static int  box_read_query_string(box_http *http);
+
+static void  box_read_cookie(box_http *http);
 
 static char *box_get_env_var(box_http *http, char *varname);
 
@@ -41,6 +45,9 @@ extern box_http *box_new_http(char *filename, char **env) {
 
     box_read_query_string(http);
     box_read_post_body(http);
+    box_read_cookie(http);
+
+    if ( http->token != NULL) http->login = USER_LOGGED;
 
     return http;
 }
@@ -57,6 +64,8 @@ extern void  box_destroy_http(box_http *http) {
         if (http->query_string != NULL) free(http->query_string);
 
         if (http->post_body != NULL) free(http->post_body);
+
+        if (http->token != NULL) box_destroy_token(http->token);
 
         free(http);
     }
@@ -96,6 +105,12 @@ extern int  box_http_has_query(box_http *http) {
     return box_read_query_string(http);
 }
 
+/* returns USER_LOGGED or USER_VISIT */
+extern int  box_http_logged(box_http *http) {
+
+    return http->login;
+}
+
 
 /* HEADERS RELATED */
 /* sets response, box_headers.h has response code enum */
@@ -130,8 +145,8 @@ extern void box_http_location(box_http *http, char *url) {
 }
 
 /*sets cookie */
-extern void box_http_setCookie(box_http *http, char * cookie){
-    box_header_add_cookie(http->headers,cookie);
+extern void box_http_set_cookie(box_http *http, box_token *token){
+    box_header_add_cookie(http->headers, box_get_token_value(token));
 }
 
 /* send headers */
@@ -181,6 +196,21 @@ static int  box_read_query_string(box_http *http) {
     }
 
     return 0;
+}
+
+static void box_read_cookie(box_http *http) {
+
+    char *cookie = box_get_env_var(http, "COOKIE");
+    char *value = box_get_regex_match(cookie, COOKIE_ID);
+
+    free(cookie);
+
+    box_token *token = NULL;
+
+    if ((token = box_new_token(value)) != NULL) {
+
+        http->token = token;
+    }
 }
 
 static char *box_get_env_var(box_http *http, char *varname) {
@@ -245,6 +275,11 @@ extern char *box_query_param(box_http *http, char *param) {
     }
 
     return value;
+}
+
+extern box_token *box_get_token(box_http *http) {
+
+    if (http != NULL) return http->token;
 }
 
 /* HTML OPERATIONS */

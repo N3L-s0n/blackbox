@@ -8,9 +8,12 @@
 #include <stdint.h>
 
 /* HTTP Headers*/
-#define BOX_CONTENT_TYPE "Content-Type"
-#define BOX_LOCATION         "Location"
-#define BOX_COOKIE          "Set-Cookie"
+#define BOX_CONTENT_TYPE    "Content-Type"
+#define BOX_LOCATION        "Location"
+#define BOX_SET_COOKIE      "Set-Cookie"
+#define BOX_COOKIE          "Cookie"
+
+
 typedef struct box_headers box_headers;
 
 #define BOX_HEADER_END  "\r\n"

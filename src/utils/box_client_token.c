@@ -1,25 +1,63 @@
 #include "box_client_token.h"
 
+typedef struct box_token {
+
+    char value[TOKENSIZE + 1];
+    size_t size;
+
+} box_token;
+
+static char get_random_char(void);
+
 static const char alphanum[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxzy@#$*+-.";
-int length= sizeof(alphanum)-1;
 
-extern char getRandomChar(){
+static char get_random_char(void){
 
-    return alphanum[rand()%length];
+    return alphanum[rand() % (sizeof(alphanum) - 1)];
 }
 
-extern char * box_getToken(){
-    char token[TOKENSIZE], *ptr;
-    int i;
+extern box_token *box_new_token(char *value) {
+
+    if (value == NULL || strlen(value) != TOKENSIZE) return NULL;
+
+    box_token *token = (box_token *)calloc(1, sizeof(box_token));
+
+    strncpy(token->value, value, TOKENSIZE);
+    token->size = TOKENSIZE;
+
+    return token; 
+}
+
+extern void box_destroy_token(box_token *token) {
+
+    if (token != NULL) free(token);
+}
+
+extern box_token *box_craft_token(void) {
+
+    char value[TOKENSIZE + 1];
     long seconds;
+
     time(&seconds);
     srand((unsigned int)seconds);
-    for (i=0; i<TOKENSIZE;i++){
-        token[i] = getRandomChar();
+
+    for (int i=0; i<TOKENSIZE; i++) {
+
+        value[i] = get_random_char();
     }
-    token[TOKENSIZE-1]=MYNULL;
-    ptr=token;
-    return ptr;
+
+    value[TOKENSIZE] = MYNULL;
+
+    box_token *token = box_new_token(value);
+
+    return token;
+}
+
+extern char *box_get_token_value(box_token *token) {
+
+    if (token == NULL) return NULL;
+
+    return token->value;
 }
 
 

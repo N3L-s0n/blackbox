@@ -54,6 +54,8 @@
 
 #define NUMERIC         "^([0-9]+)$"
 
+#define COOKIE_ID       "^ID=(.*)$"
+
 /* BOTH regex functions work with 0 or 1 subexpressions */
 
 /* if you want to move string to match */
