@@ -13,5 +13,7 @@ extern int sql_get_cart_id(MYSQL* connection, char* token);
 
 extern int sql_max_id(MYSQL* connection);
 
+extern int sql_user_has_cart(MYSQL* connection, char* email);
+
 
 #endif

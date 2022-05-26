@@ -2,9 +2,9 @@
 
 
 extern int validateCard(char* number, int month, int year, char* csv){
-    long long num = atoll(number); 
+  long long num = atoll(number); 
 
-    return validCSV(csv) && validDate(month,year) && validNumber(num);
+  return validNumber(num) && validCSV(csv) && validDate(month,year);
 }
 
 extern int validCSV(char* csv){
@@ -12,12 +12,12 @@ extern int validCSV(char* csv){
 }
 
 extern int validDate(int month, int year){
-    char currentYear[5] = {0};
+    char currentYear[6] = {0};
     char currentMonth[3] = {0};
     time_t rawtime = time(NULL);
     struct tm *ptm = localtime(&rawtime);
     strftime(currentMonth, 3, "%m", ptm);
-    strftime(currentYear, 5, "%y", ptm);
+    strftime(currentYear, 6, "%y", ptm);
 
     if(atoi(currentYear)+2000 == year && month <= atoi(currentMonth)) return 0;
 
@@ -42,8 +42,6 @@ extern int validNumber(long long cardnumber)
         length = length/10;
         count++;
     }
-
-    printf("Count %d\n",count);
 
     if ((count != 13) && (count != 15) && (count != 16))
     {
