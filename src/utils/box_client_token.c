@@ -74,7 +74,6 @@ extern int box_check_time(char * time){
     if (rest>=3600){
         return 1;
     }
-    if (rest<0)printf("hola");
     return 0; 
 }
 

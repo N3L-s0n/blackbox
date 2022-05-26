@@ -56,6 +56,8 @@
 
 #define COOKIE_ID       "^ID=(.*)$"
 
+#define VALID_PASSWORD "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]).{8,16}";
+
 /* BOTH regex functions work with 0 or 1 subexpressions */
 
 /* if you want to move string to match */
