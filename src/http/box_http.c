@@ -176,8 +176,9 @@ static int  box_read_post_body(box_http *http) {
         char *buffer = (char*)calloc(len+1, sizeof(char));
         read(0, buffer, len);
 
-        http->post_body = buffer;
+        http->post_body = box_url_decode(buffer);
 
+        free(buffer);
         free(cont_len);
         return 1;
     }
@@ -190,7 +191,9 @@ static int  box_read_query_string(box_http *http) {
     char *query = box_get_env_var(http, "QUERY_STRING");
 
     if (query != NULL) {
-        http->query_string = query;
+        http->query_string = box_url_decode(query);
+
+        free(query);
 
         return 1;
     }
@@ -200,9 +203,15 @@ static int  box_read_query_string(box_http *http) {
 
 static void box_read_cookie(box_http *http) {
 
-    char *cookie = box_get_env_var(http, "COOKIE");
+    char *string = box_get_env_var(http, "COOKIE");
+
+    if (string == NULL) return;
+
+    char *cookie = box_url_decode(string);
+    
     char *value = box_get_regex_match(cookie, COOKIE_ID);
 
+    free(string);
     free(cookie);
 
     box_token *token = NULL;
@@ -211,6 +220,8 @@ static void box_read_cookie(box_http *http) {
 
         http->token = token;
     }
+
+    if (value != NULL) free(value);
 }
 
 static char *box_get_env_var(box_http *http, char *varname) {

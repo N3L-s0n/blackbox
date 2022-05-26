@@ -13,6 +13,7 @@
 
 #include "../utils/box_regex.h"
 #include "../utils/box_client_token.h"
+#include "../utils/box_url.h"
 
 typedef struct box_http box_http;
 
