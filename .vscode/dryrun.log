@@ -19,6 +19,7 @@ gcc -g -c `mysql_config --cflags` -o obj/sql_connection.o src/db/sql_connection.
 gcc -g -c `mysql_config --cflags` -o obj/sql_product.o src/db/sql_product.c
 gcc -g -c `mysql_config --cflags` -o obj/sql_user.o src/db/sql_user.c
 gcc -g -c `mysql_config --cflags` -o obj/sql_question.o src/db/sql_question.c
+gcc -g -c `mysql_config --cflags` -o obj/sql_cart.o src/db/sql_cart.c
 gcc -g -c `mysql_config --cflags` -o obj/sql_credit_card.o src/db/sql_credit_card.c
 gcc -g -c `mysql_config --cflags` -o obj/box_client_token.o src/utils/box_client_token.c
 gcc -g -c `mysql_config --cflags` -o obj/box_url.o src/utils/box_url.c
