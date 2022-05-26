@@ -31,7 +31,7 @@ extern int sql_set_PayDate(MYSQL *connection, int cartId){
     struct tm *ptm = localtime(&rawtime);
     strftime(date, 15, "%Y/%m/%d", ptm);
 
-    asprintf(&query, "UPDATE Cart SET PayDate='%s' WHERE PayDate=-1 AND Id=%d", date, cartId);
+    asprintf(&query, "UPDATE Cart SET PayDate='%s' WHERE PayDate='-1' AND Id='%d'", date, cartId);
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
     
@@ -48,7 +48,7 @@ extern int sql_get_cart_id(MYSQL* connection, char* token){
     char *query = NULL;
     int id = 0;
 
-    asprintf(&query, "SELECT Cart.Id FROM Cart INNER JOIN User ON Cart.UserEmail=User.Email AND User.Token=%s AND Cart.PayDate=-1",token);
+    asprintf(&query, "SELECT Cart.Id FROM Cart INNER JOIN User ON Cart.UserEmail=User.Email AND User.Token='%s' AND Cart.PayDate='-1'",token);
 
     if (mysql_query(connection, query)) handle_sql_error(connection);
     
