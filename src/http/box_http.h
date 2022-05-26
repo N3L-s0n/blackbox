@@ -12,6 +12,8 @@
 #include "../html/box_reader.h"
 
 #include "../utils/box_regex.h"
+#include "../utils/box_client_token.h"
+#include "../utils/box_url.h"
 
 typedef struct box_http box_http;
 
@@ -40,6 +42,9 @@ extern int  box_http_has_post(box_http *http);
 /* returns 1 if get method with query string */
 extern int  box_http_has_query(box_http *http);
 
+/* returns USER_LOGGED or USER_VISIT */
+extern int  box_http_logged(box_http *http);
+
 
 /* HEADERS RELATED */
 /* sets response, box_headers.h has response code enum */
@@ -55,7 +60,7 @@ extern void box_http_redirect(box_http *http, char *url);
 extern void box_http_location(box_http *http, char *url);
 
 /*sets cookie header*/
-extern void box_http_setCookie(box_http *http, char * cookie);
+extern void box_http_set_cookie(box_http *http, box_token *token);
 
 
 /* send headers */
@@ -65,10 +70,12 @@ extern void box_send_headers(box_http *http);
 extern void box_send_html(box_http *http);
 
 
-/* CLIENT INPUT */
+/* CLIENT DATA */
 extern char *box_query_param(box_http *http, char *param);
 
 extern char *box_post_param(box_http *http, char *param);
+
+extern box_token *box_get_token(box_http *http);
 
 /* HTML OPERATIONS */
 extern void *box_replicate_class(box_http *http, char *html_class, int index, int n);

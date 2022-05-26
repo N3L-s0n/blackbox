@@ -1,22 +1,5 @@
 #include "sql_user.h"
-/*
-typedef struct box_http {
-    
-    box_headers *headers;
-    document    html;
 
-    char        **env;
-
-    char        *query_string;
-    char        *post_body;
-
-} box_http;
-
-extern box_user *new_user(){
-
-}
-
-/* USER DATA */
 extern box_user  *sql_get_user(MYSQL *connection, char *email) {
 
     MYSQL_RES *res = NULL;
@@ -32,7 +15,7 @@ extern box_user  *sql_get_user(MYSQL *connection, char *email) {
     if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
 
     if ((row = mysql_fetch_row(res)) != NULL) {
-        user = box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]);
+        user = box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], box_new_token(row[7]));
     }
 
     mysql_free_result(res);
@@ -40,6 +23,33 @@ extern box_user  *sql_get_user(MYSQL *connection, char *email) {
 
     return user;
 }
+
+extern box_user *sql_get_user_by_token(MYSQL *connection, box_token *token) {
+
+    if (connection == NULL || token == NULL || box_get_token_value(token) == NULL) return NULL;
+
+    MYSQL_RES *res = NULL;
+    MYSQL_ROW  row;
+
+    char *query = NULL;
+    box_user *user = NULL;
+
+    asprintf(&query, "SELECT * from User where Token = '%s'", box_get_token_value(token));
+
+    if (mysql_query(connection, query)) handle_sql_error(connection);
+    
+    if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
+
+    if ((row = mysql_fetch_row(res)) != NULL) {
+        user = box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], box_new_token(row[7]));
+    }
+
+    mysql_free_result(res);
+    free(query);
+
+    return user;
+}
+
 extern box_users *sql_get_users(MYSQL *connection) {
 
     MYSQL_RES *res = NULL;
@@ -62,7 +72,7 @@ extern box_users *sql_get_users(MYSQL *connection) {
         int i = 0;
 
         while ((row = mysql_fetch_row(res)) != NULL) {
-            box_set_user_from_array(users, box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]), i++);
+            box_set_user_from_array(users, box_user_fill(row[0], row[1], row[2], row[3], row[4], row[5], row[6], box_new_token(row[7])), i++);
         }
     }
 
@@ -145,21 +155,18 @@ extern int  sql_create_user(MYSQL *connection, box_user *user) {
     
     return res;
 }
-extern char * sql_log_user(MYSQL * connection, char * email, char * password){
-    box_user *user = sql_get_user(connection,email);
-    if (user!= NULL){
-        char * storedPassword = box_user_get_password(user); //consigo el password 
-        if (box_same_string(password,storedPassword)==0){ //verifico sean iguales
-            box_user_token(user,box_getToken()); // le asigno un token
-            box_user_token_time(user,box_get_timestamp()); // asigno un timestamp
-            int error = sql_save_user(connection,user); //guardo en base 
-            return box_user_get_token(user);
-        }else{
-            return NULL;//incorect password 
-        }
-    }else{
-        return NULL; //no user exist with that email
+
+extern box_token *sql_log_user(MYSQL *connection, char *email, char *password) {
+
+    box_user   *user = sql_get_user(connection,email);
+    box_token *token = NULL;
+
+    if (user != NULL && box_same_string(password, box_user_get_password(user)) == 0) {
+
+            token = box_user_token(user, box_craft_token()); // le asigno un token 
+            if (sql_save_user(connection,user) != SQL_NO_ERROR) token = NULL;
     }
 
+    return token;
 }
 

@@ -18,9 +18,10 @@ typedef struct box_user {
     char password[USER_PASSWORD_SIZE + 1];
     char address[USER_ADDRESS_SIZE + 1];
     char phone[USER_PHONE_SIZE + 1];
-    char token[USER_TOKEN_SIZE + 1];
     char token_time[USER_TIME_SIZE + 1];
 
+
+    box_token *token;
 
 } box_user;
 
@@ -34,6 +35,7 @@ typedef struct box_users {
 extern box_user *box_user_new(void) {
     
     box_user *user = (box_user *)calloc(1, sizeof(box_user));
+    user->token = NULL;
 
     return user;
 }
@@ -49,7 +51,7 @@ extern box_users *box_users_new(size_t size) {
     return users;
 }
 
-extern box_user *box_user_fill(char *email, char *name, char *last_name, char *second_last_name, char *password, char *address, char *phone, char *token){
+extern box_user *box_user_fill(char *email, char *name, char *last_name, char *second_last_name, char *password, char *address, char *phone, box_token *token){
 
     if (email == NULL) return NULL; // key
     email = box_replace_string(email,"%40","@");
@@ -64,7 +66,7 @@ extern box_user *box_user_fill(char *email, char *name, char *last_name, char *s
     if (password != NULL) strncpy(user->password, password, USER_PASSWORD_SIZE);
     if (address != NULL) strncpy(user->address, address, USER_ADDRESS_SIZE);
     if (phone != NULL) strncpy(user->phone, phone, USER_PHONE_SIZE);
-    if (token != NULL) strncpy(user->token, token, USER_TOKEN_SIZE);
+    if (token != NULL) user->token = token;
 
     return user;
     
@@ -72,6 +74,7 @@ extern box_user *box_user_fill(char *email, char *name, char *last_name, char *s
 
 extern void box_destroy_user(box_user *user){
 
+    if (user->token != NULL) box_destroy_token(user->token);
     if (user != NULL) free(user);
 }
 
@@ -154,9 +157,14 @@ extern char *box_user_phone(box_user *user, char *value) {
 
     return user->phone;
 }
-extern char *box_user_token(box_user *user, char *value) {
+extern box_token *box_user_token(box_user *user, box_token *token) {
 
-    if (value != NULL) strncpy(user->token, value, USER_TOKEN_SIZE);
+    if (user == NULL) return NULL;
+    if (token == NULL) return user->token;
+
+    if (user->token != NULL) box_destroy_token(user->token);
+    
+    user->token = token;
 
     return user->token;
 }
@@ -174,7 +182,7 @@ extern char *box_user_get_email(box_user *user){
 extern char *box_user_get_password(box_user *user){
     return user->password;
 }
-extern char *box_user_get_token(box_user *user){
+extern box_token *box_user_get_token(box_user *user){
     return user->token;
 }
 extern char *box_user_get_phone(box_user *user){
