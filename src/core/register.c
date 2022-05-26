@@ -22,11 +22,12 @@ int main(int argc, char **argv, char **env){
         char * address = box_post_param(http,"address");
         
         if (box_same_string(pass,confpass) == 0 ){ //confirm password 
-            MYSQL *connection = init_sql_connection(); //initialize conection to database
+            MYSQL *connection = init_sql_connection(); 
             box_user * user =  box_user_fill(email,name,"","",pass,address,phone,NULL, NULL);
-            sql_create_user(connection,user);
+            if(sql_create_user(connection,user)==0){
+                box_http_redirect(http,"login.cgi");
+            }
             close_sql_connection(connection);
-            box_http_redirect(http,"login.cgi");
         }   
     }
     box_send_headers(http);

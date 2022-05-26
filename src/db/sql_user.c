@@ -138,14 +138,16 @@ extern int  sql_create_user(MYSQL *connection, box_user *user) {
 
     char *query = NULL;
 
-    asprintf(&query, "INSERT INTO User VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
+    asprintf(&query, "INSERT INTO User VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s','%s','%s')", 
             box_user_email(user, NULL),
             box_user_name(user, NULL),
             box_user_last_name(user, NULL),
             box_user_second_last_name(user, NULL),
             box_user_password(user, NULL),
             box_user_address(user, NULL),
-            box_user_phone(user, NULL)
+            box_user_phone(user, NULL),
+            box_user_token(user,NULL),
+            box_user_token_time(user,NULL)
             );
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
