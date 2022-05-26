@@ -28,9 +28,10 @@ int main(int argc, char **argv, char **env)
     int cartId;
 
     MYSQL *connection = init_sql_connection();
-    token = box_get_token_value(box_get_token(http));
+    box_token* t = box_get_token(http);
+    token = box_get_token_value(t);
     if(token!=NULL) {
-        email = box_user_email(sql_get_user(connection,token),NULL);
+        email = box_user_email(sql_get_user_by_token(connection,t),NULL);
         cartId = sql_get_cart_id(connection, token);
     }
 
