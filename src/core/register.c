@@ -36,9 +36,5 @@ int main(int argc, char **argv, char **env){
     box_destroy_http(http);
     
     return 0; 
-    /*
-       
-    gcc -o bin/cookie.cgi  src/core/testCookie.c src/http/box_http.c src/http/box_headers.c  src/html/box_html.c src/html/box_reader.c src/html/box_tags.c src/utils/box_regex.c src/mem/box_array.c src/mem/box_map.c src/mem/box_ntree.c
-    */
 }
 

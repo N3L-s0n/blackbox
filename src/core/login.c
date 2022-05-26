@@ -16,21 +16,18 @@ int main(int argc, char **argv, char **env){
         char * email = box_post_param(http, "email");    
         char * password = box_post_param(http, "password");
         char* log = sql_log_user(connection,email,password);
-        //comments
+        
         if (log!=NULL){ // credenciales correctas 
                        
             box_http_setCookie(http,log);
             //free(log);
             box_http_redirect(http,"index.cgi");
             // cambio header set cookie
-        }else{
-            printf("log null");
-        }//else sql_log_user == 0 significa contrasena incorrecta o usuario no existente
+        }
         
 
         close_sql_connection(connection);
     }
-    //box_http_send(http);
     box_send_headers(http);
     box_send_html(http);
     box_destroy_http(http); 
