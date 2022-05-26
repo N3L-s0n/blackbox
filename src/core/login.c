@@ -3,6 +3,7 @@
 
 #include "../http/box_http.h"
 #include "../db/sql_connection.h"
+#include "../db/sql_cart.h"
 
 int main(int argc, char **argv, char **env){
 
@@ -29,6 +30,12 @@ int main(int argc, char **argv, char **env){
             box_http_redirect(http, "index.cgi");
 
             box_destroy_token(token);
+
+            if(sql_user_has_cart(connection,email) == 0){
+                box_cart *new_cart = box_cart_fill(sql_max_id(connection) + 1, "-1", email);
+                sql_new_cart(connection, new_cart);
+                box_destroy_cart(new_cart);
+            }
         }
 
         close_sql_connection(connection);

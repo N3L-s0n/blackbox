@@ -15,6 +15,8 @@ static void set_cart_products(box_http *http, MYSQL *connection, int cartId);
 
 static void handle_card(box_http *http, MYSQL *connection, int cartId, char *email);
 
+static void no_products(box_http *http);
+
 int main(int argc, char **argv, char **env)
 {
    
@@ -26,9 +28,10 @@ int main(int argc, char **argv, char **env)
     int cartId;
 
     MYSQL *connection = init_sql_connection();
-    token = box_get_token_value(box_get_token(http));
+    box_token* t = box_get_token(http);
+    token = box_get_token_value(t);
     if(token!=NULL) {
-        email = box_user_email(sql_get_user(connection,token),NULL);
+        email = box_user_email(sql_get_user_by_token(connection,t),NULL);
         cartId = sql_get_cart_id(connection, token);
     }
 
@@ -41,9 +44,8 @@ int main(int argc, char **argv, char **env)
         box_set_class_variables(http, "subheader", "subtitle=Cart", 0);
     }
 
-    if(token!=NULL){
-        set_cart_products(http, connection, cartId);
-    }
+    if(token!=NULL) set_cart_products(http, connection, cartId);
+    else no_products(http);
     
 
     box_send_headers(http);
@@ -52,6 +54,10 @@ int main(int argc, char **argv, char **env)
     box_destroy_http(http);
 
     return 0;
+}
+
+static void no_products(box_http *http){
+    box_set_class_variables(http, "productsList", "product-name=-&product-description=-&product-price=-", 0);
 }
 
 static void set_cart_products(box_http *http, MYSQL *connection, int cartId)
@@ -68,7 +74,7 @@ static void set_cart_products(box_http *http, MYSQL *connection, int cartId)
 
     if (size == 0)
     {
-        box_set_class_variables(http, "productsList", "product-name=-&product-description=-&product-price=-", i++);
+        no_products(http);
     }
 
     while ((product = box_get_product_from_array(products, i)) != NULL)
@@ -107,19 +113,19 @@ static void handle_card(box_http *http, MYSQL *connection, int cartId, char *ema
 
         asprintf(&date, "%d/%d", month, year);
 
-        // if(validateCard(number, month, year, csv) == 1){
-        box_credit_card *card = box_credit_card_fill(cartId, number, date, csv, owner);
-        res = sql_save_credit_card(connection, card);
-        box_destroy_credit_card(card);
+        if(validateCard(number, month, year, csv) == 1){
+            box_credit_card *card = box_credit_card_fill(cartId, number, date, csv, owner);
+            res = sql_save_credit_card(connection, card);
+            box_destroy_credit_card(card);
 
-        if (res == SQL_NO_ERROR)
-        {
-            sql_set_PayDate(connection, cartId);
-            box_cart *new_cart = box_cart_fill(sql_max_id(connection) + 1, "-1", email);
-            sql_new_cart(connection, new_cart);
-            box_destroy_cart(new_cart);
+            if (res == SQL_NO_ERROR)
+            {
+                sql_set_PayDate(connection, cartId);
+                box_cart *new_cart = box_cart_fill(sql_max_id(connection) + 1, "-1", email);
+                sql_new_cart(connection, new_cart);
+                box_destroy_cart(new_cart);
+            }
         }
-        //}
 
         free(number);
         free(date);
