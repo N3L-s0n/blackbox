@@ -12,7 +12,6 @@ input {
     margin:auto;
     outline: none;
     height: 50px;
-    line-height: 60px;
     border-radius: 4px;
   }
   
@@ -31,28 +30,18 @@ input {
   }
   
   input[type="submit"] {
-    margin: 10px;
-    cursor: pointer;
-    position: relative;
-    display: block;
-    display: inline-block;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 12px;
-    font-size: 18px;
-    text-align: center;
-    border: 2px solid #111;
+    border-radius: 20px;
+    border: 2px solid #EEEEEE;
     color: #EEEEEE;
     background-color: #111111;
-    width: 120px;
-    height: 70px;
+    width: 100px;
+    height: 40px;
     transition-duration: 0.4s;
   }
   input[type="submit"]:hover {
-    background-color: #1D2951;
-    -webkit-transition: all 0.4s ease;
-    transition: all 0.4s ease;
-    
+    color: #3250b3;
+    border-color: #3250b3;
+    border-radius: 0px;
   }
 
   .column {

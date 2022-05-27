@@ -20,6 +20,24 @@ extern int sql_new_cart(MYSQL *connection, box_cart* cart){
     return res;
 }
 
+extern int sql_cart_add_product(MYSQL* connection, int cart_id, int product_id) {
+ 
+    int res = SQL_NO_ERROR;
+    
+    char* query = NULL;
+
+    asprintf(&query, "INSERT INTO ProductIsINCart VALUES('%d','%d')",
+            product_id,
+            cart_id
+    );
+
+    if (mysql_query(connection, query)) res = handle_sql_error(connection);
+    
+    free(query);
+    
+    return res;
+}
+
 extern int sql_set_PayDate(MYSQL *connection, int cartId){
     
     int res = SQL_NO_ERROR;

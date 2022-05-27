@@ -27,4 +27,6 @@ extern size_t box_size_array(box_array *array);
 
 extern size_t box_length_array(box_array *array);
 
+extern int box_check_value_in_array(box_array *array, void *value);
+
 #endif

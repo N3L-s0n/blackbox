@@ -14,7 +14,7 @@ typedef struct box_product {
 
 typedef struct box_products {
     
-    box_product **products;
+    box_array *products;
     size_t size;
     
 } box_products;
@@ -26,12 +26,22 @@ extern box_product *box_product_new(void) {
     return product;
 }
 
+extern box_product *box_product_copy(box_product *original) {
+
+    if (original == NULL) return NULL;
+    box_product *product = (box_product *)calloc(1, sizeof(box_product));
+
+    memcpy(product, original, sizeof(box_product));
+
+    return product;
+}
+
 extern box_products *box_products_new(size_t size) {
 
-    if (size <= 0) return NULL;
+    if (size < 0) return NULL;
 
     box_products* products = (box_products *)calloc(1, sizeof(box_products));
-    products->products = (box_product **)calloc(size, sizeof(box_product *));
+    products->products = box_new_array(size + 1, sizeof(box_product *));
     products->size = size;
     
     return products;
@@ -66,10 +76,10 @@ extern void box_destroy_products(box_products *products) {
     if (products != NULL) {
         for (int i = 0; i < products->size; ++i) {
 
-            box_destroy_product(products->products[i]);
+            box_destroy_product(*(box_product **)box_get_array(products->products, i));
         }
 
-        free(products->products);
+        box_destroy_array(products->products);
         free(products);
     }
 
@@ -79,15 +89,46 @@ extern box_product *box_get_product_from_array(box_products *products, unsigned 
 
     if (products == NULL) return NULL;
 
-    if (index >= 0 && index < products->size) return products->products[index];
+    if (index >= 0 && index < products->size) { 
+        return *(box_product **)box_get_array(products->products, index);
+    }
 
     return NULL;
 }
 
 extern void box_set_product_from_array(box_products *products, box_product *product, unsigned int index) {
 
-    if (products != NULL && product != NULL && index >= 0 && index < products->size)
-        products->products[index] = product;
+    if (products != NULL && product != NULL && index >= 0 && index < products->size) {
+
+        box_put_array(products->products, index, (void*)&product);
+    }
+}
+
+extern void box_products_add(box_products *products, box_product *product) {
+
+    if (products != NULL && product != NULL) {
+
+        box_put_array(products->products, products->size++, (void*)&product);
+    }
+}
+
+
+extern box_products *box_products_diff(box_products *original, box_products *updated) {
+
+    if (original == NULL || updated == NULL) return NULL;
+
+    box_products *products = box_products_new(0);
+
+    for (int i = 0; i < updated->size; ++i) {
+
+        box_product *tmp = *(box_product **)box_get_array(updated->products, i);
+        if (box_check_value_in_array(original->products, tmp) != 0) {
+
+            box_products_add(products, box_product_copy(tmp));
+        }
+    }
+
+    return products;
 }
 
 extern int box_get_product_array_size(box_products *products) {

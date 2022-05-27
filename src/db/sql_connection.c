@@ -1,5 +1,8 @@
 #include "sql_connection.h"
 
+#include "../domain/box_user.h"
+#include "../domain/box_product.h"
+
 extern int handle_sql_error(MYSQL *conn) {
 
     int errno = mysql_errno(conn);
@@ -12,6 +15,7 @@ extern int handle_sql_error(MYSQL *conn) {
     exit(1);
 }
 
+
 /*
 int main (void) {
 
@@ -23,15 +27,21 @@ int main (void) {
     int i = 0;
     box_product *product = NULL;
 
+    box_products *products = sql_get_products(connection);
+    box_products *updated = sql_get_products(connection);
+
     box_product *new = box_product_new();
-    box_product_name(new, "Blue box");
+    box_product_name(new, "Red box");
     box_product_price(new, 50);
     box_product_stock(new, 1);
 
-    sql_save_product(connection, new);
-    box_products *products = sql_get_products(connection);
+    box_products_add(updated, new);
+    box_products *diff = box_products_diff(products, updated);
 
-    while((product = box_get_product_from_array(products, i++)) != NULL) {
+    box_destroy_products(products);
+    box_destroy_products(updated);
+
+    while((product = box_get_product_from_array(diff, i++)) != NULL) {
 
         printf("==========================\n");
 
@@ -42,12 +52,13 @@ int main (void) {
         printf("==========================\n");
     }
 
-    box_destroy_products(products);
+    box_destroy_products(diff);
     close_sql_connection(connection);
 
     return 0;
 }
 */
+
 
 extern MYSQL *init_sql_connection(void) {
 

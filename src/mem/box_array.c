@@ -11,6 +11,21 @@ extern box_array *box_new_array(size_t length, size_t size) {
     return array;
 }
 
+extern int box_check_value_in_array(box_array *array, void *value) {
+
+    if (array == NULL || value == NULL) return 1;
+
+    for (int i = 0; i < array->length; ++i) {
+
+        void * tmp = *(void**)(array->array + i*array->size);
+        if(tmp == NULL) break;
+
+        if(memcmp(tmp, value, array->size) == 0) return 0;
+    }
+
+    return 1;
+}
+
 extern void *box_put_array(box_array *array, unsigned int index, void *value) {
 
     if (index >= array->length && index < array->length*2) {

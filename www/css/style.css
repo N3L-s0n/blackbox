@@ -123,7 +123,7 @@ header {
 }
 
 
-.button {
+.navbutton {
     border-radius: 20px;
     border: 2px solid #EEEEEE;
     color: #EEEEEE;
@@ -133,7 +133,7 @@ header {
     transition-duration: 0.4s;
 }
 
-.button:hover{
+.navbutton:hover{
     color: #3250b3;
     border-color: #3250b3;
     border-radius: 0px;

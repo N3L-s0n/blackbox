@@ -1,6 +1,8 @@
 #ifndef BOX_HTTP_H
 #define BOX_HTTP_H
 
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

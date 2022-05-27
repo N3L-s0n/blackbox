@@ -19,14 +19,15 @@
                             <button class="search-btn">
                                 <i class="fas fa-search"></i>
                             </button>
-                            <input type="text" class="input-search" name="search" pattern="[A-z0-9 ]+" required >
+                            <input type="text" class="input-search" name="search" pattern="[A-z0-9 ]+" required />
                         </form>
                     </div>
 
+                    <!--@iflogged-->
                     <div class="add-product">
                         <a class="add-btn" href="addProduct.cgi">
                             <i class="fas fa-plus"></i>
-                        <a/>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -40,6 +41,7 @@
                         </div>
                         <div class="details">
                             <h2>$(product-name)<br /><span>$(product-price)</span></h2>
+                            <!--@iflogged-->
                             <form>
                                 <input name="product-id" type="hidden" value="$(product-id)" />
                                 <input class="product-btn" type="submit" value="Add" />

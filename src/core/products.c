@@ -3,9 +3,12 @@
 #include "../http/box_http.h"
 #include "../db/sql_connection.h"
 #include "../db/sql_product.h"
+#include "../db/sql_user.h"
+#include "../db/sql_cart.h"
 
 #include <stdio.h>
 
+static int handle_cart_product(box_http *http, MYSQL *connection);
 static void set_products(box_http *http, MYSQL *connection);
 static int filter_products(box_http *http, MYSQL *connection);
 
@@ -17,7 +20,7 @@ int main(int argc, char **argv, char **env) {
     box_http_content(http, 2 , TEXT_HTML, CHARSET_UTF_8);
     box_send_headers(http);
     
-
+    if ( box_get_token(http)) handle_cart_product(http, connection);
     if ( filter_products(http, connection) == 0) set_products(http, connection);
 
     close_sql_connection(connection);
@@ -28,6 +31,29 @@ int main(int argc, char **argv, char **env) {
     box_destroy_http(http);
 
     return 0;
+}
+
+static int handle_cart_product(box_http *http, MYSQL *connection) {
+
+    char *id = box_query_param(http, "product-id");
+
+    if (id == NULL || box_check_regex_match(id, NUMERIC) != 0) return 1;
+
+    box_product *product = sql_get_product(connection, atoi(id));
+
+    if (product == NULL) return 1;
+
+    int cart_id = sql_get_cart_id(connection, box_get_token_value(box_get_token(http)));
+
+    int res = sql_cart_add_product(connection, cart_id, atoi(id));
+
+    if (res == SQL_NO_ERROR) 
+        box_set_class_variables(http, "subheader", "subtitle=Product added.", 0);
+    else
+        box_set_class_variables(http, "subheader", "subtitle=Product already added.", 0);
+
+    free(product);
+
 }
 
 static int filter_products(box_http *http, MYSQL *connection) {
