@@ -24,6 +24,10 @@ static void  box_read_cookie(box_http *http);
 
 static char *box_get_env_var(box_http *http, char *varname);
 
+static int box_check_logout(box_http *http);
+
+static void box_validate_token(box_http *http);
+
 /* HTTP STRUCT */
 /* creates new http struct & sets 200 OK response */
 extern box_http *box_new_http(char *filename, char **env) {
@@ -46,23 +50,33 @@ extern box_http *box_new_http(char *filename, char **env) {
     box_read_query_string(http);
     box_read_post_body(http);
     box_read_cookie(http);
+    box_validate_token(http);
 
-    MYSQL * connection = init_sql_connection();
-   
-    if ( http->token != NULL){
-        box_user * user = sql_get_user_by_token(connection,http->token);
-        if (user!=NULL){
-            if (box_check_time(box_user_token_time(user,NULL))==0) {
-                http->login = USER_LOGGED;
-            }
-            else{
-                box_clear_token(user);
-                sql_save_user(connection,user);
-            }
-        }
-    } 
-    close_sql_connection(connection);
     return http;
+}
+
+static void box_validate_token(box_http *http) {
+
+    if (http->token == NULL) return;
+
+    MYSQL *connection = init_sql_connection();
+    
+    box_user *user = sql_get_user_by_token(connection, http->token);
+
+    if (user != NULL) {
+
+        if (box_check_logout(http) == 0 || box_check_time(box_user_token_time(user, NULL)) != 0) {
+
+            box_clear_token(user);
+            sql_save_user(connection, user);
+
+            http->login = USER_VISIT;
+        }
+        else http->login = USER_LOGGED;
+    }
+    else http->login = USER_VISIT;
+
+    close_sql_connection(connection);
 }
 
 /* destroy http struct and all related data */
@@ -214,21 +228,29 @@ static int  box_read_query_string(box_http *http) {
     return 0;
 }
 
+// returns 0 if logout
+static int box_check_logout(box_http *http) {
+
+    char *logout = box_query_param(http, "logout");
+
+    if (logout != NULL) {
+
+        free(logout);
+        return 0;
+    }
+
+    return 1;
+}
+
 static void box_read_cookie(box_http *http) {
 
     char *cookie = box_get_env_var(http, "COOKIE");
 
     if (cookie == NULL) return;
 
-    //char *cookie = box_url_decode(string);
-    
     char *value = box_get_regex_match(cookie, COOKIE_ID);
-    //printf(value);
 
-
-    //free(string);
     free(cookie);
-
     box_token *token = NULL;
 
     if ((token = box_new_token(value)) != NULL) {
