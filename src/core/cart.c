@@ -121,7 +121,7 @@ static void handle_card(box_http *http, MYSQL *connection, int cartId, char *ema
             if (res == SQL_NO_ERROR)
             {
                 sql_set_PayDate(connection, cartId);
-                box_cart *new_cart = box_cart_fill(sql_max_id(connection) + 1, "-1", email);
+                box_cart *new_cart = box_cart_fill(sql_max_id(connection) + 1, "-1", email, sql_get_products_by_cart_id(connection, cartId));
                 sql_new_cart(connection, new_cart);
                 box_destroy_cart(new_cart);
             }

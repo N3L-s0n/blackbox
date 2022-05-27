@@ -32,7 +32,7 @@ int main(int argc, char **argv, char **env){
             box_destroy_token(token);
 
             if(sql_user_has_cart(connection,email) == 0){
-                box_cart *new_cart = box_cart_fill(sql_max_id(connection) + 1, "-1", email);
+                box_cart *new_cart = box_cart_fill(sql_max_id(connection) + 1, "-1", email,NULL);
                 sql_new_cart(connection, new_cart);
                 box_destroy_cart(new_cart);
             }
