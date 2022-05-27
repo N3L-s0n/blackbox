@@ -2,60 +2,33 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target 'obj/.o', needed by '/var/www/blackbox/bin/.cgi'.  Stop.
 
 # GNU Make 4.3
- 
 # Built for x86_64-pc-linux-gnu
- 
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
- 
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
- 
 # This is free software: you are free to change and redistribute it.
- 
 # There is NO WARRANTY, to the extent permitted by law.
- 
 
- 
-# Make data base, printed on Thu May 26 15:39:37 2022
- 
+# Make data base, printed on Thu May 26 22:49:45 2022
 
 # Variables
- 
 
- 
 # environment
- 
 GDK_BACKEND = x11
- 
 # environment
- 
 LC_ALL = C
- 
 # environment
- 
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-1ba00809-5966-42db-8d50-683bbbe39468.sock
- 
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-9f236a3a-18c3-4bef-ab3e-07ebeb1856b7.sock
 # makefile (from 'Makefile', line 15)
- 
 VPATH := src:src/core:src/http:src/mem:src/html:src/utils:src/db:src/domain
- 
 # environment
- 
 VSCODE_CWD = /home/kali
- 
 # environment
- 
 LESS_TERMCAP_me = [0m
- 
 # default
- 
 MAKE_COMMAND := make
- 
 # environment
- 
 QT_ACCESSIBILITY = 1
- 
 # automatic
- 
 @D = $(patsubst %/,%,$(dir $@))
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
@@ -102,7 +75,6 @@ TARGETDIR := /var/www/blackbox/bin
 # environment
 LESS_TERMCAP_so = [01;33m
 # makefile
- 
 CURDIR := /home/kali/Desktop/blackbox
 # environment
 VSCODE_PIPE_LOGGING = true
@@ -115,7 +87,7 @@ LESS_TERMCAP_ue = [0m
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/ssh-XXXXXXhhIkaE/agent.763
+SSH_AUTH_SOCK = /tmp/ssh-XXXXXXok8X6e/agent.798
 # default
 .SHELLFLAGS := -c
 # environment
@@ -131,7 +103,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 1173
+VSCODE_PID = 19395
 # makefile (from 'Makefile', line 8)
 IMGDEST := /var/www/blackbox/images
 # environment
@@ -139,7 +111,7 @@ XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/763,unix/kali:/tmp/.ICE-unix/763
+SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/798,unix/kali:/tmp/.ICE-unix/798
 # automatic
 *F = $(notdir $*)
 # environment
@@ -219,7 +191,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 843
+SSH_AGENT_PID = 889
 # environment
 _ = /usr/share/code/code
 # environment
@@ -239,7 +211,7 @@ ELECTRON_RUN_AS_NODE = 1
 # environment
 VSCODE_IPC_HOOK = /run/user/1000/vscode-f2138f4e-1.67.2-main.sock
 # environment
-XDG_SESSION_ID = 3
+XDG_SESSION_ID = 2
 # environment
 PANEL_GDK_CORE_DEVICE_EVENTS = 0
 # environment
@@ -349,6 +321,7 @@ Makefile:
 #  Successfully updated.
 
 obj/sql_cart.o: | obj
+ 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -381,7 +354,6 @@ obj/sql_product.o: | obj
 #  File has not been updated.
 
 obj/box_array.o: | obj
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -504,7 +476,6 @@ obj/box_headers.o: | obj
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
- 
 #  recipe to execute (from 'Makefile', line 27):
 	gcc -g $(OUTPUT_OPTION) $^ `mysql_config --libs | awk '{print $$1,$$2;}'`
 
@@ -538,6 +509,6 @@ obj/box_html.o: | obj
 # strcache performance: lookups = 181 / hit rate = 61%
 # hash-table stats:
 # Load=69/8192=1%, Rehash=0, Collisions=4/181=2%
-# Finished Make data base on Thu May 26 15:39:38 2022
+# Finished Make data base on Thu May 26 22:49:45 2022
 
  
