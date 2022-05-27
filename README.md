@@ -35,7 +35,7 @@ Nelson Alvares Cedeno B90368 | Andrea Alvarado Acon B90272 | Greivin Sanchez Gar
     4. Copie el archivo que se encuentra en **blackbox/src/misc** en **/etc/httpd/sites-available/** esto para configurar los permisos de acceso de directorios.
     5. Elimine el archivo que se encuentra en **/etc/httpd/sites-enabled/** y ejecute el comando: **ln -s ../sites-available/001-blackbox.conf.** Esto habilitará la configuracion que hemos establecido en el paso anterior.
     6. Habilite que apache pueda ejecutar archivos cgi:  **sudo ln -s /etc/httpd/mods-available/cgi.load**
-    7. Recargue el servicio de apache: **sudo service httpd reload**
+    7. Recargue el servicio de apache: **sudo service httpd restart**
     8. Ejecute los siguientes comandos para crear las carpetas donde se alojaran los archivos del sitio:  **sudo mkdir /var/www/blackbox** seguido de **sudo chown usuario:usuario /var/www/blackbox** y asegurese de reemplazar su usuario en el ultimo comando. 
     9. Ejecute el archivo make (*make page=página*) para cada una de las siguientes páginas:
         * register
@@ -48,3 +48,10 @@ Nelson Alvares Cedeno B90368 | Andrea Alvarado Acon B90272 | Greivin Sanchez Gar
     10. Disfrute de la aplicación ingresando a su navegador y probando a entrar a localhost.
 
 Usted puede visitar nuestra implementacón si se encuentra conectado a la VPN de la NAC colocando la ip **172.24.131.191** en el navegador.
+Para esto requiere de un usuario y contraseña. Nosotros hemos configurado los siguientes usuarios: 
+- Usuario: profe
+    - Contraseña: N03NTr4r.
+- Usuario: asistente
+    - Contraseña: E5tuDI4Nt3.
+- Usuario: estudiante
+    - Contraseña: N0s0tr05.
