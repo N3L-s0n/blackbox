@@ -1,14 +1,72 @@
+.body .content {
+
+    width: 80vw;
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 440px);
+    column-gap: 30px;
+}
+
+.card{
+
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
+
+.card h1{
+
+    margin: 0px;
+    grid-column-start: 1;
+    text-align: end;
+}
+
+label {
+    font-weight: 100;
+    margin-top: auto;
+    margin-bottom: 0px;
+    text-align: start;
+}
+
+input {
+    width: 80%;
+    padding: 10px; 
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+input:focus{
+    outline: none;
+    border: 1px solid rgba(0,100,255,0.4);
+}
+
+
+.csv{
+    grid-column-start: 1;
+    width: 20%;
+}
+
+h2 {
+    margin-bottom: 0px;
+}
+
 .table{
+    font-size: 16px;
     min-width: 100px;
     width: 100%;
-    background-color: #eee;
+    background-color: transparent;
     margin-bottom: 1rem;
-    border-collapse: collapse;
-    border-radius: 10px;
+    border-collapse: separate;
+    border-radius: 20px;
+    border-spacing: 0 1em;
 }
 
 .table thead.thead-primary {
-    background: #1d2951;
+    background: #111111;
 }
 
 thead {
@@ -21,17 +79,45 @@ tr {
     display: table-row;
     vertical-align: inherit;
     border-color: inherit;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
 }
 
 th {
     display: table-cell;
     vertical-align: inherit;
     font-weight: bold;
-    text-align: center;
+    text-align: start;
     color: #eee;
+    padding: 10px 4px;
 }
 
 td {
+    padding-left: 6px;
     display: table-cell;
     color: #111;
 }
+
+.submit {
+
+    padding: 0px;
+    grid-column-start: 2;
+    grid-row-start: 7;
+    width: 120px;
+    height: 40px;
+    justify-self: end;
+    align-self: center;
+
+    color: #EEEEEE;
+    background-color: #111111;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+
+    transition-duration: 0.4s;
+    font-weight: 900;
+}
+
+.submit:hover {
+
+    background-color: #3250b3;
+    border-radius: 0px;
+}
+

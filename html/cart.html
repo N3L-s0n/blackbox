@@ -1,61 +1,78 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="../css/style.css" rel="stylesheet">
-        <link href="../css/cart.css" rel="stylesheet">
-        <link href="../css/login_register.css" rel="stylesheet">
+        <link href="../css/style.css" rel="stylesheet" />
+        <link href="../css/cart.css" rel="stylesheet" />
     </head>
     <body class="wrapper">
+
         <!-- @component="../html/components/navbar.html" -->
+
         <div class="body">
+
+            <!-- @iflogged -->
             <div class="content">
+
                 <div class="row">
-                    <div class="column">
-                        <table class="table">
-                            <thead class="thead-primary">
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Description</th>
-                                    <th>Price</th>
-                                </tr>
-                            </thead>
-                                <tbody>
-                                    <div class="productsList">
-                                        <tr>
-                                            <td>$(product-name)</td>
-                                            <td>$(product-description)</td>
-                                            <td>$(product-price)</td>
-                                        </tr>
-                                    </div>
-                                </tbody>
-                        </table>
-                    </div>
 
-                    <div class="column">
-                        <div> Card Details </div>
-                        <form method="POST">
-                            <label for="owner"> Owner</label>
-                            <input id="owner" type="text" name="owner" placeholder="Owner...">
+                    <h2>Products added</h2>
 
-                            <label for="cardNumber">Number</label>
-                            <input id="cardNumber" type="number"  name="cardNumber" placeholder="Number...">
-
-                            <label for="expireMont">Expire Month</label>
-                            <input id="expireMonth" type="number" min="1" max="12" name="expireMonth" placeholder="12...">
-
-                            <label for="expireYear">Expire Year</label>
-                            <input id="expireYear" type="number" name="expireYear" placeholder="2023...">
-
-                            <label for="csv">CSV</label>
-                            <input id="csv" type="number" min="000" max="999" name="csv" placeholder="csv">
-
-                            <input type="submit" value="Pay">
-                        </form>
-                    </div>
+                    <table class="table">
+                        <thead class="thead-primary">
+                            <tr>
+                                <th>Product</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                                <div class="productsList">
+                                    <tr>
+                                        <td>$(product-name)</td>
+                                        <td>$(product-description)</td>
+                                        <td>$(product-price)</td>
+                                    </tr>
+                                </div>
+                            </tbody>
+                    </table>
                 </div>
-               
+
+                <div class="row">
+
+                    <h2>Payment details</h2>
+
+                    <form class="card" method="POST">
+
+                        <label for="cardNumber">Card number</label>
+                        <label for="owner"> Cardholder name</label>
+
+                        <input id="cardNumber" type="number"  name="cardNumber" placeholder="Number..." />
+                        <input id="owner" type="text" name="owner" placeholder="Owner..." />
+
+                        <label for="expireMont">Expire Month</label>
+                        <label for="expireYear">Expire Year</label>
+
+                        <input id="expireMonth" type="number" min="1" max="12" name="expireMonth" placeholder="12..." />
+                        <input id="expireYear" type="number" name="expireYear" placeholder="2023..." />
+
+                        <label for="csv">CSV</label>
+                        <input class="csv" id="csv" type="number" min="000" max="999" name="csv" placeholder="csv" />
+
+                        <h1> $(total) </h1>
+                        <input class="submit" type="submit" value="Pay" />
+                    </form>
+                </div>
+                    
             </div>
+
+            <!-- @ifnlogged -->
+            <div class="content">
+                <h1>You must login to have a cart.</h1>
+            </div>
+
         </div>
+
         <!-- @component="../html/components/footer.html" -->
+
     </body>
 </html>
