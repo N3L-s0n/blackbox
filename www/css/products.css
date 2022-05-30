@@ -175,7 +175,6 @@
     width: 300px;
     border-radius: 20px;
     background-color: #EEEEEE;
-    border-bottom:1px solid rgba(255,255,255,.5);
     transition: all 500ms;
 }
 .input-search:focus{
@@ -183,6 +182,5 @@
     width: 300px;
     border-radius: 20px;
     background-color: #EEEEEE;
-    border-bottom:1px solid rgba(255,255,255,.5);
     transition: all 500ms;
 }
