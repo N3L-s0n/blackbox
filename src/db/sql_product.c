@@ -120,7 +120,7 @@ extern box_products *sql_get_products_filter(MYSQL *connection, char *string) {
 }
 
 
-extern box_products *sql_get_products_by_cart_id(MYSQL *connection, int cartId){
+extern box_products *sql_get_products_by_cart_id(MYSQL *connection, box_cart *cart){
     MYSQL_RES *res = NULL;
     MYSQL_ROW  row;
 
@@ -128,7 +128,7 @@ extern box_products *sql_get_products_by_cart_id(MYSQL *connection, int cartId){
 
     char *query = NULL;
 
-    asprintf(&query,"SELECT Product.Id, Product.Name, Product.Price, Product.Stock, Product.Description, Product.Image FROM Product INNER JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d",cartId);
+    asprintf(&query,"SELECT Product.Id, Product.Name, Product.Price, Product.Stock, Product.Description, Product.Image FROM Product INNER JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d", box_cart_id(cart, -1));
     
     if (mysql_query(connection, query)) handle_sql_error(connection);
     
@@ -213,14 +213,14 @@ extern int  sql_save_product(MYSQL *connection, box_product *product) {
 }
 
 
-extern int sql_get_products_in_cart_count(MYSQL *connection, int cartId){
+extern int sql_get_products_in_cart_count(MYSQL *connection, box_cart *cart){
     MYSQL_RES *res = NULL;
     MYSQL_ROW  row;
 
     char *query = NULL;
     int count = 0;
 
-    asprintf(&query,"SELECT  COUNT(*) FROM Product INNER JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d",cartId);
+    asprintf(&query,"SELECT  COUNT(*) FROM Product INNER JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d", box_cart_id(cart, -1));
     
     if (mysql_query(connection, query)) handle_sql_error(connection);
     

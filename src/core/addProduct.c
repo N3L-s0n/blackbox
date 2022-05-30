@@ -10,7 +10,9 @@ int main(int argc, char **argv, char **env) {
     box_http_content(http, 2, TEXT_HTML, CHARSET_UTF_8);
 
 
-    if (box_get_token(http) && box_http_has_post(http)) handle_product_post(http); 
+    if (box_http_logged(http) != USER_LOGGED) 
+        box_set_class_variables(http, "subheader", "subtitle=Not logged.", 0);
+    else if (box_http_logged(http) == USER_LOGGED && box_http_has_post(http)) handle_product_post(http); 
     else box_set_class_variables(http, "subheader", "subtitle=Add your product.", 0);
 
     box_send_headers(http);

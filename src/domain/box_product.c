@@ -136,6 +136,18 @@ extern int box_get_product_array_size(box_products *products) {
     if (products != NULL) return products->size;
 }
 
+extern int box_get_products_total(box_products *products) {
+
+    int total = 0;
+
+    for (int i = 0; i < products->size; ++i) {
+
+        total += box_get_product_from_array(products, i)->price;
+    }
+
+    return total;
+}
+
 /* KEY */
 extern int box_product_id(box_product *product) {
 

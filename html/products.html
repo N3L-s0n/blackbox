@@ -36,17 +36,16 @@
             <div class="content">
                 <div class="products">
                     <div class="card">
-                        <div class="imgBx">
-                            <img src="../images/blackbox.png" alt="image" />
+                        <h1>$(product-name)</h1>
+                        <div class="description">
+                            <p>$(product-description)</p>
                         </div>
-                        <div class="details">
-                            <h2>$(product-name)<br /><span>$(product-price)</span></h2>
-                            <!--@iflogged-->
-                            <form>
-                                <input name="product-id" type="hidden" value="$(product-id)" />
-                                <input class="product-btn" type="submit" value="Add" />
-                            </form>
-                        </div>
+                        <h2>$(product-price)</h2>
+                        <!--@iflogged-->
+                        <form>
+                            <input name="product-id" type="hidden" value="$(product-id)" />
+                            <input class="product-btn" type="submit" value="Add" />
+                        </form>
                     </div>
                 </div>
             </div>

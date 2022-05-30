@@ -44,6 +44,14 @@ input:focus{
     border: 1px solid rgba(0,100,255,0.4);
 }
 
+.remove {
+    color: #111111;
+}
+
+.remove:hover {
+    color: #D21404;
+}
+
 
 .csv{
     grid-column-start: 1;
@@ -61,8 +69,8 @@ h2 {
     background-color: transparent;
     margin-bottom: 1rem;
     border-collapse: separate;
-    border-radius: 20px;
     border-spacing: 0 1em;
+
 }
 
 .table thead.thead-primary {
@@ -79,7 +87,6 @@ tr {
     display: table-row;
     vertical-align: inherit;
     border-color: inherit;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
 }
 
 th {
@@ -93,11 +100,12 @@ th {
 
 td {
     padding-left: 6px;
+    padding-right: 10px;
     display: table-cell;
     color: #111;
 }
 
-.submit {
+.submit{
 
     padding: 0px;
     grid-column-start: 2;
@@ -120,4 +128,3 @@ td {
     background-color: #3250b3;
     border-radius: 0px;
 }
-

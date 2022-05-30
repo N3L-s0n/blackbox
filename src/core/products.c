@@ -43,17 +43,19 @@ static int handle_cart_product(box_http *http, MYSQL *connection) {
 
     if (product == NULL) return 1;
 
-    int cart_id = sql_get_cart_id(connection, box_get_token_value(box_get_token(http)));
+    box_user *user = sql_get_user_by_token(connection, box_get_token(http));
+    box_cart *cart = sql_get_cart(connection, user);
 
-    int res = sql_cart_add_product(connection, cart_id, atoi(id));
+    int res = sql_cart_add_product(connection, cart, product);
 
     if (res == SQL_NO_ERROR) 
         box_set_class_variables(http, "subheader", "subtitle=Product added.", 0);
     else
         box_set_class_variables(http, "subheader", "subtitle=Product already added.", 0);
 
-    free(product);
-
+    box_destroy_product(product);
+    box_destroy_user(user);
+    box_destroy_cart(cart);
 }
 
 static int filter_products(box_http *http, MYSQL *connection) {
@@ -97,11 +99,12 @@ static int filter_products(box_http *http, MYSQL *connection) {
         while((product = box_get_product_from_array(products, i)) != NULL) {
 
             char *name = box_product_name(product, NULL);
+            char *desc = box_product_description(product, NULL);
             int  price = box_product_price(product, -1);
             int     id = box_product_id(product);
 
             char *variables = NULL;
-            asprintf(&variables, "product-name=%s&product-price=$%d&product-id=%d", name, price, id);
+            asprintf(&variables, "product-name=%s&product-description=%s&product-price=$%d&product-id=%d", name, desc, price, id);
 
             box_set_class_variables(http, "card", variables, i++);
             free(variables);
@@ -144,11 +147,12 @@ static void set_products(box_http *http, MYSQL *connection) {
     while((product = box_get_product_from_array(products, i)) != NULL) {
 
         char *name = box_product_name(product, NULL);
+        char *desc = box_product_description(product, NULL);
         int  price = box_product_price(product, -1);
         int     id = box_product_id(product);
 
         char *variables = NULL;
-        asprintf(&variables, "product-name=%s&product-price=$%d&product-id=%d", name, price, id);
+        asprintf(&variables, "product-name=%s&product-description=%s&product-price=$%d&product-id=%d", name, desc, price, id);
 
         box_set_class_variables(http, "card", variables, i++);
         free(variables);

@@ -5,12 +5,12 @@ typedef struct box_cart{
     int id;
     char payDate[CART_PAYDATE_SIZE+1];
     char email[CART_EMAIL_SIZE+1];
+    int amount;
 
-    box_products *products;
 } box_cart;
 
 
-extern box_cart *box_cart_fill(int id, char* date, char* email, box_products *products) {
+extern box_cart *box_cart_fill(int id, char* date, char* email, int amount) {
     box_cart* cart = (box_cart *)calloc(1, sizeof(box_cart));
     
     cart->id = id;
@@ -18,12 +18,14 @@ extern box_cart *box_cart_fill(int id, char* date, char* email, box_products *pr
     if(date != NULL) strncpy(cart->payDate, date, CART_PAYDATE_SIZE);
     if(email != NULL) strncpy(cart->email, email, CART_EMAIL_SIZE);
 
+    if(amount >= 0) cart->amount = amount;
+    else cart->amount = 0;
+
     return cart;
 }
 
 
 extern void box_destroy_cart(box_cart *cart){
-    if (cart->products != NULL) box_destroy_products(cart->products);
     if(cart != NULL) free(cart);
 }
 
@@ -44,24 +46,8 @@ extern char* box_cart_email(box_cart* cart, char* value){
     return cart->email;
 }
 
-extern box_products *box_cart_products(box_cart *cart, box_products *products) {
+extern int box_cart_amount(box_cart *cart, int amount) {
+    if (amount >= 0) cart->amount = amount;
 
-    if (products != NULL) {
-
-        if(cart->products != NULL) box_destroy_products(cart->products);
-
-        cart->products = products;
-    }
-
-    return cart->products;
-}
-
-extern box_products *box_cart_add_product(box_cart *cart, box_product *product) {
-
-    if (product != NULL && cart->products != NULL) {
-
-        box_products_add(cart->products, product);
-    }
-
-    return cart->products;
+    return cart->amount;
 }

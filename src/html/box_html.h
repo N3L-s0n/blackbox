@@ -1,8 +1,6 @@
 #ifndef BOX_HTML_H
 #define BOX_HTML_H
 
-#include "box_tags.h"
-
 #include "../mem/box_ntree.h"
 #include "../mem/box_array.h"
 #include "../mem/box_map.h"
@@ -14,9 +12,6 @@
 #define BOX_CONTENT 1
 #define BOX_DUMMY   2
 #define BOX_HIDDEN  3
-
-#define BOX_CLASS   10
-#define BOX_ID      11
 
 #define CHECK_LOGGED 21
 #define CHECK_VISIT  22
@@ -43,7 +38,6 @@ typedef struct box_el_tags {
 
     box_element super;
 
-    int tag;
     int check_user;
 
     char *open_tag;
@@ -56,7 +50,6 @@ typedef struct box_document {
     box_ntree     *ntree;
     int *login;
 
-    box_map_array *id_map;
     box_map_array *class_map;
 
 } box_document;
@@ -82,24 +75,12 @@ extern void box_document_element_up(box_document *document);
 
 extern void box_document_print(box_document *document);
 
-extern void box_document_print_by_tag(box_document *document, char *tag);
+extern void box_document_replicate(box_document *document, char *key, int index, int n);
 
-extern void box_document_print_with_class(box_document *document, char *key);
+extern void box_document_set_variables(box_document *document, char *key, char *variables, int index);
 
-extern void box_document_replicate(box_document *document, int mode, char *key, int index, int n);
+extern void box_document_hide(box_document *document, char *key, int index);
 
 extern int box_document_get_class_n(box_document *document, char *key);
 
-extern void box_document_set_variables(box_document *document, int mode, char *key, char *variables, int index);
-
 #endif
-
-
-
-
-
-
-
-
-
-

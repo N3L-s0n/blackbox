@@ -3,6 +3,7 @@
     <head>
         <link href="../css/style.css" rel="stylesheet" />
         <link href="../css/cart.css" rel="stylesheet" />
+        <script src="https://kit.fontawesome.com/370d34b641.js" crossorigin="anonymous"></script>
     </head>
     <body class="wrapper">
 
@@ -23,17 +24,23 @@
                                 <th>Product</th>
                                 <th>Description</th>
                                 <th>Price</th>
+                                <th></th>
                             </tr>
                         </thead>
-                            <tbody>
-                                <div class="productsList">
-                                    <tr>
-                                        <td>$(product-name)</td>
-                                        <td>$(product-description)</td>
-                                        <td>$(product-price)</td>
-                                    </tr>
-                                </div>
-                            </tbody>
+                        <tbody>
+                            <div class="productsList">
+                                <tr>
+                                    <td>$(product-name)</td>
+                                    <td>$(product-description)</td>
+                                    <td>$(product-price)</td>
+                                    <td>
+                                        <a class="remove" href="cart.cgi?remove=$(product-id)">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </div>
+                        </tbody>
                     </table>
                 </div>
 

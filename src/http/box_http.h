@@ -84,11 +84,9 @@ extern box_token *box_get_token(box_http *http);
 /* HTML OPERATIONS */
 extern void *box_replicate_class(box_http *http, char *html_class, int index, int n);
 
-extern void *box_replicate_id(box_http *http, char *html_id, int index, int n);
-
 extern void box_set_class_variables(box_http *http, char *html_class, char *variables, int index);
 
-extern void box_set_id_variables(box_http *http, char *html_id, char *variables, int index);
+extern void box_hide_class(box_http *http, char *html_class, int index);
 
 extern int  box_class_n_instances(box_http *http, char *html_class);
 

@@ -13,14 +13,12 @@
 
 typedef struct box_cart box_cart;
 
-extern box_cart *box_cart_fill(int id, char* date, char* email, box_products *products);
+extern box_cart *box_cart_fill(int id, char* date, char* email, int amount); 
 extern void box_destroy_cart(box_cart *cart);
 
 extern int box_cart_id(box_cart* cart, int value);
 extern char* box_cart_payDate(box_cart* cart, char* value);
 extern char* box_cart_email(box_cart* cart, char* value);
-extern box_products *box_cart_products(box_cart *cart, box_products *products);
-
-extern box_products *box_cart_add_product(box_cart *cart, box_product *product);
+extern int   box_cart_amount(box_cart *cart, int amount);
 
 #endif

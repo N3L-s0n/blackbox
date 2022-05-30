@@ -12,83 +12,69 @@
 }
 
 .card{
-    width: 250px;
-    height: 300px;
+    width: 280px;
+    height: auto;
     background: #FFFFFF;
-    padding: 10px;
-    border-radius: 10px;
+    border-radius: 6px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
 
     box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
 }
 
-.card .imgBx{
-    height: 200px;
-}
-
-.card .imgBx img{
-    height: 100%;
-    width: auto;
-}
-
-.card .details{
-    flex: 2;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-
-    width: 100%;
-}
-
-.card .details h2{
+.card h1 {
     margin: 0;
-    padding: 0;
-    font-weight: 600;
-    font-size: 20px;
-    color: #777;
-    text-transform: uppercase;
-} 
+    padding: 20px 10px 10px 10px;
+    background-color: #111111;
+    color: #EEEEEE;
 
-.card .details h2 span{
-    font-weight: 500;
-    font-size: 16px;
-    color: #3250B3;
-    display: block;
-    margin-top: 5px;
- } 
+    grid-column: span 2;
+}
 
-.card .details form {
+.card h2 {
+    padding-left: 20px;
+}
+
+.card div {
+
+    padding: 10px;
+    grid-column: span 2;
+}
+
+.card form {
     display: flex;
     justify-content: flex-end;
     
     width: 100%;
 }
 
-.card .details .product-btn {
-    color: #111111;
-    border-color: #111111;
-    background-color: transparent;
 
-    font-size: 14px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 20px;
-    border: 1px solid;
-    padding: 8px 24px;
+.product-btn {
+
+    padding: 0px;
+    margin-right: 10px;
+    grid-column-start: 2;
+    width: 80px;
+    height: 40px;
+    justify-self: end;
+    align-self: center;
+
+    color: #EEEEEE;
+    background-color: #111111;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+
     transition-duration: 0.4s;
+    font-weight: 900;
 }
 
-.card .details .product-btn:hover {
+.product-btn:hover {
+
     background-color: #3250b3;
-    border-color: transparent;
-    color: #EEEEEE;
     border-radius: 0px;
 }
+
 
 .user-options{
     position: fixed;

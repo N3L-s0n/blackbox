@@ -23,20 +23,26 @@ int main(int argc, char **argv, char **env){
         char *password = box_post_param(http, "password");
         
         box_token *token = sql_log_user(connection,email,password);
+        box_user  *user = sql_get_user_by_token(connection, token);
 
-        if (token != NULL){ // credenciales correctas 
+        if (token != NULL && user != NULL){ // credenciales correctas 
                        
             box_http_set_cookie(http, token);
             box_http_redirect(http, "index.cgi");
 
             box_destroy_token(token);
 
-            if(sql_user_has_cart(connection,email) == 0){
-                box_cart *new_cart = box_cart_fill(sql_max_id(connection) + 1, "-1", email,NULL);
+            if(sql_user_has_cart(connection, user) == 0){
+                box_cart *new_cart = box_cart_fill(sql_max_id(connection) + 1, "-1", email, 0);
                 sql_new_cart(connection, new_cart);
                 box_destroy_cart(new_cart);
             }
+        
+            box_destroy_user(user);
         }
+        else 
+            box_set_class_variables(http, "subheader", "subtitle=Wrong credentials.", 0);
+
 
         close_sql_connection(connection);
     }

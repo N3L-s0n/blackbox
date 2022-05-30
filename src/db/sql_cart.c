@@ -7,10 +7,11 @@ extern int sql_new_cart(MYSQL *connection, box_cart* cart){
     
     char* query = NULL;
 
-    asprintf(&query, "INSERT INTO Cart VALUES('%d','%s','%s')",
+    asprintf(&query, "INSERT INTO Cart VALUES('%d','%s','%s', '%d')",
         box_cart_id(cart,-1),
         box_cart_payDate(cart,NULL),
-        box_cart_email(cart,NULL)
+        box_cart_email(cart,NULL),
+        box_cart_amount(cart, -1)
     );
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
@@ -20,15 +21,15 @@ extern int sql_new_cart(MYSQL *connection, box_cart* cart){
     return res;
 }
 
-extern int sql_cart_add_product(MYSQL* connection, int cart_id, int product_id) {
+extern int sql_cart_add_product(MYSQL* connection, box_cart *cart, box_product *product) {
  
     int res = SQL_NO_ERROR;
     
     char* query = NULL;
 
     asprintf(&query, "INSERT INTO ProductIsINCart VALUES('%d','%d')",
-            product_id,
-            cart_id
+            box_product_id(product),
+            box_cart_id(cart, -1)
     );
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
@@ -38,7 +39,41 @@ extern int sql_cart_add_product(MYSQL* connection, int cart_id, int product_id) 
     return res;
 }
 
-extern int sql_set_PayDate(MYSQL *connection, int cartId){
+extern int sql_cart_remove_product(MYSQL *connection, box_cart *cart, box_product *product) {
+
+    int res = SQL_NO_ERROR;
+    
+    char* query = NULL;
+
+    asprintf(&query, "DELETE FROM ProductIsINCart WHERE ProductId='%d' AND CartId='%d'",
+            box_product_id(product),
+            box_cart_id(cart, -1)
+    );
+
+    if (mysql_query(connection, query)) res = handle_sql_error(connection);
+    
+    free(query);
+    
+    return res;
+}
+
+extern int sql_cart_set_amount(MYSQL *connection, box_cart *cart) {
+    
+    int res = SQL_NO_ERROR;
+    
+    char* query = NULL;
+
+    asprintf(&query, "UPDATE Cart SET Amount='%d' WHERE PayDate='-1' AND Id='%d'", box_cart_amount(cart, -1), box_cart_id(cart, -1));
+
+    if (mysql_query(connection, query)) res = handle_sql_error(connection);
+    
+    free(query);
+    
+    return res;
+
+}
+
+extern int sql_cart_set_PayDate(MYSQL *connection, box_cart *cart) {
     
     int res = SQL_NO_ERROR;
     
@@ -49,7 +84,7 @@ extern int sql_set_PayDate(MYSQL *connection, int cartId){
     struct tm *ptm = localtime(&rawtime);
     strftime(date, 15, "%Y/%m/%d", ptm);
 
-    asprintf(&query, "UPDATE Cart SET PayDate='%s' WHERE PayDate='-1' AND Id='%d'", date, cartId);
+    asprintf(&query, "UPDATE Cart SET PayDate='%s', Amount='%d' WHERE PayDate='-1' AND Id='%d'", date, box_cart_amount(cart, -1), box_cart_id(cart, -1));
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
     
@@ -58,28 +93,28 @@ extern int sql_set_PayDate(MYSQL *connection, int cartId){
     return res;
 }
 
-extern int sql_get_cart_id(MYSQL* connection, char* token){
+extern box_cart *sql_get_cart(MYSQL* connection, box_user *user){
     
     MYSQL_RES *res = NULL;
     MYSQL_ROW  row;
 
     char *query = NULL;
-    int id = 0;
+    box_cart *cart;
 
-    asprintf(&query, "SELECT Cart.Id FROM Cart INNER JOIN User ON Cart.UserEmail=User.Email AND User.Token='%s' AND Cart.PayDate='-1'",token);
+    asprintf(&query, "SELECT Cart.Id, Cart.PayDate, Cart.UserEmail, Cart.Amount FROM Cart INNER JOIN User ON Cart.UserEmail=User.Email AND User.Token='%s' AND Cart.PayDate='-1'", box_user_get_token(user));
 
     if (mysql_query(connection, query)) handle_sql_error(connection);
     
     if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
 
     if ((row = mysql_fetch_row(res)) != NULL) {
-        id = atoi(row[0]); 
+        cart = box_cart_fill(atoi(row[0]), row[1], row[2], atoi(row[3]));
     }
 
     mysql_free_result(res);
     free(query);
     
-    return id;
+    return cart;
 }
 
 extern int sql_max_id(MYSQL* connection){
@@ -107,14 +142,14 @@ extern int sql_max_id(MYSQL* connection){
 
 
 
-extern int sql_user_has_cart(MYSQL* connection, char* email){
+extern int sql_user_has_cart(MYSQL* connection, box_user *user){
     MYSQL_RES *res = NULL;
     MYSQL_ROW  row;
 
     char *query = NULL;
     int hasCart = 1;
 
-    asprintf(&query, "SELECT COUNT(*) FROM Cart WHERE UserEmail='%s' AND PayDate='-1'",email);
+    asprintf(&query, "SELECT COUNT(*) FROM Cart WHERE UserEmail='%s' AND PayDate='-1'", box_user_get_email(user));
 
     if (mysql_query(connection, query)) handle_sql_error(connection);
     

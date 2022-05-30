@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS Cart
 	Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     PayDate NVARCHAR(15) NULL,
     UserEmail NVARCHAR(100) NOT NULL,
+    Amount INT NOT NULL,
     CONSTRAINT `fk_cart_user`
     FOREIGN KEY (UserEmail) REFERENCES User (Email)
 );
@@ -90,11 +91,6 @@ INSERT IGNORE INTO Cart
 (Id, PayDate, UserEmail)
 VALUES 
 (1, "-1" ,"jane.doe@gmail.com");
-
-INSERT IGNORE INTO CreditCard
-(CartId, CardNumber, ExpirationDate, CSV, CardOwner)
-VALUES
-(1, "1111111111111111","12/25","123", "Jane Doe");
 
 INSERT IGNORE INTO Product
 (Id, Name, Price, Stock, Description, Image)

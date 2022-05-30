@@ -32,6 +32,8 @@ extern void box_products_add(box_products *products, box_product *product);
 
 extern box_products *box_products_diff(box_products *original, box_products *updated);
 
+extern int box_get_products_total(box_products *products);
+
 /* KEY */
 extern int box_product_id(box_product *product);
 
