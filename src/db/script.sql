@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS blackboxDB;
 CREATE USER IF NOT EXISTS 'blackbox'@'localhost'
     IDENTIFIED BY '2uwejs45KSdf8!4$';
 
-GRANT SELECT, INSERT, UPDATE
+GRANT SELECT, INSERT, DELETE, UPDATE
     ON blackboxDB.*
     TO 'blackbox'@'localhost';
 

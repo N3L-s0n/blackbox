@@ -15,6 +15,8 @@ static void set_cart_products(box_http *http, MYSQL *connection);
 
 static void handle_payment(box_http *http, MYSQL *connection);
 
+static void handle_remove(box_http *http, MYSQL *connection, int id);
+
 int main(int argc, char **argv, char **env)
 {
    
@@ -25,9 +27,17 @@ int main(int argc, char **argv, char **env)
 
     if(box_http_logged(http) == USER_LOGGED) {
         
-        set_cart_products(http, connection);
+        char *product_id = box_query_param(http, "remove");
 
-        if (box_http_has_post(http) == 1) handle_payment(http, connection);
+        if (product_id != NULL) {
+            handle_remove(http, connection, atoi(product_id));
+            free(product_id);
+        }
+        else {
+            set_cart_products(http, connection);
+
+            if (box_http_has_post(http) == 1) handle_payment(http, connection);
+        }
     }
     else box_set_class_variables(http, "subheader", "subtitle=Not logged.", 0);
 
@@ -145,4 +155,26 @@ static void handle_payment(box_http *http, MYSQL *connection)
 
     box_destroy_user(user);
     box_destroy_cart(cart);
+}
+
+static void handle_remove(box_http *http, MYSQL *connection, int id) {
+
+    box_user *user = sql_get_user_by_token(connection, box_get_token(http));
+    box_cart *cart = sql_get_cart(connection, user);
+
+    box_product *product = sql_get_product(connection, id);
+
+    if (product == NULL) {
+
+        box_destroy_user(user);
+        box_destroy_cart(cart);
+        return;
+    }
+
+    sql_cart_remove_product(connection, cart, product);
+    box_http_redirect(http, "cart.cgi");
+
+    box_destroy_user(user);
+    box_destroy_cart(cart);
+    box_destroy_product(product);
 }
