@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include "../utils/box_entry_validation.h"
 
 #define QUESTION_EMAIL_SIZE 100
 #define QUESTION_DATE_SIZE 20

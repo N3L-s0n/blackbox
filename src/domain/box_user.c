@@ -70,7 +70,15 @@ extern box_user *box_user_fill(char *email, char *name, char *last_name, char *s
     if (token != NULL) user->token = token;
     if(toke_time!=NULL)strncpy(user->token_time, toke_time, USER_TIME_SIZE);
 
-    return user;
+    if(validate_length(name,USER_NAME_SIZE)
+    &&validate_length(password,USER_PASSWORD_SIZE)
+    &&validate_length(address,USER_ADDRESS_SIZE)
+    &&validate_length(phone,USER_PHONE_SIZE)
+    &&validate_length(email,USER_EMAIL_SIZE)){
+        return user;
+    }
+
+    return NULL;
     
 }
 

@@ -7,6 +7,7 @@
 #include "../utils/box_regex.h"
 #include "../utils/box_sha.h"
 #include "../utils/box_client_token.h"
+#include "../utils/box_entry_validation.h"
 
 #define USER_EMAIL_SIZE 100
 #define USER_NAME_SIZE 100

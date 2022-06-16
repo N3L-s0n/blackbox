@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include "../utils/box_entry_validation.h"
 
 #define CREDIT_CARD_NUMBER_SIZE 20
 #define CREDIT_CARD_EXP_DATE_SIZE 10

@@ -29,7 +29,14 @@ extern box_question *box_question_fill(char* email, char* subject, char* descrip
     if (subject != NULL) strncpy(question->subject, subject, QUESTION_SUBJECT_SIZE);
     if (description != NULL) strncpy(question->description, description, QUESTION_DESCRIPTION_SIZE);
     
-    return question;
+    if(validate_length(email,QUESTION_EMAIL_SIZE) 
+    && validate_length(date,QUESTION_DATE_SIZE) 
+    && validate_length(subject,QUESTION_SUBJECT_SIZE)
+    && validate_length(description,QUESTION_DESCRIPTION_SIZE)){
+        return question;
+    }
+
+    return NULL;  
 }
 
 extern void box_destroy_question(box_question* question){

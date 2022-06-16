@@ -18,7 +18,7 @@ OBJS := $(addprefix $(BUILDDIR)/, box_headers.o box_array.o box_ntree.o \
 		box_product.o box_user.o box_question.o box_credit_card.o box_cart.o\
 		sql_connection.o sql_product.o sql_user.o sql_question.o sql_cart.o\
 		sql_credit_card.o box_client_token.o box_url.o box_card_validation.o\
-		box_sha.o)
+		box_entry_validation.o box_sha.o)
 
 .PHONY: all
 
