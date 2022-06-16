@@ -131,7 +131,9 @@ extern int sql_max_id(MYSQL* connection){
     if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
 
     if ((row = mysql_fetch_row(res)) != NULL) {
-        id = atoi(row[0]); 
+        
+        if (row[0] == NULL) id = 0;
+        else id = atoi(row[0]); 
     }
 
     mysql_free_result(res);

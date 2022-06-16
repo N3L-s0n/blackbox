@@ -15,7 +15,7 @@ typedef struct box_user {
     char last_name [USER_NAME_SIZE + 1];
     char second_last_name [USER_NAME_SIZE + 1];
 
-    char password[USER_PASSWORD_SIZE + 1];
+    unsigned char password[SHA256_DIGEST_LENGTH + 1];
     char address[USER_ADDRESS_SIZE + 1];
     char phone[USER_PHONE_SIZE + 1];
     char token_time[USER_TIME_SIZE + 1];
@@ -51,9 +51,10 @@ extern box_users *box_users_new(size_t size) {
     return users;
 }
 
-extern box_user *box_user_fill(char *email, char *name, char *last_name, char *second_last_name, char *password, char *address, char *phone, box_token *token, char * toke_time){
+extern box_user *box_user_fill(char *email, char *name, char *last_name, char *second_last_name, unsigned char *password, char *address, char *phone, box_token *token, char * toke_time){
 
     if (email == NULL) return NULL; // key
+
     email = box_replace_string(email,"%40","@");
     box_user *user = (box_user *)calloc(1, sizeof(box_user));
 
@@ -63,7 +64,7 @@ extern box_user *box_user_fill(char *email, char *name, char *last_name, char *s
     if (last_name != NULL) strncpy(user->last_name, last_name, USER_NAME_SIZE);
     if (second_last_name != NULL) strncpy(user->second_last_name, second_last_name, NAME_SIZE);
 
-    if (password != NULL) strncpy(user->password, password, USER_PASSWORD_SIZE);
+    if (password != NULL) memcpy(user->password, password, USER_PASSWORD_SIZE);
     if (address != NULL) strncpy(user->address, address, USER_ADDRESS_SIZE);
     if (phone != NULL) strncpy(user->phone, phone, USER_PHONE_SIZE);
     if (token != NULL) user->token = token;
@@ -140,7 +141,7 @@ extern char *box_user_second_last_name(box_user *user, char *value) {
 
     return user->second_last_name;
 }
-extern char *box_user_password(box_user *user, char *value) {
+extern unsigned char *box_user_password(box_user *user, char *value) {
 
     if (value != NULL) strncpy(user->password, value, USER_PASSWORD_SIZE);
 
@@ -189,7 +190,7 @@ extern void box_clear_token(box_user *user){
 extern char *box_user_get_email(box_user *user){
     return user->email;
 }
-extern char *box_user_get_password(box_user *user){
+extern unsigned char *box_user_get_password(box_user *user){
     return user->password;
 }
 extern box_token *box_user_get_token(box_user *user){

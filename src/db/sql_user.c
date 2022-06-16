@@ -28,6 +28,7 @@ extern box_user *sql_get_user_by_token(MYSQL *connection, box_token *token) {
 
     if (connection == NULL || token == NULL || box_get_token_value(token) == NULL) return NULL;
 
+
     MYSQL_RES *res = NULL;
     MYSQL_ROW  row;
 
@@ -46,6 +47,7 @@ extern box_user *sql_get_user_by_token(MYSQL *connection, box_token *token) {
 
     mysql_free_result(res);
     free(query);
+    
 
     return user;
 }
@@ -157,17 +159,28 @@ extern int  sql_create_user(MYSQL *connection, box_user *user) {
     return res;
 }
 
-extern box_token *sql_log_user(MYSQL *connection, char *email, char *password) {
+extern box_user *sql_log_user(MYSQL *connection, char *email, char *password) {
 
-    box_user   *user = sql_get_user(connection,email);
-    box_token *token = NULL;
+    box_user *user = sql_get_user(connection,email);
 
-    if (user != NULL && box_same_string(password, box_user_get_password(user)) == 0) {
+    if (user == NULL) return NULL;
+
+    unsigned char   *digest = box_sha256(password);
+
+    if (digest != NULL && memcmp(digest, box_user_get_password(user), SHA256_DIGEST_LENGTH) == 0) {
+
             box_user_token_time(user,box_get_timestamp());
-            token = box_user_token(user, box_craft_token()); // le asigno un token 
-            if (sql_save_user(connection,user) != SQL_NO_ERROR) token = NULL;
+            box_user_token(user, box_craft_token()); // le asigno un token 
+                                                             
+            if (sql_save_user(connection,user) != SQL_NO_ERROR) {
+    
+                box_destroy_user(user);
+                user = NULL;
+            }
+
+            free(digest);
     }
 
-    return token;
+    return user;
 }
 

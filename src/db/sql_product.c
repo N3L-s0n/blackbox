@@ -20,9 +20,7 @@ extern box_product  *sql_get_product(MYSQL *connection, int id) {
                 atoi(row[0]),
                 row[1],
                 atoi(row[2]),
-                atoi(row[3]),
-                row[4],
-                row[5]
+                row[3]
                 );
     }
 
@@ -60,9 +58,7 @@ extern box_products *sql_get_products(MYSQL *connection) {
                         atoi(row[0]), 
                         row[1], 
                         atoi(row[2]), 
-                        atoi(row[3]), 
-                        row[4], 
-                        row[5]
+                        row[3]
                         ), 
                     i++);
         }
@@ -105,9 +101,7 @@ extern box_products *sql_get_products_filter(MYSQL *connection, char *string) {
                         atoi(row[0]), 
                         row[1], 
                         atoi(row[2]), 
-                        atoi(row[3]), 
-                        row[4], 
-                        row[5]
+                        row[3]
                         ), 
                     i++);
         }
@@ -128,7 +122,7 @@ extern box_products *sql_get_products_by_cart_id(MYSQL *connection, box_cart *ca
 
     char *query = NULL;
 
-    asprintf(&query,"SELECT Product.Id, Product.Name, Product.Price, Product.Stock, Product.Description, Product.Image FROM Product INNER JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d", box_cart_id(cart, -1));
+    asprintf(&query,"SELECT Product.Id, Product.Name, Product.Price, Product.Description FROM Product INNER JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d", box_cart_id(cart, -1));
     
     if (mysql_query(connection, query)) handle_sql_error(connection);
     
@@ -148,9 +142,7 @@ extern box_products *sql_get_products_by_cart_id(MYSQL *connection, box_cart *ca
                         atoi(row[0]), 
                         row[1], 
                         atoi(row[2]), 
-                        atoi(row[3]), 
-                        row[4], 
-                        row[5]
+                        row[3]
                         ), 
                     i++);
         }
@@ -197,12 +189,10 @@ extern int  sql_save_product(MYSQL *connection, box_product *product) {
 
     char *query = NULL;
 
-    asprintf(&query, "INSERT INTO Product (Name, Price, Stock, Description, Image) VALUES('%s', '%d', '%d', '%s', '%s')", 
+    asprintf(&query, "INSERT INTO Product (Name, Price, Description) VALUES('%s', '%d', '%s')", 
             box_product_name(product, NULL),
             box_product_price(product, -1),
-            box_product_stock(product, -1),
-            box_product_description(product, NULL),
-            box_product_image(product, NULL)
+            box_product_description(product, NULL)
             );
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);

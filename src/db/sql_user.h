@@ -4,6 +4,7 @@
 #include "sql_connection.h"
 #include "../domain/box_user.h"
 #include "../utils/box_regex.h"
+#include "../utils/box_sha.h"
 #include "../utils/box_client_token.h"
 
 
@@ -16,6 +17,6 @@ extern int sql_get_users_count(MYSQL *connection);
 extern int sql_create_user(MYSQL *connection, box_user *user);
 extern int sql_save_user(MYSQL *conection, box_user *user);
 
-extern box_token *sql_log_user(MYSQL * connection, char *email, char *password);
+extern box_user *sql_log_user(MYSQL * connection, char *email, char *password);
 
 #endif

@@ -19,7 +19,7 @@ extern box_products *box_products_new(size_t size);
 
 extern box_product *box_product_copy(box_product *orignal);
 
-extern box_product *box_product_fill(int id, char *name, int price, int stock, char *description, char *image);
+extern box_product *box_product_fill(int id, char *name, int price, char *description);
 
 extern void box_destroy_product(box_product *product);
 
@@ -39,8 +39,6 @@ extern int box_product_id(box_product *product);
 
 extern char *box_product_name(box_product *product, char *value);
 extern int   box_product_price(box_product *product, int value);
-extern int   box_product_stock(box_product *product, int value);
 extern char *box_product_description(box_product *product, char *value);
-extern char *box_product_image(box_product *product, char *value);
 
 #endif

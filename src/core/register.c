@@ -1,8 +1,8 @@
-#include "stdlib.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
 #include "../http/box_http.h"
-#include "../db/data.h"
 #include "../db/sql_connection.h"
+#include "../utils/box_sha.h"
 
 
 int main(int argc, char **argv, char **env){
@@ -13,7 +13,8 @@ int main(int argc, char **argv, char **env){
 
     box_set_class_variables(http, "subheader", "subtitle=Register new user.", 0);
     
-    if (box_http_has_post(http)==1){
+    if (box_http_has_post(http) == 1) {
+
         char * email = box_post_param(http,"email");
         char * pass = box_post_param(http,"password");
         char * confpass = box_post_param(http,"confPass");
@@ -22,14 +23,23 @@ int main(int argc, char **argv, char **env){
         char * address = box_post_param(http,"address");
         
         if (box_same_string(pass,confpass) == 0 ){ //confirm password 
-            MYSQL *connection = init_sql_connection(); 
-            box_user * user =  box_user_fill(email,name,"","",pass,address,phone,NULL, NULL);
-            if(sql_create_user(connection,user)==0){
-                box_http_redirect(http,"login.cgi");
+
+            unsigned char *digest = box_sha256(pass);
+
+            if (digest != NULL) { // password hash
+                                                    
+                MYSQL *connection = init_sql_connection(); 
+                box_user * user =  box_user_fill(email,name,"","",digest,address,phone,NULL, NULL);
+
+                if (sql_create_user(connection,user) == 0) box_http_redirect(http,"login.cgi");
+
+                close_sql_connection(connection);
+
+                free(digest);
             }
-            close_sql_connection(connection);
         }   
     }
+
     box_send_headers(http);
 
     box_send_html(http);

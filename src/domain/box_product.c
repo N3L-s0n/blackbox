@@ -4,11 +4,9 @@ typedef struct box_product {
     
     int id; // KEY
     int price;
-    int stock;
 
     char name [PRODUCT_NAME_SIZE + 1];
     char description [PRODUCT_DESCRIPTION_SIZE + 1];
-    char image [PRODUCT_IMAGE_SIZE + 1];
 
 } box_product;
 
@@ -47,7 +45,7 @@ extern box_products *box_products_new(size_t size) {
     return products;
 }
 
-extern box_product *box_product_fill(int id, char *name, int price, int stock, char *description, char *image){
+extern box_product *box_product_fill(int id, char *name, int price, char *description){
 
     if (id < 0) return NULL; // key
         
@@ -56,10 +54,8 @@ extern box_product *box_product_fill(int id, char *name, int price, int stock, c
 
     product->id = id;
     product->price = price;
-    product->stock = stock;
 
     if (name != NULL) strncpy(product->name, name, PRODUCT_NAME_SIZE);
-    if (image != NULL) strncpy(product->image, image, PRODUCT_IMAGE_SIZE);
     if (description != NULL) strncpy(product->description, description, PRODUCT_DESCRIPTION_SIZE);
 
     return product;
@@ -166,22 +162,10 @@ extern char *box_product_description(box_product *product, char *value) {
 
     return product->description;
 }
-extern char *box_product_image(box_product *product, char *value) {
-
-    if (value != NULL) strncpy(product->image, value, PRODUCT_IMAGE_SIZE);
-
-    return product->image;
-}
 
 extern int   box_product_price(box_product *product, int value) {
     
     if (value > 0) product->price = value;
 
     return product->price;
-}
-extern int   box_product_stock(box_product *product, int value) {
-
-    if (value > 0) product->stock = value;
-
-    return product->stock;
 }
