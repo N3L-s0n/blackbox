@@ -20,7 +20,8 @@ extern box_product  *sql_get_product(MYSQL *connection, int id) {
                 atoi(row[0]),
                 row[1],
                 atoi(row[2]),
-                row[3]
+                row[3],
+                0
                 );
     }
 
@@ -58,7 +59,8 @@ extern box_products *sql_get_products(MYSQL *connection) {
                         atoi(row[0]), 
                         row[1], 
                         atoi(row[2]), 
-                        row[3]
+                        row[3],
+                        0
                         ), 
                     i++);
         }
@@ -101,7 +103,8 @@ extern box_products *sql_get_products_filter(MYSQL *connection, char *string) {
                         atoi(row[0]), 
                         row[1], 
                         atoi(row[2]), 
-                        row[3]
+                        row[3],
+                        0
                         ), 
                     i++);
         }
@@ -121,11 +124,10 @@ extern box_products *sql_get_products_by_cart_id(MYSQL *connection, box_cart *ca
     uint64_t rows = 0;
 
     char *query = NULL;
-
-    asprintf(&query,"SELECT Product.Id, Product.Name, Product.Price, Product.Description FROM Product INNER JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d", box_cart_id(cart, -1));
+    
+    asprintf(&query,"SELECT Product.Id, Product.Name, Product.Price, Product.Description, ProductIsINCart.Quantity FROM Product JOIN ProductIsINCart ON Product.Id=ProductIsINCart.ProductId AND ProductIsINCart.CartId = %d", box_cart_id(cart, -1));
     
     if (mysql_query(connection, query)) handle_sql_error(connection);
-    
     if ((res = mysql_store_result(connection)) == NULL) handle_sql_error(connection);
 
     rows = mysql_num_rows(res);
@@ -136,13 +138,13 @@ extern box_products *sql_get_products_by_cart_id(MYSQL *connection, box_cart *ca
         int i = 0;
 
         while ((row = mysql_fetch_row(res)) != NULL) {
-
             box_set_product_from_array(products, 
                     box_product_fill(
                         atoi(row[0]), 
                         row[1], 
                         atoi(row[2]), 
-                        row[3]
+                        row[3],
+                        atoi(row[4])
                         ), 
                     i++);
         }

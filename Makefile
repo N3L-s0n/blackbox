@@ -25,13 +25,13 @@ OBJS := $(addprefix $(BUILDDIR)/, box_headers.o box_array.o box_ntree.o \
 all: $(TARGETDIR)/$(page).cgi $(BUILDDIR)/$(page).o $(OBJS) | $(HOMEDIR) $(TARGETDIR) $(CSSDEST) $(IMGDEST) $(HTMLDEST)
 
 $(TARGETDIR)/$(page).cgi: $(BUILDDIR)/$(page).o $(OBJS) | $(HOMEDIR) $(TARGETDIR) $(CSSDEST) $(IMGDEST) $(HTMLDEST)
-	gcc -g $(OUTPUT_OPTION) $^ -lssl -lcrypto `mysql_config --libs | awk '{print $$1,$$2;}'`
+	gcc -g  $(OUTPUT_OPTION) $^ -lssl -lcrypto `mysql_config --libs | awk '{print $$1,$$2;}'`
 
 $(BUILDDIR)/%.o: %.c %.h | $(BUILDDIR)
 	gcc -g -c `mysql_config --cflags` $(OUTPUT_OPTION) $<
 
 $(BUILDDIR)/%.o: %.c | $(BUILDDIR)
-	gcc -g -c $(OUTPUT_OPTION) $<
+	gcc -g -c  $(OUTPUT_OPTION) $<
 
 $(OBJS): | $(BUILDDIR)
 

@@ -2,22 +2,37 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target 'obj/.o', needed by '/var/www/blackbox/bin/.cgi'.  Stop.
 
 # GNU Make 4.3
+ 
 # Built for x86_64-pc-linux-gnu
+ 
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
+ 
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+ 
 # This is free software: you are free to change and redistribute it.
+ 
 # There is NO WARRANTY, to the extent permitted by law.
+ 
 
-# Make data base, printed on Thu May 26 22:49:45 2022
+ 
+# Make data base, printed on Mon Jun 20 16:52:04 2022
+ 
 
 # Variables
+ 
 
+ 
 # environment
+ 
 GDK_BACKEND = x11
+ 
 # environment
+ 
 LC_ALL = C
+ 
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-9f236a3a-18c3-4bef-ab3e-07ebeb1856b7.sock
+ 
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-d528fcca-43ab-4232-9662-183962cfdd10.sock
 # makefile (from 'Makefile', line 15)
 VPATH := src:src/core:src/http:src/mem:src/html:src/utils:src/db:src/domain
 # environment
@@ -53,7 +68,7 @@ VSCODE_LOG_STACK = false
 # makefile (from 'Makefile', line 13)
 HTMLSRC := html
 # environment
-VSCODE_CODE_CACHE_PATH = /home/kali/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /home/kali/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
 # environment
 XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
 # environment
@@ -87,7 +102,7 @@ LESS_TERMCAP_ue = [0m
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /tmp/ssh-XXXXXXok8X6e/agent.798
+SSH_AUTH_SOCK = /tmp/ssh-XXXXXXYc8JjZ/agent.772
 # default
 .SHELLFLAGS := -c
 # environment
@@ -103,7 +118,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 19395
+VSCODE_PID = 28804
 # makefile (from 'Makefile', line 8)
 IMGDEST := /var/www/blackbox/images
 # environment
@@ -111,7 +126,7 @@ XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/798,unix/kali:/tmp/.ICE-unix/798
+SESSION_MANAGER = local/kali:@/tmp/.ICE-unix/772,unix/kali:/tmp/.ICE-unix/772
 # automatic
 *F = $(notdir $*)
 # environment
@@ -127,7 +142,7 @@ VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupp
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # makefile (from 'Makefile', line 16)
-OBJS := obj/box_headers.o obj/box_array.o obj/box_ntree.o obj/box_html.o obj/box_reader.o obj/box_tags.o obj/box_regex.o obj/box_http.o obj/box_map.o obj/box_product.o obj/box_user.o obj/box_question.o obj/box_credit_card.o obj/box_cart.o obj/sql_connection.o obj/sql_product.o obj/sql_user.o obj/sql_question.o obj/sql_cart.o obj/sql_credit_card.o obj/box_client_token.o obj/box_url.o obj/box_card_validation.o
+OBJS := obj/box_headers.o obj/box_array.o obj/box_ntree.o obj/box_html.o obj/box_reader.o obj/box_tags.o obj/box_regex.o obj/box_http.o obj/box_map.o obj/box_product.o obj/box_user.o obj/box_question.o obj/box_credit_card.o obj/box_cart.o obj/sql_connection.o obj/sql_product.o obj/sql_user.o obj/sql_question.o obj/sql_cart.o obj/sql_credit_card.o obj/box_client_token.o obj/box_url.o obj/box_card_validation.o obj/box_entry_validation.o obj/box_sha.o
 # makefile
 SHELL = /bin/sh
 # environment
@@ -191,7 +206,7 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-SSH_AGENT_PID = 889
+SSH_AGENT_PID = 859
 # environment
 _ = /usr/share/code/code
 # environment
@@ -209,7 +224,7 @@ _JAVA_OPTIONS = -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-f2138f4e-1.67.2-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-f2138f4e-1.68.1-main.sock
 # environment
 XDG_SESSION_ID = 2
 # environment
@@ -270,15 +285,20 @@ GDMSESSION = lightdm-xsession
 # Implicit Rules
 
 obj/%.o: %.c %.h | obj
-#  recipe to execute (from 'Makefile', line 30):
+#  recipe to execute (from 'Makefile', line 31):
 	gcc -g -c `mysql_config --cflags` $(OUTPUT_OPTION) $<
 
 obj/%.o: %.c | obj
-#  recipe to execute (from 'Makefile', line 33):
-	gcc -g -c $(OUTPUT_OPTION) $<
+#  recipe to execute (from 'Makefile', line 34):
+	gcc -g -c  $(OUTPUT_OPTION) $<
 
 # 2 implicit rules, 0 (0.0%) terminal.
 # Files
+
+obj/box_entry_validation.o: | obj
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 obj/box_client_token.o: | obj
 #  Implicit rule search has not been done.
@@ -289,9 +309,12 @@ obj/box_client_token.o: | obj
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 41):
+#  recipe to execute (from 'Makefile', line 42):
+ 
 	rsync -rupE --delete $(IMGSRC) $(HOMEDIR) 
+ 
 
+ 
 obj/box_question.o: | obj
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -316,12 +339,11 @@ obj/box_card_validation.o: | obj
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-26 14:25:10.27007337
+#  Last modified 2022-06-20 15:55:06.589526755
 #  File has been updated.
 #  Successfully updated.
 
 obj/sql_cart.o: | obj
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -335,7 +357,7 @@ obj/sql_question.o: | obj
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 53):
+#  recipe to execute (from 'Makefile', line 54):
 	mkdir $(TARGETDIR)
 
 obj/box_product.o: | obj
@@ -382,14 +404,14 @@ obj:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 47):
+#  recipe to execute (from 'Makefile', line 48):
 	mkdir $(BUILDDIR)
 
 /var/www/blackbox:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 50):
+#  recipe to execute (from 'Makefile', line 51):
 	mkdir $(HOMEDIR)
 
 # Not a target:
@@ -412,7 +434,7 @@ obj/box_user.o: | obj
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 38):
+#  recipe to execute (from 'Makefile', line 39):
 	rsync -rupE --delete $(CSSSRC) $(HOMEDIR)
 
 obj/sql_connection.o: | obj
@@ -424,7 +446,7 @@ obj/sql_connection.o: | obj
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 44):
+#  recipe to execute (from 'Makefile', line 45):
 	rsync -rupE --delete $(HTMLSRC) $(HOMEDIR)
 
 # Not a target:
@@ -438,7 +460,7 @@ obj/box_reader.o: | obj
 #  Modification time never checked.
 #  File has not been updated.
 
-all: /var/www/blackbox/bin/.cgi obj/.o obj/box_headers.o obj/box_array.o obj/box_ntree.o obj/box_html.o obj/box_reader.o obj/box_tags.o obj/box_regex.o obj/box_http.o obj/box_map.o obj/box_product.o obj/box_user.o obj/box_question.o obj/box_credit_card.o obj/box_cart.o obj/sql_connection.o obj/sql_product.o obj/sql_user.o obj/sql_question.o obj/sql_cart.o obj/sql_credit_card.o obj/box_client_token.o obj/box_url.o obj/box_card_validation.o | /var/www/blackbox /var/www/blackbox/bin /var/www/blackbox/css /var/www/blackbox/images /var/www/blackbox/html
+all: /var/www/blackbox/bin/.cgi obj/.o obj/box_headers.o obj/box_array.o obj/box_ntree.o obj/box_html.o obj/box_reader.o obj/box_tags.o obj/box_regex.o obj/box_http.o obj/box_map.o obj/box_product.o obj/box_user.o obj/box_question.o obj/box_credit_card.o obj/box_cart.o obj/sql_connection.o obj/sql_product.o obj/sql_user.o obj/sql_question.o obj/sql_cart.o obj/sql_credit_card.o obj/box_client_token.o obj/box_url.o obj/box_card_validation.o obj/box_entry_validation.o obj/box_sha.o | /var/www/blackbox /var/www/blackbox/bin /var/www/blackbox/css /var/www/blackbox/images /var/www/blackbox/html
 #  Phony target (prerequisite of .PHONY).
 #  Command line target.
 #  Implicit rule search has not been done.
@@ -457,6 +479,11 @@ obj/.o:
 #  File does not exist.
 #  File has not been updated.
 
+obj/box_sha.o: | obj
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
 obj/sql_user.o: | obj
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -472,12 +499,12 @@ obj/box_headers.o: | obj
 #  Modification time never checked.
 #  File has not been updated.
 
-/var/www/blackbox/bin/.cgi: obj/.o obj/box_headers.o obj/box_array.o obj/box_ntree.o obj/box_html.o obj/box_reader.o obj/box_tags.o obj/box_regex.o obj/box_http.o obj/box_map.o obj/box_product.o obj/box_user.o obj/box_question.o obj/box_credit_card.o obj/box_cart.o obj/sql_connection.o obj/sql_product.o obj/sql_user.o obj/sql_question.o obj/sql_cart.o obj/sql_credit_card.o obj/box_client_token.o obj/box_url.o obj/box_card_validation.o | /var/www/blackbox /var/www/blackbox/bin /var/www/blackbox/css /var/www/blackbox/images /var/www/blackbox/html
+/var/www/blackbox/bin/.cgi: obj/.o obj/box_headers.o obj/box_array.o obj/box_ntree.o obj/box_html.o obj/box_reader.o obj/box_tags.o obj/box_regex.o obj/box_http.o obj/box_map.o obj/box_product.o obj/box_user.o obj/box_question.o obj/box_credit_card.o obj/box_cart.o obj/sql_connection.o obj/sql_product.o obj/sql_user.o obj/sql_question.o obj/sql_cart.o obj/sql_credit_card.o obj/box_client_token.o obj/box_url.o obj/box_card_validation.o obj/box_entry_validation.o obj/box_sha.o | /var/www/blackbox /var/www/blackbox/bin /var/www/blackbox/css /var/www/blackbox/images /var/www/blackbox/html
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 27):
-	gcc -g $(OUTPUT_OPTION) $^ `mysql_config --libs | awk '{print $$1,$$2;}'`
+#  recipe to execute (from 'Makefile', line 28):
+	gcc -g  $(OUTPUT_OPTION) $^ -lssl -lcrypto `mysql_config --libs | awk '{print $$1,$$2;}'`
 
 obj/box_url.o: | obj
 #  Implicit rule search has not been done.
@@ -495,7 +522,7 @@ obj/box_html.o: | obj
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=39/1024=4%, Rehash=0, Collisions=11/153=7%
+# Load=41/1024=4%, Rehash=0, Collisions=11/161=7%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
@@ -503,12 +530,12 @@ obj/box_html.o: | obj
 # General ('VPATH' variable) search path:
 # src:src/core:src/http:src/mem:src/html:src/utils:src/db:src/domain
 
-# strcache buffers: 1 (0) / strings = 69 / storage = 879 B / avg = 12 B
-# current buf: size = 8162 B / used = 879 B / count = 69 / avg = 12 B
+# strcache buffers: 1 (0) / strings = 71 / storage = 920 B / avg = 12 B
+# current buf: size = 8162 B / used = 920 B / count = 71 / avg = 12 B
 
-# strcache performance: lookups = 181 / hit rate = 61%
+# strcache performance: lookups = 189 / hit rate = 62%
 # hash-table stats:
-# Load=69/8192=1%, Rehash=0, Collisions=4/181=2%
-# Finished Make data base on Thu May 26 22:49:45 2022
+# Load=71/8192=1%, Rehash=0, Collisions=4/189=2%
+# Finished Make data base on Mon Jun 20 16:52:04 2022
 
  

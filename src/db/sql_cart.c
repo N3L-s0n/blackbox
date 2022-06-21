@@ -21,15 +21,15 @@ extern int sql_new_cart(MYSQL *connection, box_cart* cart){
     return res;
 }
 
-extern int sql_cart_add_product(MYSQL* connection, box_cart *cart, box_product *product) {
+extern int sql_cart_add_product(MYSQL* connection, box_cart *cart, box_product *product, int quantity) {
  
     int res = SQL_NO_ERROR;
     
     char* query = NULL;
-
-    asprintf(&query, "INSERT INTO ProductIsINCart VALUES('%d','%d')",
+    asprintf(&query, "INSERT INTO ProductIsINCart VALUES('%d','%d','%d')",
             box_product_id(product),
-            box_cart_id(cart, -1)
+            box_cart_id(cart, -1),
+            quantity
     );
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);

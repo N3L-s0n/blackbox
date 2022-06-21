@@ -4,6 +4,7 @@ typedef struct box_product {
     
     int id; // KEY
     int price;
+    int quantity;
 
     char name [PRODUCT_NAME_SIZE + 1];
     char description [PRODUCT_DESCRIPTION_SIZE + 1];
@@ -45,15 +46,14 @@ extern box_products *box_products_new(size_t size) {
     return products;
 }
 
-extern box_product *box_product_fill(int id, char *name, int price, char *description){
+extern box_product *box_product_fill(int id, char *name, int price, char *description,int quantity){
 
     if (id < 0) return NULL; // key
-        
     box_product *product = (box_product *)calloc(1, sizeof(box_product));
-
 
     product->id = id;
     product->price = price;
+    product->quantity=quantity;
 
     if (name != NULL) strncpy(product->name, name, PRODUCT_NAME_SIZE);
     if (description != NULL) strncpy(product->description, description, PRODUCT_DESCRIPTION_SIZE);
@@ -138,7 +138,7 @@ extern int box_get_products_total(box_products *products) {
 
     for (int i = 0; i < products->size; ++i) {
 
-        total += box_get_product_from_array(products, i)->price;
+        total += box_get_product_from_array(products, i)->price * box_get_product_from_array(products,i)->quantity;
     }
 
     return total;
@@ -148,6 +148,9 @@ extern int box_get_products_total(box_products *products) {
 extern int box_product_id(box_product *product) {
 
     return product->id;
+}
+extern int box_product_quantity(box_product *product){
+    return product->quantity;
 }
 
 extern char *box_product_name(box_product *product, char *value) {
