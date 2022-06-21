@@ -66,7 +66,7 @@ extern box_user *box_user_fill(char *email, char *name, char *last_name, char *s
 
     if (password != NULL) { 
         memcpy(user->password, password, USER_PASSWORD_SIZE);
-        user->password[USER_PASSWORD_SIZE] = '/0'; 
+        user->password[USER_PASSWORD_SIZE] = '\0'; 
     }
 
     if (address != NULL) strncpy(user->address, address, USER_ADDRESS_SIZE);

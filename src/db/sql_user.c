@@ -113,11 +113,14 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
     MYSQL_ROW row; 
     char * query= NULL;
     int res = SQL_NO_ERROR;
-    asprintf(&query, "UPDATE User SET Name='%s',FirstLastName='%s',SecondLastName='%s',Password='%s',Address='%s',Phone='%s',Token='%s',TokenTime='%s' WHERE Email='%s'", 
+
+    char * hex = box_hex(box_user_password(user, NULL), USER_PASSWORD_SIZE);
+
+    asprintf(&query, "UPDATE User SET Name='%s',FirstLastName='%s',SecondLastName='%s',Password=UNHEX('%s'),Address='%s',Phone='%s',Token='%s',TokenTime='%s' WHERE Email='%s'", 
             box_user_name(user, NULL),
             box_user_last_name(user, NULL),
             box_user_second_last_name(user, NULL),
-            box_user_password(user, NULL),
+            hex,
             box_user_address(user, NULL),
             box_user_phone(user, NULL),
             box_user_token(user, NULL),
@@ -126,6 +129,7 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
             );
 
 
+    free(hex);
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
     
@@ -158,7 +162,6 @@ extern int  sql_create_user(MYSQL *connection, box_user *user) {
             );
 
     free(hex);
-    printf("<h1> %s </h1>", query);
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
     
@@ -187,6 +190,10 @@ extern box_user *sql_log_user(MYSQL *connection, char *email, char *password) {
             }
 
             free(digest);
+    }
+    else {
+        box_destroy_user(user);
+        user = NULL;
     }
 
     return user;
