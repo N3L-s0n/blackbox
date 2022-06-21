@@ -22,7 +22,8 @@ int main(int argc, char **argv, char **env)
    
     box_http *http = box_new_http("../html/cart.html", env);
     box_http_content(http, 2, TEXT_HTML, CHARSET_UTF_8);
-
+    //este send headers hay que eliminarlo luego, es solo para ver los print
+    //box_send_headers(http);
     MYSQL *connection = init_sql_connection();
 
     if(box_http_logged(http) == USER_LOGGED) {
@@ -43,7 +44,6 @@ int main(int argc, char **argv, char **env)
 
     box_set_class_variables(http, "subheader", "subtitle=Cart.", 0);
     
-
     box_send_headers(http);
     box_send_html(http);
 
@@ -57,18 +57,16 @@ static void set_cart_products(box_http *http, MYSQL *connection)
 {
     box_user *user = sql_get_user_by_token(connection, box_get_token(http));
     box_cart *cart = sql_get_cart(connection, user);
-
     box_products *products = sql_get_products_by_cart_id(connection, cart);
     box_product *product = NULL;
 
     int i = 0;
-
-    if (box_get_product_array_size(products) > 0) {
+    int cantidad = box_get_product_array_size(products);
+    if (cantidad> 0) {
         box_replicate_class(http, "productsList", 0, box_get_product_array_size(products));
 
         char *total = NULL;
         int amount = box_get_products_total(products);
-
         asprintf(&total, "total=%d USD", amount);
         box_set_class_variables(http, "card", total, 0);
 
@@ -79,7 +77,7 @@ static void set_cart_products(box_http *http, MYSQL *connection)
     }
     else {
         box_hide_class(http, "row", 1);
-        box_set_class_variables(http, "productsList",  "product-name=-&product-description=-&product-price=-", 0);
+        box_set_class_variables(http, "productsList",  "product-name=-&product-description=-&product-price=-&product-quantity=-", 0);
         box_set_class_variables(http, "subheader", "subtitle=Your shopping cart has no products.", 0);
     }
 
@@ -87,16 +85,18 @@ static void set_cart_products(box_http *http, MYSQL *connection)
     {
         char *variables = NULL;
 
-        asprintf(&variables, "product-name=%s&product-description=%s&product-price=$%d&product-id=%d", 
+        asprintf(&variables, "product-name=%s&product-description=%s&product-price=$%d&product-id=%d&product-quantity=%d", 
                     box_product_name(product, NULL),
                     box_product_description(product, NULL),
                     box_product_price(product, -1),
-                    box_product_id(product)
+                    box_product_id(product),
+                    box_product_quantity(product)
                 );
 
         box_set_class_variables(http, "productsList", variables, i++);
         free(variables);
     }
+    
 
     box_destroy_user(user);
     box_destroy_cart(cart);

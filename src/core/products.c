@@ -36,6 +36,7 @@ int main(int argc, char **argv, char **env) {
 static int handle_cart_product(box_http *http, MYSQL *connection) {
 
     char *id = box_query_param(http, "product-id");
+    char* quantity = box_query_param(http,"product-quantity");
 
     if (id == NULL || box_check_regex_match(id, NUMERIC) != 0) return 1;
 
@@ -46,7 +47,7 @@ static int handle_cart_product(box_http *http, MYSQL *connection) {
     box_user *user = sql_get_user_by_token(connection, box_get_token(http));
     box_cart *cart = sql_get_cart(connection, user);
 
-    int res = sql_cart_add_product(connection, cart, product);
+    int res = sql_cart_add_product(connection, cart, product,atoi(quantity));
 
     if (res == SQL_NO_ERROR) 
         box_set_class_variables(http, "subheader", "subtitle=Product added.", 0);

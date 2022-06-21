@@ -19,7 +19,7 @@ extern int sql_max_id(MYSQL* connection);
 
 extern int sql_user_has_cart(MYSQL* connection, box_user *user);
 
-extern int sql_cart_add_product(MYSQL* connection, box_cart *cart, box_product *product);
+extern int sql_cart_add_product(MYSQL* connection, box_cart *cart, box_product *product, int quantity);
 
 extern int sql_cart_remove_product(MYSQL* connection, box_cart *cart, box_product *product);
 

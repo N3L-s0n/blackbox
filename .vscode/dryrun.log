@@ -1,35 +1,7 @@
-make --dry-run --always-make --keep-going --print-directory
+make --dry-run --keep-going --print-directory
 make: Entering directory '/home/kali/Desktop/blackbox'
-mkdir obj
-gcc -g -c `mysql_config --cflags` -o obj/box_headers.o src/http/box_headers.c
-gcc -g -c `mysql_config --cflags` -o obj/box_array.o src/mem/box_array.c
-gcc -g -c `mysql_config --cflags` -o obj/box_ntree.o src/mem/box_ntree.c
-gcc -g -c `mysql_config --cflags` -o obj/box_html.o src/html/box_html.c
-gcc -g -c `mysql_config --cflags` -o obj/box_reader.o src/html/box_reader.c
-gcc -g -c `mysql_config --cflags` -o obj/box_tags.o src/html/box_tags.c
-gcc -g -c `mysql_config --cflags` -o obj/box_regex.o src/utils/box_regex.c
-gcc -g -c `mysql_config --cflags` -o obj/box_http.o src/http/box_http.c
-gcc -g -c `mysql_config --cflags` -o obj/box_map.o src/mem/box_map.c
-gcc -g -c `mysql_config --cflags` -o obj/box_product.o src/domain/box_product.c
-gcc -g -c `mysql_config --cflags` -o obj/box_user.o src/domain/box_user.c
-gcc -g -c `mysql_config --cflags` -o obj/box_question.o src/domain/box_question.c
-gcc -g -c `mysql_config --cflags` -o obj/box_credit_card.o src/domain/box_credit_card.c
-gcc -g -c `mysql_config --cflags` -o obj/box_cart.o src/domain/box_cart.c
-gcc -g -c `mysql_config --cflags` -o obj/sql_connection.o src/db/sql_connection.c
-gcc -g -c `mysql_config --cflags` -o obj/sql_product.o src/db/sql_product.c
-gcc -g -c `mysql_config --cflags` -o obj/sql_user.o src/db/sql_user.c
-gcc -g -c `mysql_config --cflags` -o obj/sql_question.o src/db/sql_question.c
-gcc -g -c `mysql_config --cflags` -o obj/sql_cart.o src/db/sql_cart.c
-gcc -g -c `mysql_config --cflags` -o obj/sql_credit_card.o src/db/sql_credit_card.c
-gcc -g -c `mysql_config --cflags` -o obj/box_client_token.o src/utils/box_client_token.c
-gcc -g -c `mysql_config --cflags` -o obj/box_url.o src/utils/box_url.c
-gcc -g -c `mysql_config --cflags` -o obj/box_card_validation.o src/utils/box_card_validation.c
-mkdir /var/www/blackbox
-mkdir /var/www/blackbox/bin
-rsync -rupE --delete www/css /var/www/blackbox
-rsync -rupE --delete www/images /var/www/blackbox 
-rsync -rupE --delete html /var/www/blackbox
-make: Leaving directory '/home/kali/Desktop/blackbox'
  
 make: *** No rule to make target 'obj/.o', needed by '/var/www/blackbox/bin/.cgi'.
 
+make: Leaving directory '/home/kali/Desktop/blackbox'
+ 

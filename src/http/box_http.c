@@ -301,6 +301,10 @@ extern char *box_post_param(box_http *http, char *param) {
         value = box_get_regex_match(http->post_body, buffer);
 
         free(buffer);
+
+        if(validate_entry(value) == 0){
+            return NULL;
+        }
     }
 
     return value;

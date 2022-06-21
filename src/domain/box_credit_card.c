@@ -28,7 +28,14 @@ extern box_credit_card *box_credit_card_fill(int id, char* number, char* date, c
     if(owner != NULL) strncpy(card->cardOwner, owner, CREDIT_CARD_OWNER_SIZE);
     if(csv != NULL) strncpy(card->csv, csv, CREDIT_CARD_CSV_SIZE);
 
-    return card;
+    if(validate_length(number,CREDIT_CARD_NUMBER_SIZE) 
+    && validate_length(date,CREDIT_CARD_EXP_DATE_SIZE) 
+    && validate_length(owner,CREDIT_CARD_OWNER_SIZE)
+    && validate_length(csv,CREDIT_CARD_CSV_SIZE)){
+        return card;
+    }
+
+    return NULL;
 }
 
 extern void box_destroy_credit_card(box_credit_card *card){

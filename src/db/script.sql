@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS ProductIsINCart
 	ProductId INT NOT NULL,
     CartId INT NOT NULL,
     PRIMARY KEY (ProductId,CartId),
+    Quantity INT NOT NULL,
 
     CONSTRAINT `fk_product_ID`
     FOREIGN KEY (ProductId) REFERENCES Product (Id),

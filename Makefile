@@ -18,20 +18,20 @@ OBJS := $(addprefix $(BUILDDIR)/, box_headers.o box_array.o box_ntree.o \
 		box_product.o box_user.o box_question.o box_credit_card.o box_cart.o\
 		sql_connection.o sql_product.o sql_user.o sql_question.o sql_cart.o\
 		sql_credit_card.o box_client_token.o box_url.o box_card_validation.o\
-		box_sha.o)
+		box_entry_validation.o box_sha.o)
 
 .PHONY: all
 
 all: $(TARGETDIR)/$(page).cgi $(BUILDDIR)/$(page).o $(OBJS) | $(HOMEDIR) $(TARGETDIR) $(CSSDEST) $(IMGDEST) $(HTMLDEST)
 
 $(TARGETDIR)/$(page).cgi: $(BUILDDIR)/$(page).o $(OBJS) | $(HOMEDIR) $(TARGETDIR) $(CSSDEST) $(IMGDEST) $(HTMLDEST)
-	gcc -g $(OUTPUT_OPTION) $^ -lssl -lcrypto `mysql_config --libs | awk '{print $$1,$$2;}'`
+	gcc -g  $(OUTPUT_OPTION) $^ -lssl -lcrypto `mysql_config --libs | awk '{print $$1,$$2;}'`
 
 $(BUILDDIR)/%.o: %.c %.h | $(BUILDDIR)
 	gcc -g -c `mysql_config --cflags` $(OUTPUT_OPTION) $<
 
 $(BUILDDIR)/%.o: %.c | $(BUILDDIR)
-	gcc -g -c $(OUTPUT_OPTION) $<
+	gcc -g -c  $(OUTPUT_OPTION) $<
 
 $(OBJS): | $(BUILDDIR)
 

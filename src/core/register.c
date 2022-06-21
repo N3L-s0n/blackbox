@@ -3,6 +3,7 @@
 #include "../http/box_http.h"
 #include "../db/sql_connection.h"
 #include "../utils/box_sha.h"
+#include "../utils/box_entry_validation.h"
 
 
 int main(int argc, char **argv, char **env){
@@ -22,22 +23,26 @@ int main(int argc, char **argv, char **env){
         char * phone = box_post_param(http,"phoneNumber");
         char * address = box_post_param(http,"address");
         
-        if (box_same_string(pass,confpass) == 0 ){ //confirm password 
+        if(email!=NULL && pass!=NULL && confpass!=NULL && name!=NULL && phone!=NULL && address!=NULL){
+            if (validate_password(pass) && box_same_string(pass,confpass) == 0 ){ //confirm password 
 
-            unsigned char *digest = box_sha256(pass);
+                unsigned char *digest = box_sha256(pass);
 
-            if (digest != NULL) { // password hash
-                                                    
-                MYSQL *connection = init_sql_connection(); 
-                box_user * user =  box_user_fill(email,name,"","",digest,address,phone,NULL, NULL);
+                if (digest != NULL) { // password hash
+                                                        
+                    MYSQL *connection = init_sql_connection(); 
+                    box_user * user =  box_user_fill(email,name,"","",digest,address,phone,NULL, NULL);
 
-                if (sql_create_user(connection,user) == 0) box_http_redirect(http,"login.cgi");
+                    if (sql_create_user(connection,user) == 0) box_http_redirect(http,"login.cgi");
 
-                close_sql_connection(connection);
+                    close_sql_connection(connection);
 
-                free(digest);
-            }
-        }   
+                    free(digest);
+                }
+            }   
+        }
+
+        
     }
 
     box_send_headers(http);
