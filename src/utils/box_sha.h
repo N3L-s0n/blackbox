@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <openssl/sha.h>
 
-extern char *box_sha256(const char *string);
+extern unsigned char *box_sha256(const char *string);
+
+extern char *box_hex(const unsigned char* bytes, int len);
 
 #endif

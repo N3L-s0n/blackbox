@@ -64,11 +64,15 @@ extern box_user *box_user_fill(char *email, char *name, char *last_name, char *s
     if (last_name != NULL) strncpy(user->last_name, last_name, USER_NAME_SIZE);
     if (second_last_name != NULL) strncpy(user->second_last_name, second_last_name, NAME_SIZE);
 
-    if (password != NULL) memcpy(user->password, password, USER_PASSWORD_SIZE);
+    if (password != NULL) { 
+        memcpy(user->password, password, USER_PASSWORD_SIZE);
+        user->password[USER_PASSWORD_SIZE] = '/0'; 
+    }
+
     if (address != NULL) strncpy(user->address, address, USER_ADDRESS_SIZE);
     if (phone != NULL) strncpy(user->phone, phone, USER_PHONE_SIZE);
     if (token != NULL) user->token = token;
-    if(toke_time!=NULL)strncpy(user->token_time, toke_time, USER_TIME_SIZE);
+    if (toke_time!=NULL)strncpy(user->token_time, toke_time, USER_TIME_SIZE);
 
     return user;
     

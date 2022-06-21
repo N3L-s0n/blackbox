@@ -124,6 +124,9 @@ extern int  sql_save_user(MYSQL *connection, box_user *user) {
             box_user_token_time(user,NULL),
             box_user_email(user,NULL)
             );
+
+
+
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
     
     free(query);
@@ -140,17 +143,22 @@ extern int  sql_create_user(MYSQL *connection, box_user *user) {
 
     char *query = NULL;
 
-    asprintf(&query, "INSERT INTO User VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s','%s','%s')", 
+    char * hex = box_hex(box_user_password(user, NULL), USER_PASSWORD_SIZE);
+
+    asprintf(&query, "INSERT INTO User VALUES('%s', '%s', '%s', '%s', UNHEX('%s'), '%s', '%s','%s','%s')", 
             box_user_email(user, NULL),
             box_user_name(user, NULL),
             box_user_last_name(user, NULL),
             box_user_second_last_name(user, NULL),
-            box_user_password(user, NULL),
+            hex,
             box_user_address(user, NULL),
             box_user_phone(user, NULL),
-            box_user_token(user,NULL),
-            box_user_token_time(user,NULL)
+            "",
+            ""
             );
+
+    free(hex);
+    printf("<h1> %s </h1>", query);
 
     if (mysql_query(connection, query)) res = handle_sql_error(connection);
     
