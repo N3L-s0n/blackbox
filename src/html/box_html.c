@@ -283,7 +283,11 @@ static int box_map_class_traverse(box_ntree_node *node, void *data) {
 
     if (element->type == BOX_TAGS) {
         box_el_tags *tag = (box_el_tags *)element;
-        box_map(document->class_map, box_get_regex_match(tag->open_tag, TAG_CLASS), node);
+
+        char * key = box_get_regex_match(tag->open_tag, TAG_CLASS);
+        box_map(document->class_map, key, node);
+
+        if (key != NULL) free(key);
         return 0;
     }
 

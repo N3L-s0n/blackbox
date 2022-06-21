@@ -131,8 +131,6 @@ extern box_array *box_map(box_map_array *array, char *key, void *value) {
 
                 if (*(void **)box_get_array(node->values, i) == value) return node->values;
             }
-
-            free(key);
         }
         else node = box_map_new_node(array, key);
 

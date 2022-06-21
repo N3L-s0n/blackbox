@@ -14,6 +14,7 @@ static char *box_read_buffer(FILE *fp);
 extern document box_open_document(int *login) {
 
     document doc = box_new_document(login);
+    return doc;
 }
 
 extern void box_read_document(document doc, char *filename) {
